@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Container from "./layouts/Container";
-import SignIn from "./layouts/SignIn";
+import SignIn from "../../redux/containers/SignICtn";
 import ParticleField from "react-particles-webgl";
 
 import animConfig from "./animConfig";
@@ -12,7 +12,7 @@ const HomePage = props => {
   });
 
   return (
-    <Container justify="center" style={{ backgroundColor: "#f5950563s" }}>
+    <Container justify="center" style={{ backgroundColor: "#f5950563" }}>
       <ParticleField config={config} />
       <SignIn>{props.children}</SignIn>
     </Container>
