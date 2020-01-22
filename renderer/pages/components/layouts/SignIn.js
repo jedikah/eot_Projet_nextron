@@ -48,11 +48,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function SignIn() {
+export default function SignIn(props) {
   const classes = useStyles();
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container
+      component="main"
+      maxWidth="xs"
+      style={{ backgroundColor: "white", position: "fixed" }}
+    >
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -85,6 +89,7 @@ export default function SignIn() {
             autoComplete="current-password"
           />
           <MyLink href="/Bureau">
+            {props.children}
             <Button
               type="button"
               fullWidth
