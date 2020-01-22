@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -14,6 +14,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
 import MyLink from "./MyLink";
+import SignInCtn from "../../redux/containers/SignICtn";
 
 function Copyright() {
   return (
@@ -48,9 +49,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function SignIn(props) {
+const SignIn = props => {
   const classes = useStyles();
 
+  useEffect(() => {
+    console.log("SIGNIN props store: ", props);
+  });
   return (
     <Container
       component="main"
@@ -88,8 +92,8 @@ export default function SignIn(props) {
             id="password"
             autoComplete="current-password"
           />
+          {props.children}
           <MyLink href="/Bureau">
-            {props.children}
             <Button
               type="button"
               fullWidth
@@ -116,4 +120,6 @@ export default function SignIn(props) {
       </Box>
     </Container>
   );
-}
+};
+
+export default SignInCtn(SignIn);

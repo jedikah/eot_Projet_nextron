@@ -24,9 +24,8 @@ const Next = () => {
       <Head>
         <title>Next - Nextron (with-javascript-material-ui)</title>
       </Head>
-      <NextCtn>next component</NextCtn>
     </React.Fragment>
   );
 };
 
-export default Next;
+export default NextCtn(Next);

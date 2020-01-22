@@ -5,6 +5,13 @@ import Typography from "@material-ui/core/Typography";
 import { Link } from "../components";
 
 import HomeCtn from "../redux/containers/HomeCtn";
+import Container from "./components/layouts/Container";
+import SignIn from "./components/SignIn";
+import ParticleField from "react-particles-webgl";
+
+import animConfig from "./components/animConfig";
+
+const config = animConfig;
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -23,7 +30,7 @@ const Home = props => {
   const classes = useStyles({});
 
   useEffect(() => {
-    console.log("base props: ", props);
+    console.log("HOME base props: ", props);
 
     var sqlite3 = require("sqlite3").verbose();
     var db = new sqlite3.Database(":memory:");
@@ -31,13 +38,16 @@ const Home = props => {
 
   return (
     <div className={classes.root}>
-      <HomeCtn>
-        <Typography gutterBottom>
-          <Link href="/next">Go to the next page</Link>
-        </Typography>
-      </HomeCtn>
+      <Container justify="center">
+        <ParticleField config={config} />
+        <SignIn>
+          <Typography gutterBottom>
+            <Link href="/next">Go to the next page</Link>
+          </Typography>
+        </SignIn>
+      </Container>
     </div>
   );
 };
 
-export default Home;
+export default HomeCtn(Home);

@@ -7,7 +7,7 @@ import { theme } from "../lib";
 import { Provider } from "react-redux";
 import withRedux from "next-redux-wrapper";
 
-import store from "../redux/store";
+import myStore from "../redux/myStore";
 
 process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
 
@@ -29,7 +29,7 @@ class MyApp extends App {
           </Head>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Component {...pageProps} />
+            <Component {...pageProps} store={myStore} />
           </ThemeProvider>
         </React.Fragment>
       </Provider>
@@ -37,4 +37,4 @@ class MyApp extends App {
   }
 }
 
-export default withRedux(store)(MyApp);
+export default withRedux(myStore)(MyApp);
