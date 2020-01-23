@@ -25,7 +25,7 @@ class MyApp extends App {
       <Provider store={store}>
         <React.Fragment>
           <Head>
-            <title>with-javascript-material-ui</title>
+            <title>EOT Manager</title>
           </Head>
           <ThemeProvider theme={theme}>
             <CssBaseline />

@@ -13,6 +13,7 @@
   "dependencies": {
     "electron-serve": "^0.4.1",
     "electron-store": "^5.1.0",
+    "mdbreact": "^4.25.0",
     "nan": "^2.14.0",
     "next-redux-wrapper": "^4.0.1",
     "node-pre-gyp": "^0.14.0",

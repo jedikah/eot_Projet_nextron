@@ -28,7 +28,7 @@ function Copyright() {
     </Typography>
   );
 }
-
+let input = { id: "", passWd: "" };
 const useStyles = makeStyles(theme => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -52,73 +52,96 @@ const useStyles = makeStyles(theme => ({
 const SignIn = props => {
   const classes = useStyles();
 
+  const chageInputId = e => {
+    input.id = e.target.value;
+  };
+
+  const chageInputPassWd = e => {
+    input.passWd = e.target.value;
+  };
+
   useEffect(() => {
     console.log("SIGNIN props store: ", props);
   });
   return (
-    <Container
-      component="main"
-      maxWidth="xs"
-      style={{ backgroundColor: "white", position: "fixed" }}
-    >
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Authentification
-        </Typography>
-        <form className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="Identifiant"
-            label="Identifiant"
-            name="Identifiant"
-            autoComplete="Identifiant"
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          {props.children}
-          <MyLink href="/Bureau">
-            <Button
-              type="button"
+    <div style={{ position: "fixed" }}>
+      <Container
+        component="main"
+        maxWidth="xs"
+        style={{ backgroundColor: "white" }}
+      >
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Authentification
+          </Typography>
+          <form className={classes.form} noValidate>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
               fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
+              id="Identifiant"
+              label="Identifiant"
+              name="Identifiant"
+              autoComplete="Identifiant"
+              autoFocus
+              onChange={chageInputId}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              onChange={chageInputPassWd}
+            />
+            {props.children}
+            <MyLink
+              href="/next"
+              prefetch={false}
+              values={{
+                signId: props.signIns[0].id,
+                signPassWd: props.signIns[0].passWd,
+                input
+              }}
             >
-              S'authentifier
-            </Button>
-          </MyLink>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                onClick={e => {
+                  e.preventDefault;
+                }}
+              >
+                S'authentifier
+              </Button>
+            </MyLink>
 
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item></Grid>
             </Grid>
-            <Grid item></Grid>
-          </Grid>
-        </form>
-      </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
-    </Container>
+          </form>
+        </div>
+        <Box mt={8}>
+          <Copyright />
+        </Box>
+      </Container>
+    </div>
   );
 };
 

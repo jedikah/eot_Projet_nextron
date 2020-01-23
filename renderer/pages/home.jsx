@@ -38,6 +38,9 @@ const Home = props => {
 
   return (
     <div className={classes.root}>
+      <Head>
+        <title>EOT Manager: Authentification</title>
+      </Head>
       <Container justify="center">
         <ParticleField config={config} />
         <SignIn>

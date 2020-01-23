@@ -1,4 +1,6 @@
-const animConfig = {
+import React from "react";
+
+const config = {
   // Display reference cube, useful for orienting the field
   showCube: true,
   // '2D' or '3D' particle field
@@ -8,7 +10,7 @@ const animConfig = {
   // 'passthru' particles will disappear after hitting canvas boundaries and be added back into the scene elsewhere
   boundaryType: "bounce",
   // Maximum velocity of particles
-  velocity: 0.5,
+  velocity: 1,
   // Toggles antialiasing -- must be set during construction, cannot be changed after initial render
   // Slight performance optimization to set false, although lines will appear more jagged
   antialias: false,
@@ -46,11 +48,11 @@ const animConfig = {
     // Transparency of particles
     transparency: 0.9,
     // 'square' or 'circle' shape of particles
-    shape: "square",
+    shape: "circle",
     // The exact number of particles to render
     count: 500,
     // The minimum particle size
-    minSize: 5,
+    minSize: 50,
     // The maximum particle size
     maxSize: 100,
     // true/false render particles
@@ -78,6 +80,10 @@ const animConfig = {
     // Useful when turning off autoRotate, the camera will return to FOV where scene fits to canvas
     resetCameraFlag: false
   }
+};
+
+const animConfig = () => {
+  return config;
 };
 
 export default animConfig;
