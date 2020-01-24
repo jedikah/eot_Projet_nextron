@@ -7,6 +7,9 @@ import { Link } from "../components";
 
 import NextCtn from "../redux/containers/NextCtn";
 import SideNavPage from "./components/SideNavPage";
+import ToolBar from "./components/ToolBar";
+import RemoteWindow from "./components/RemoteWindow";
+import NouveauDossierTravau from "./components/MainComponent/NouveauDossierTravau";
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -16,6 +19,24 @@ const useStyles = makeStyles(theme =>
       bottom: 0,
       left: 0,
       right: 0
+    },
+    main: {
+      border: "1px solid green",
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "flex-start"
+    },
+    innerMain: {
+      width: "100%",
+      height: "100%",
+      display: "flex",
+      flexDirection: "column"
+    },
+    contenue: {
+      width: "100%",
+      height: "100%",
+      display: "flex",
+      border: "1px solid red"
     }
   })
 );
@@ -25,19 +46,27 @@ const Next = () => {
   const [state, setState] = React.useState("azerty");
   return (
     <div className={classes.root}>
-      <Head>
-        <title>EOT Manager</title>
-      </Head>
       <Container
         justify="left"
         style={{
-          border: "1px solid red",
           display: "flex",
-          flexDirection: "row"
+          flexDirection: "column",
+          alignContent: "center",
+          height: "100%"
         }}
       >
-        <SideNavPage></SideNavPage>
-        <Container justify="left"></Container>
+        <RemoteWindow bg="#1a237e">E.O.T MANAGER</RemoteWindow>
+        <Container justify="toolBar" className={classes.main}>
+          <SideNavPage />
+          <div className={classes.innerMain}>
+            <div>
+              <ToolBar></ToolBar>
+            </div>
+            <div className={classes.contenue}>
+              <NouveauDossierTravau />
+            </div>
+          </div>
+        </Container>
       </Container>
     </div>
   );

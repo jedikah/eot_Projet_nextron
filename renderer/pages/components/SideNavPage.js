@@ -10,8 +10,6 @@ import AddToQueueIcon from "@material-ui/icons/AddToQueue";
 import TodayIcon from "@material-ui/icons/Today";
 import WorkOutlineIcon from "@material-ui/icons/WorkOutline";
 import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
-import "./style.css";
-import { yellow } from "@material-ui/core/colors";
 
 const useStyles = makeStyles({
   ListItemIcon: {
@@ -31,12 +29,12 @@ const useStyles = makeStyles({
     display: "block",
     zIndex: 1,
     background: "white",
-    paddingTop: 12,
-    paddingBottom: 12,
+    paddingTop: 16,
+    paddingBottom: 16,
     paddingLeft: 18,
     paddingRight: 18,
     "&:hover": {
-      background: "blue",
+      background: "#283593",
       color: "white"
     }
   },
@@ -92,6 +90,7 @@ export default function SideNavPage() {
     <div
       className={state.hoverMenu ? classes.list1 : classes.list2}
       role="presentation"
+      style={{ color: "black" }}
     >
       <List className={classes.list1} onMouseEnter={hoverMenuOn}>
         <ListItem button style={{ padding: 0 }}>
@@ -151,6 +150,7 @@ export default function SideNavPage() {
           />
         </ListItem>
       </List>
+      <Divider />
     </div>
   );
 

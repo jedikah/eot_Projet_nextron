@@ -126,15 +126,6 @@ const SignIn = props => {
                 S'authentifier
               </Button>
             </MyLink>
-
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item></Grid>
-            </Grid>
           </form>
         </div>
         <Box mt={8}>
