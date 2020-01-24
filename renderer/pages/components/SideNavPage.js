@@ -9,31 +9,64 @@ import ListItemText from "@material-ui/core/ListItemText";
 import AddToQueueIcon from "@material-ui/icons/AddToQueue";
 import TodayIcon from "@material-ui/icons/Today";
 import WorkOutlineIcon from "@material-ui/icons/WorkOutline";
+import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
+import "./style.css";
+import { yellow } from "@material-ui/core/colors";
 
 const useStyles = makeStyles({
   ListItemIcon: {
     display: "block",
     zIndex: 1,
     background: "white",
-    padding: 12,
+    paddingTop: 20,
+    paddingBottom: 20,
     paddingLeft: 18,
-    paddingRight: 18
+    paddingRight: 18,
+    "&:hover": {
+      background: "coral",
+      color: "white"
+    }
+  },
+  ListItemIcon_menu: {
+    display: "block",
+    zIndex: 1,
+    background: "white",
+    paddingTop: 12,
+    paddingBottom: 12,
+    paddingLeft: 18,
+    paddingRight: 18,
+    "&:hover": {
+      background: "blue",
+      color: "white"
+    }
   },
   list1: {
     width: 200,
-    transition: "0.5s"
+    transition: "0.5s",
+    padding: 0,
+    "&:not(:first-child)>:hover": {
+      width: 200,
+      transition: "0.5s",
+      padding: 0,
+      background: "coral",
+      color: "white",
+      transition: "color 0s"
+    }
   },
   list2: {
     width: 60,
-    transition: "0.5s"
+    transition: "0.5s",
+    padding: 0
   },
   text1: {
     transform: "translateX(0)",
-    transition: "0.5s"
+    transition: "0.5s",
+    textAlign: "center"
   },
   text2: {
     transform: "translateX(-100px)",
-    transition: "0.5s"
+    transition: "0.5s",
+    textAlign: "center"
   },
   root: {
     borderRight: "1px solid Grey",
@@ -43,20 +76,43 @@ const useStyles = makeStyles({
 
 export default function SideNavPage() {
   const classes = useStyles();
-  const [state, setState] = React.useState({ hover: false });
+  const [state, setState] = React.useState({
+    hoverMenu: false
+  });
 
-  const hoverOn = () => {
-    setState({ hover: true });
+  const hoverMenuOn = () => {
+    setState({ hoverMenu: true });
   };
-  const hoverOff = () => {
-    setState({ hover: false });
+  const hoverMenuOff = () => {
+    setState({ hoverMenu: false });
   };
+  React.render;
 
   const sideList = side => (
     <div
-      className={state.hover ? classes.list1 : classes.list2}
+      className={state.hoverMenu ? classes.list1 : classes.list2}
       role="presentation"
     >
+      <List className={classes.list1} onMouseEnter={hoverMenuOn}>
+        <ListItem button style={{ padding: 0 }}>
+          <ListItemIcon
+            className={
+              state.hoverMenu
+                ? classes.hoverMenuIcon_on
+                : classes.hoverMenuIcon_off
+            }
+            className={classes.ListItemIcon_menu}
+          >
+            <MenuRoundedIcon />
+          </ListItemIcon>
+          <ListItemText
+            primary={"Menu"}
+            className={state.hoverMenu ? classes.text1 : classes.text2}
+            style={{ zIndex: 0 }}
+          />
+        </ListItem>
+      </List>
+      <Divider />
       <List className={classes.list1}>
         <ListItem button style={{ padding: 0 }}>
           <ListItemIcon className={classes.ListItemIcon}>
@@ -64,7 +120,7 @@ export default function SideNavPage() {
           </ListItemIcon>
           <ListItemText
             primary={"Nouveau dossier de travaux"}
-            className={state.hover ? classes.text1 : classes.text2}
+            className={state.hoverMenu ? classes.text1 : classes.text2}
             style={{ zIndex: 0 }}
           />
         </ListItem>
@@ -77,7 +133,7 @@ export default function SideNavPage() {
           </ListItemIcon>
           <ListItemText
             primary={"Elaboration de Travaux"}
-            className={state.hover ? classes.text1 : classes.text2}
+            className={state.hoverMenu ? classes.text1 : classes.text2}
             style={{ zIndex: 0 }}
           />
         </ListItem>
@@ -90,7 +146,7 @@ export default function SideNavPage() {
           </ListItemIcon>
           <ListItemText
             primary={"Planning"}
-            className={state.hover ? classes.text1 : classes.text2}
+            className={state.hoverMenu ? classes.text1 : classes.text2}
             style={{ zIndex: 0 }}
           />
         </ListItem>
@@ -99,12 +155,7 @@ export default function SideNavPage() {
   );
 
   return (
-    <div
-      className={classes.root}
-      onMouseEnter={hoverOn}
-      onMouseLeave={hoverOff}
-      style={{ paddingTop: "50px" }}
-    >
+    <div className={classes.root} onMouseLeave={hoverMenuOff}>
       <div style={{ overflow: "hidden" }}>{sideList("left")}</div>
     </div>
   );
