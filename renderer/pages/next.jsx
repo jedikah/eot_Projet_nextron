@@ -22,14 +22,22 @@ const useStyles = makeStyles(theme =>
 
 const Next = () => {
   const classes = useStyles({});
-
+  const [state, setState] = React.useState("azerty");
   return (
     <div className={classes.root}>
       <Head>
         <title>EOT Manager</title>
       </Head>
-      <Container justify="center" style={{ border: "1px solid red" }}>
-        <SideNavPage />
+      <Container
+        justify="left"
+        style={{
+          border: "1px solid red",
+          display: "flex",
+          flexDirection: "row"
+        }}
+      >
+        <SideNavPage></SideNavPage>
+        <Container justify="left"></Container>
       </Container>
     </div>
   );

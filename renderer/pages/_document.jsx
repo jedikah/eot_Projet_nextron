@@ -2,6 +2,7 @@ import React from "react";
 import Document, { Head, Main, NextScript } from "next/document";
 import { ServerStyleSheets } from "@material-ui/styles";
 import { initializeFonts, theme } from "../lib";
+import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 
 class MyDocument extends Document {
   componentDidMount() {

@@ -6,6 +6,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { theme } from "../lib";
 import { Provider } from "react-redux";
 import withRedux from "next-redux-wrapper";
+import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 
 import myStore from "../redux/myStore";
 
