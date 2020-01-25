@@ -1,26 +1,81 @@
 import React from "react";
-import GridLayout from "react-grid-layout";
+import { Responsive, WidthProvider } from "react-grid-layout";
+import "../../../../node_modules/react-grid-layout/css/styles.css";
+import "../../../../node_modules/react-resizable/css/styles.css";
+import { makeStyles, createStyles } from "@material-ui/core";
+
+const ResponsiveGridLayout = WidthProvider(Responsive);
+
+const useStyles = makeStyles(theme =>
+  createStyles({
+    grid: {
+      border: "1px solid green",
+      width: "100%"
+    },
+    root: {
+      border: "1px solid red"
+    }
+  })
+);
+
+const layoutLarge = [
+  { i: "1", x: 0, y: 0, w: 2, h: 1, minW: 2 },
+  { i: "2", x: 2, y: 0, w: 2, h: 1, minW: 2 },
+  { i: "3", x: 4, y: 0, w: 2, h: 1, minW: 2 },
+  { i: "4", x: 6, y: 0, w: 2, h: 1, minW: 2 },
+  { i: "5", x: 0, y: 2, w: 2, h: 1, minW: 2 },
+  { i: "6", x: 2, y: 2, w: 2, h: 1, minW: 2 },
+  { i: "7", x: 4, y: 2, w: 2, h: 1, minW: 2 }
+];
+const layoutMedium = [
+  { i: "1", x: 0, y: 0, w: 2, h: 1, minW: 2 },
+  { i: "2", x: 2, y: 0, w: 2, h: 1, minW: 2 },
+  { i: "3", x: 4, y: 0, w: 2, h: 1, minW: 2 },
+  { i: "4", x: 6, y: 0, w: 2, h: 1, minW: 2 },
+  { i: "5", x: 0, y: 2, w: 2, h: 1, minW: 2 },
+  { i: "6", x: 2, y: 2, w: 2, h: 1, minW: 2 },
+  { i: "7", x: 4, y: 2, w: 2, h: 1, minW: 2 }
+];
 
 const NouveauDossierTravau = () => {
-  const layout = [
-    { i: "a", x: 0, y: 0, w: 1, h: 2, static: true },
-    { i: "b", x: 1, y: 0, w: 3, h: 2, minW: 2, maxW: 4 },
-    { i: "c", x: 4, y: 0, w: 1, h: 2 }
-  ];
+  const classes = useStyles({});
+  const [state, setState] = React.useState({});
+
+  const layouts = { lg: layoutLarge, md: layoutMedium };
+
+  const onLayoutChange = (layout, newLayout) => {
+    setState({ layouts: newLayout });
+  };
   return (
-    <div>
-      <GridLayout
-        className="layout"
-        layout={layout}
-        cols={12}
-        rowHeight={30}
-        width={1200}
-      >
-        <div key="a">a</div>
-        <div key="b">b</div>
-        <div key="c">c</div>
-      </GridLayout>
-    </div>
+    <ResponsiveGridLayout
+      className={classes.grid}
+      layouts={layouts}
+      autoSize={true}
+      breakpoints={{ lg: 1100, md: 768 }}
+      onLayoutChange={(layout, newLayout) => onLayoutChange(layout, newLayout)}
+    >
+      <div key="1" className={classes.root}>
+        ...
+      </div>
+      <div key="2" className={classes.root}>
+        ...
+      </div>
+      <div key="3" className={classes.root}>
+        ...
+      </div>
+      <div key="4" className={classes.root}>
+        ...
+      </div>
+      <div key="5" className={classes.root}>
+        ...
+      </div>
+      <div key="6" className={classes.root}>
+        ...
+      </div>
+      <div key="7" className={classes.root}>
+        ...
+      </div>
+    </ResponsiveGridLayout>
   );
 };
 

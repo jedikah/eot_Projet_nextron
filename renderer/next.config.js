@@ -1,5 +1,5 @@
 const withCSS = require("@zeit/next-css");
-const withLess = require("@zeit/next-less");
+const webpack = require("webpack");
 
 module.exports = withCSS({
   lessLoaderOptions: {
@@ -8,7 +8,12 @@ module.exports = withCSS({
   webpack: config => {
     config.target = "electron-renderer";
     config.externals = config.externals || [{ sqlite3: "commonjs sqlite3" }];
-
+    config.plugins.push(
+      new webpack.ProvidePlugin({
+        $: "jquery",
+        jQuery: "jquery"
+      })
+    );
     config.module.rules = [
       ...(config.module.rules || []),
       {
