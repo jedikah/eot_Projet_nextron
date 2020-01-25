@@ -9,7 +9,7 @@ import NextCtn from "../redux/containers/NextCtn";
 import SideNavPage from "./components/SideNavPage";
 import ToolBar from "./components/ToolBar";
 import RemoteWindow from "./components/RemoteWindow";
-import NouveauDossierTravau from "./components/MainComponent/NouveauDossierTravau";
+import Main from "./components/MainComponent/Main";
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -63,7 +63,7 @@ const Next = () => {
               <ToolBar></ToolBar>
             </div>
             <div className={classes.contenue}>
-              <NouveauDossierTravau />
+              <Main />
             </div>
           </div>
         </Container>
