@@ -1,3 +1,5 @@
+import * as types from "../constants/clientActionTypes";
+
 const SIMULATION = {
   clients: [
     {
@@ -16,8 +18,14 @@ const initialState = {
 const client = (state = initialState, action) => {
   let newState = { ...state };
   let payload = action.payload;
+  let { clients } = state;
 
   switch (action.type) {
+    case types.ADD_CLIENT:
+      clients.push(payload.newClient);
+      newState.clients = [...clients];
+      return newState;
+
     default:
       return state;
   }

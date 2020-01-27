@@ -1,3 +1,5 @@
+import * as types from "../constants/travauActionTypes";
+
 const SIMULATION = {
   travaux: [
     {
@@ -30,8 +32,14 @@ const initState = {
 const travau = (state = initState, action) => {
   let newState = { ...state };
   let payload = action.payload;
+  let { travaux } = state;
 
   switch (action.type) {
+    case types.ADD_TRAVAU:
+      travaux.push(payload.newTravau);
+      newState.travaux = [...travaux];
+      return newState;
+
     default:
       return state;
   }

@@ -1,3 +1,5 @@
+import * as types from "../constants/factureActionTypes";
+
 const SIMULATION = {
   factures: [
     {
@@ -18,8 +20,14 @@ const initState = {
 const facture = (state = initState, action) => {
   let newState = { ...state };
   let payload = action.payload;
+  let { factures } = state;
 
   switch (action.type) {
+    case types.ADD_FACTURE:
+      factures.push(payload.newFacture);
+      newState.factures = [...factures];
+      return newState;
+
     default:
       return state;
   }
