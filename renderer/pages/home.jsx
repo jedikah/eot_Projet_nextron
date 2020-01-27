@@ -42,7 +42,8 @@ const Home = props => {
     <div className={classes.root}>
       <RemoteWindow bg="#272727">AUTHENTIFICATION</RemoteWindow>
       <Container justify="center">
-        <ParticleField config={config} />><SignIn></SignIn>
+        <ParticleField config={config} />
+        <SignIn></SignIn>
       </Container>
     </div>
   );
