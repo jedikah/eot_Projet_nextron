@@ -4,6 +4,7 @@ import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
+import Button from "@material-ui/core/Button";
 
 export default function FormNewDoc() {
   //new Date().getFullYear() +"-" + new Date().getMonth()+ "-" + new Date().getDate()
@@ -23,83 +24,97 @@ export default function FormNewDoc() {
   };
   return (
     <React.Fragment>
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={12} md={12} lg={12}>
-          <TextField
-            required
-            id="firstName"
-            name="firstName"
-            label="Non Complet"
-            fullWidth
-            autoComplete="fname"
-          />
+      <form>
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <TextField
+              required
+              id="firstName"
+              name="firstName"
+              label="Non Complet"
+              fullWidth
+              autoComplete="fname"
+            />
+          </Grid>
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <TextField
+              required
+              id="contact"
+              name="contact"
+              label="Contact"
+              fullWidth
+              autoComplete="cont"
+            />
+          </Grid>
+          <Grid item xs={12} md={12} lg={12}>
+            <TextField
+              required
+              id="domicile"
+              name="domicile"
+              label="Domicile"
+              fullWidth
+              autoComplete="dom"
+            />
+          </Grid>
+          <Grid item xs={12} color>
+            <Typography variant="h6" gutterBottom>
+              Avec letre de charge
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <TextField
+              id="objet"
+              name="objet"
+              label="Objet"
+              fullWidth
+              autoComplete="billing country"
+            />
+          </Grid>
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <TextField
+              id="numRTX"
+              name="numRTX"
+              label="N° RTX"
+              fullWidth
+              autoComplete="numRTX"
+            />
+          </Grid>
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <TextField
+              id="dateL"
+              name="dateL"
+              label="Lettre de charge fait le : (Date)"
+              defaultValue={fullYear()}
+              type="date"
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <TextField
+              id="ville"
+              name="ville"
+              label="Lettre de charge fait à: (Ville)"
+              fullWidth
+              autoComplete="billing postal-code"
+            />
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={12}>
-          <TextField
-            required
-            id="contact"
-            name="contact"
-            label="Contact"
-            fullWidth
-            autoComplete="cont"
-          />
+        <Grid container spacing={3}>
+          <Grid item xs={4}>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              onClick={e => {
+                e.preventDefault;
+              }}
+            >
+              Enregistrer
+            </Button>
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={12} lg={12}>
-          <TextField
-            required
-            id="domicile"
-            name="domicile"
-            label="Domicile"
-            fullWidth
-            autoComplete="dom"
-          />
-        </Grid>
-        <Grid item xs={12} color>
-          <Typography variant="h6" gutterBottom>
-            Avec letre de charge
-          </Typography>
-        </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={12}>
-          <TextField
-            required
-            id="objet"
-            name="objet"
-            label="Objet"
-            fullWidth
-            autoComplete="billing country"
-          />
-        </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={12}>
-          <TextField
-            required
-            id="numRTX"
-            name="numRTX"
-            label="N° RTX"
-            fullWidth
-            autoComplete="numRTX"
-          />
-        </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={12}>
-          <TextField
-            id="dateL"
-            name="dateL"
-            label="Lettre de charge fait le : (Date)"
-            defaultValue={fullYear()}
-            type="date"
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={12}>
-          <TextField
-            required
-            id="ville"
-            name="ville"
-            label="Lettre de charge fait à: (Ville)"
-            fullWidth
-            autoComplete="billing postal-code"
-          />
-        </Grid>
-      </Grid>
+      </form>
     </React.Fragment>
   );
 }
