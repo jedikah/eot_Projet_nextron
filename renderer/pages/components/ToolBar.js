@@ -5,8 +5,11 @@ import Typography from "@material-ui/core/Typography";
 
 export default function ToolBar(props) {
   return (
-    <AppBar position="relative" style={{ background: "#283593" }}>
-      <Toolbar style={{ display: "flex", flexDirection: "row" }}>
+    <AppBar position="relative" style={{ background: "#333333" }}>
+      <Toolbar
+        variant="dense"
+        style={{ display: "flex", flexDirection: "row", height: 50 }}
+      >
         <Typography style={{ minWidth: "230px" }} variant="h6">
           GESTION DES DOSSIERS
         </Typography>

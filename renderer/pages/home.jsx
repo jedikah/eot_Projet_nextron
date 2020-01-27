@@ -40,7 +40,7 @@ const Home = props => {
 
   return (
     <div className={classes.root}>
-      <RemoteWindow bg="#fb8c00">AUTHENTIFICATION</RemoteWindow>
+      <RemoteWindow bg="#272727">AUTHENTIFICATION</RemoteWindow>
       <Container justify="center">
         <ParticleField config={config} />><SignIn></SignIn>
       </Container>

@@ -34,7 +34,7 @@ const useStyles = makeStyles({
     paddingLeft: 18,
     paddingRight: 18,
     "&:hover": {
-      background: "#283593",
+      background: "#020527",
       color: "white"
     }
   },

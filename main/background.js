@@ -14,8 +14,10 @@ if (isProd) {
   await app.whenReady();
 
   const mainWindow = createWindow("main", {
+    width: 900,
+    height: 500,
     minWidth: 900,
-    minHeight: 600,
+    minHeight: 500,
     frame: false
   });
 

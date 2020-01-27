@@ -9,7 +9,7 @@ import NextCtn from "../redux/containers/NextCtn";
 import SideNavPage from "./components/SideNavPage";
 import ToolBar from "./components/ToolBar";
 import RemoteWindow from "./components/RemoteWindow";
-import Main from "./components/MainComponent/Main";
+import NewWork from "./components/MainComponent/NewWorkComponent/NewWork";
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -36,7 +36,8 @@ const useStyles = makeStyles(theme =>
       width: "100%",
       height: "100%",
       display: "flex",
-      border: "2px solid yellow"
+      border: "2px solid yellow",
+      overflow: "auto"
     }
   })
 );
@@ -55,7 +56,7 @@ const Next = () => {
           height: "100%"
         }}
       >
-        <RemoteWindow bg="#1a237e">E.O.T MANAGER</RemoteWindow>
+        <RemoteWindow bg="#272727">E.O.T MANAGER</RemoteWindow>
         <Container justify="toolBar" className={classes.main}>
           <SideNavPage />
           <div className={classes.innerMain}>
@@ -63,7 +64,7 @@ const Next = () => {
               <ToolBar></ToolBar>
             </div>
             <div className={classes.contenue}>
-              <Main />
+              <NewWork></NewWork>
             </div>
           </div>
         </Container>
