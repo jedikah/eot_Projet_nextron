@@ -36,8 +36,7 @@ const useStyles = makeStyles(theme =>
       width: "100%",
       height: "100%",
       display: "flex",
-      border: "2px solid yellow",
-      overflow: "auto"
+      border: "2px solid yellow"
     }
   })
 );

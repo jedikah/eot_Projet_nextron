@@ -51,17 +51,23 @@ const useStyles = makeStyles(theme =>
 
 const NewWork = props => {
   const classes = useStyles({});
-  const [state, setState] = React.useState({});
-  const layouts = {
+  let layouts = {
     lg: layoutLarge,
     md: layoutMedium,
     sm: layoutSm,
     xs: layoutXs,
     xxs: layoutXxs
   };
+  useEffect(() => {
+    console.log("avant : ", Object.values(layouts));
+    if (localStorage) layouts = JSON.parse(localStorage.getItem("layouts"));
+    console.log("apres : ", Object.values(layouts));
+  });
+  let [state, setState] = React.useState({ layouts: layouts });
   const onLayoutChange = (layout, newLayout) => {
     setState({ layouts: newLayout });
     //console.log(Object.values(newLayout));
+    localStorage.setItem("layouts", JSON.stringify(newLayout));
   };
 
   return (
@@ -73,7 +79,7 @@ const NewWork = props => {
       isDraggable={false}
       isResizable={false}
       className={classes.grid}
-      layouts={layouts}
+      layouts={state.layouts}
       autoSize={false}
       breakpoints={{ lg: 1800, md: 1500, sm: 1300, xs: 1000, xxs: 800 }}
       cols={{ lg: 16, md: 16, sm: 16, xs: 16, xxs: 16 }}
@@ -94,7 +100,7 @@ const NewWork = props => {
             textAlign: "center"
           }}
         >
-          Formulaire de creation de dossier
+          Créer un dossier
         </div>
         <div
           style={{
