@@ -2,14 +2,14 @@ import React from "react";
 import Head from "next/head";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import Container from "./components/layouts/Container";
+import Container from "../components/layouts/Container";
 import { Link } from "../components";
 
 import NextCtn from "../redux/containers/NextCtn";
-import SideNavPage from "./components/SideNavPage";
-import ToolBar from "./components/ToolBar";
-import RemoteWindow from "./components/RemoteWindow";
-import NewWork from "./components/MainComponent/NewWorkComponent/NewWork";
+import SideNavPage from "../components/SideNavPage";
+import ToolBar from "../components/ToolBar";
+import RemoteWindow from "../components/RemoteWindow";
+import NewWork from "../components/MainComponent/NewWorkComponent/NewWork";
 
 const useStyles = makeStyles(theme =>
   createStyles({

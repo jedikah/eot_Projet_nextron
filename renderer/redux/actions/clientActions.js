@@ -1,6 +1,6 @@
 import * as types from "../constants/clientActionTypes";
 
-export const addClients = payload => ({
+export const addClient = payload => ({
   type: types.ADD_CLIENT,
   payload
 });

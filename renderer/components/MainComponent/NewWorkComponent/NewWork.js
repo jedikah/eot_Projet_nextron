@@ -1,11 +1,9 @@
 import React, { useEffect } from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
-import "../../../../../node_modules/react-grid-layout/css/styles.css";
-import "../../../../../node_modules/react-resizable/css/styles.css";
 import { makeStyles, createStyles } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 
-import FormNewDoc from "./FormNewDoc";
+import FormNewDoc from "../../../redux/containers/FormNewDocCtn";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -59,9 +57,7 @@ const NewWork = props => {
     xxs: layoutXxs
   };
   useEffect(() => {
-    console.log("avant : ", Object.values(layouts));
     if (localStorage) layouts = JSON.parse(localStorage.getItem("layouts"));
-    console.log("apres : ", Object.values(layouts));
   });
   let [state, setState] = React.useState({ layouts: layouts });
   const onLayoutChange = (layout, newLayout) => {

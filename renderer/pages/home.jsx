@@ -2,15 +2,13 @@ import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import { Link } from "../components";
+import ParticleField from "react-particles-webgl";
 
 import HomeCtn from "../redux/containers/HomeCtn";
-import Container from "./components/layouts/Container";
-import SignIn from "./components/SignIn";
-import ParticleField from "react-particles-webgl";
-import RemoteWindow from "./components/RemoteWindow";
-
-import animConfig from "./components/animConfig";
-import { yellow } from "@material-ui/core/colors";
+import Container from "../components/layouts/Container";
+import SignIn from "../components/SignIn";
+import RemoteWindow from "../components/RemoteWindow";
+import animConfig from "../components/animConfig";
 
 const config = animConfig;
 

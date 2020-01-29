@@ -10,12 +10,22 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Divider from "@material-ui/core/Divider";
 
-export default function FormNewDoc() {
+import * as DB from "../../../models";
+
+export default function FormNewDoc(props) {
+  const os = require("os");
+  console.log(os.homedir);
+  //DB.connect();
+  //DB.testPath(os.homedir());
+  // DB.testPath("../../../models/eotdb.sqlite");
+  /*const sqlite3 = require("sqlite3").verbose();
+
+  console.log(new sqlite3.Database("./eotdb.sqlit"));*/
   let [state, setState] = React.useState({
     letter: false,
     typeTrav: ""
   });
-  //new Date().getFullYear() +"-" + new Date().getMonth()+ "-" + new Date().getDate()
+
   const fullYear = () => {
     const year = new Date().getFullYear();
     const month = new Date().getMonth();

@@ -14,7 +14,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
 import MyLink from "./MyLink";
-import SignInCtn from "../../redux/containers/SignICtn";
+import SignInCtn from "../redux/containers/SignICtn";
 
 function Copyright() {
   return (
