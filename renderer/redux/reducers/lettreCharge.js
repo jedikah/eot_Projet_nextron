@@ -1,26 +1,12 @@
 import * as types from "../constants/lettreChargeActionTypes";
+import * as DB from "../../models/index";
 
-const SIMULATION = {
-  letreCharges: [
-    {
-      numRTX: "a000001",
-      dateRTX: "jj-mm-aaaa",
-      villeL: "sambava",
-      dateL: "jj-mm-aaaa",
-      objet: "demande de bornage"
-    },
-    {
-      numRTX: "a000002",
-      dateRTX: "jj-mm-aaaa",
-      villeL: "sambava",
-      dateL: "jj-mm-aaaa",
-      objet: "demande de bornage"
-    }
-  ]
-};
+let path = DB.homeDir("ECM");
+path += "EMC.sqlite";
+const db = DB.connect(path);
 
 const initState = {
-  lettreCharges: [...SIMULATION.letreCharges]
+  lettreCharges: DB.selectLetreCharges(db).lettreCharges
 };
 
 const lettreCharge = (state = initState, action) => {

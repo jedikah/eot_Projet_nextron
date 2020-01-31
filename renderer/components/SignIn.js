@@ -14,7 +14,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
 import MyLink from "./MyLink";
-import SignInCtn from "../redux/containers/SignICtn";
+import UserCtn from "../redux/containers/UserCtn";
 
 function Copyright() {
   return (
@@ -61,7 +61,7 @@ const SignIn = props => {
   };
 
   useEffect(() => {
-    console.log("SIGNIN props store: ", props);
+    console.log("users props", props.users);
   });
   return (
     <div style={{ position: "fixed" }}>
@@ -108,8 +108,8 @@ const SignIn = props => {
               href="/next"
               prefetch={false}
               values={{
-                signId: props.signIns[0].id,
-                signPassWd: props.signIns[0].passWd,
+                signId: props.users[0].name,
+                signPassWd: props.users[0].passWd,
                 input
               }}
             >
@@ -136,4 +136,4 @@ const SignIn = props => {
   );
 };
 
-export default SignInCtn(SignIn);
+export default UserCtn(SignIn);

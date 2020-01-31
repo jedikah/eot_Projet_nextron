@@ -7,7 +7,7 @@ const mapStateToProps = state => ({
   convocations: state.convocation.convocations,
   pvs: state.pv.pvs,
   lettreCharges: state.lettreCharge.lettreCharges,
-  signIns: state.signIn.signIns
+  users: state.user.users
 });
 
 const mapDispatchToProps = dispatch => ({});

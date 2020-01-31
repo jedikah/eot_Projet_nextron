@@ -9,6 +9,7 @@ import Container from "../components/layouts/Container";
 import SignIn from "../components/SignIn";
 import RemoteWindow from "../components/RemoteWindow";
 import animConfig from "../components/animConfig";
+import * as DB from "../models";
 
 const config = animConfig;
 
@@ -30,10 +31,12 @@ const Home = props => {
   const classes = useStyles({});
 
   useEffect(() => {
-    console.log("HOME base props: ", props);
+    let path = DB.homeDir("ECM");
+    path += "EMC.sqlite";
+    const db = DB.connect(path);
+    DB.selectUsers(db);
 
-    var sqlite3 = require("sqlite3").verbose();
-    var db = new sqlite3.Database(":memory:");
+    console.log("home", props.users);
   });
 
   return (

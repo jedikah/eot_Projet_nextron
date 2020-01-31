@@ -67,7 +67,7 @@ const RemoteWindow = props => {
           position: "absolute"
         }}
       >
-        <b>{props.children}</b>
+        {props.children}
       </div>
       <header className={classes.header}>
         <div className={classes.option}>

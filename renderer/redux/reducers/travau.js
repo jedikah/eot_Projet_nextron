@@ -1,32 +1,12 @@
 import * as types from "../constants/travauActionTypes";
+import * as DB from "../../models/index";
 
-const SIMULATION = {
-  travaux: [
-    {
-      idTrav: "00001",
-      numTitre: "pr0005",
-      nomTer: "villa kwan",
-      localisationTrav: "sambava",
-      fokontany: "aaaaaa",
-      dateTrav: "jj-mm-aaaa",
-      typeTrav: "bornage",
-      prix: "350000"
-    },
-    {
-      idTrav: "00001",
-      numTitre: "pr0005",
-      nomTer: "villa kwan",
-      localisationTrav: "sambava",
-      fokontany: "aaaaaa",
-      dateTrav: "jj-mm-aaaa",
-      typeTrav: "bornage",
-      prix: "350000"
-    }
-  ]
-};
+let path = DB.homeDir("ECM");
+path += "EMC.sqlite";
+const db = DB.connect(path);
 
 const initState = {
-  travaux: [...SIMULATION.travaux]
+  travaux: DB.selectTravaux(db).travaux
 };
 
 const travau = (state = initState, action) => {

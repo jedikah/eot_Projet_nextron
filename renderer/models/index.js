@@ -1,4 +1,8 @@
-import React from "react";
+export * from "./user";
+export * from "./client";
+export * from "./lettreCharghe";
+export * from "./travau";
+
 const fs = require("fs");
 
 export const testPath = path => {
@@ -8,14 +12,31 @@ export const testPath = path => {
   });
 };
 
+export const homeDir = dir => {
+  const osHomedir = require("os-homedir");
+  let homeDir = "";
+  for (let i = 0; i < osHomedir().length; i++) {
+    let char = osHomedir()[i];
+    if (char === "\\") char = "/";
+    homeDir += char;
+  }
+  homeDir += "/" + dir + "/";
+
+  if (!fs.existsSync(homeDir)) fs.mkdirSync(homeDir);
+  return homeDir;
+};
+
 export const connect = path => {
   const sqlite3 = require("sqlite3").verbose();
   sqlite3.OPEN_READWRITE;
-  var db = new sqlite3.Database(path);
+  if (!fs.existsSync(path)) {
+    var db = new sqlite3.Database(path);
+    createDB(db);
+  } else var db = new sqlite3.Database(path);
   return db;
 };
 
-const createDB = db => {
+export const createDB = db => {
   db.serialize(function() {
     drop(db);
     client(db);
@@ -27,6 +48,7 @@ const createDB = db => {
     setting(db);
     travau(db);
     user(db);
+    INDEX(db);
   });
 
   db.close();
@@ -185,9 +207,9 @@ const travau = db => {
 
 const user = db => {
   let sql = "CREATE TABLE user (";
-  sql += "IdUser     TEXT (15) NOT NULL,";
-  sql += "PassWord   TEXT (15) NOT NULL,";
+  sql += "IdUser     INTEGER NOT NULL,";
   sql += "IdPersonne INTEGER   NOT NULL,";
+  sql += "PassWord   TEXT (15) NOT NULL,";
   sql += "PRIMARY KEY (";
   sql += "IdUser";
   sql += "),";
@@ -204,7 +226,7 @@ const user = db => {
   sql += "PassWord,";
   sql += "IdPersonne";
   sql += ")";
-  sql += "VALUES ('admin',";
+  sql += "VALUES (1,";
   sql += "'admin',";
   sql += "1  );";
   db.run(sql);

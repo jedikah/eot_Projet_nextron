@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 
 const mapStateToProps = state => ({
-  signIns: state.signIn.signIns
+  users: state.user.users
 });
 
 const mapDispatchToProps = dispatch => ({});

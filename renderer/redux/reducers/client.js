@@ -1,18 +1,12 @@
 import * as types from "../constants/clientActionTypes";
+import * as DB from "../../models/index";
 
-const SIMULATION = {
-  clients: [
-    {
-      id: "2",
-      nomCli: "Gabriel Kwan",
-      domicile: "Sambava centre",
-      contact: "032xxxxx"
-    }
-  ]
-};
+let path = DB.homeDir("ECM");
+path += "EMC.sqlite";
+const db = DB.connect(path);
 
 const initialState = {
-  clients: [...SIMULATION.clients]
+  clients: DB.selectClients(db).clients
 };
 
 const client = (state = initialState, action) => {

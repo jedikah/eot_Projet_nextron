@@ -13,8 +13,7 @@ import Divider from "@material-ui/core/Divider";
 import * as DB from "../../../models";
 
 export default function FormNewDoc(props) {
-  const os = require("os");
-  console.log(os.homedir);
+  // DB.createDB(DB.connect(os.homedir + "/EotCM"));
   //DB.connect();
   //DB.testPath(os.homedir());
   // DB.testPath("../../../models/eotdb.sqlite");

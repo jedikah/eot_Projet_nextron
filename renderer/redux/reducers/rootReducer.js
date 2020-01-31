@@ -6,7 +6,7 @@ import facture from "./facture";
 import convocation from "./convocation";
 import pv from "./pv";
 import lettreCharge from "./lettreCharge";
-import signIn from "./signIn";
+import user from "./user";
 
 const rootReducer = combineReducers({
   client,
@@ -15,7 +15,7 @@ const rootReducer = combineReducers({
   convocation,
   pv,
   lettreCharge,
-  signIn
+  user
 });
 
 export default rootReducer;
