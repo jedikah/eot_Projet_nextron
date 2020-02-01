@@ -11,6 +11,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Divider from "@material-ui/core/Divider";
 
 import * as DB from "../../../models";
+import * as PRC from "./formProcessing";
 
 export default function FormNewDoc(props) {
   // DB.createDB(DB.connect(os.homedir + "/EotCM"));
@@ -24,6 +25,7 @@ export default function FormNewDoc(props) {
     letter: false,
     typeTrav: ""
   });
+  let formInput = {};
 
   const fullYear = () => {
     const year = new Date().getFullYear();
@@ -44,7 +46,7 @@ export default function FormNewDoc(props) {
     return (
       <Grid container spacing={3}>
         <Divider />
-        <Grid item xs={12} sm={12} md={12} lg={12}>
+        <Grid item xs={12} sm={12} md={12} lg={4}>
           <TextField
             id="objet"
             name="objet"
@@ -53,7 +55,7 @@ export default function FormNewDoc(props) {
             autoComplete="billing country"
           />
         </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={12}>
+        <Grid item xs={12} sm={12} md={12} lg={4}>
           <TextField
             id="numRTX"
             name="numRTX"
@@ -62,7 +64,7 @@ export default function FormNewDoc(props) {
             autoComplete="numRTX"
           />
         </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={12}>
+        <Grid item xs={12} sm={12} md={12} lg={4}>
           <TextField
             id="dateL"
             name="dateL"
@@ -72,7 +74,7 @@ export default function FormNewDoc(props) {
             fullWidth
           />
         </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={12}>
+        <Grid item xs={12} sm={12} md={12} lg={4}>
           <TextField
             id="ville"
             name="ville"
@@ -88,7 +90,7 @@ export default function FormNewDoc(props) {
   const titre = () => {
     return (
       <Grid container spacing={3}>
-        <Grid item xs={12} md={12} lg={12}>
+        <Grid item xs={12} md={12} lg={4}>
           <TextField
             id="numTitre"
             name="numTitre"
@@ -97,7 +99,7 @@ export default function FormNewDoc(props) {
             autoComplete="dom"
           />
         </Grid>
-        <Grid item xs={12} md={12} lg={12}>
+        <Grid item xs={12} md={12} lg={4}>
           <TextField
             id="nmTerrain"
             name="nmTerrain"
@@ -106,7 +108,7 @@ export default function FormNewDoc(props) {
             autoComplete="dom"
           />
         </Grid>
-        <Grid item xs={12} md={12} lg={12}>
+        <Grid item xs={12} md={12} lg={4}>
           <TextField
             id="localisation"
             name="localisation"
@@ -115,11 +117,11 @@ export default function FormNewDoc(props) {
             autoComplete="dom"
           />
         </Grid>
-        <Grid item xs={12} md={12} lg={12}>
+        <Grid item xs={12} md={12} lg={4}>
           <TextField
             id="fokontany"
             name="fokontany"
-            label="Fokontany"
+            label="Fokontany du terrain titré"
             fullWidth
             autoComplete="dom"
           />
@@ -133,38 +135,46 @@ export default function FormNewDoc(props) {
       setState({ ...state, [names]: e.target.value });
   };
 
+  const handleClick = e => {
+    e.preventDefault();
+    console.log(formInput);
+  };
+
   return (
     <React.Fragment>
-      <form>
+      <form onSubmit={handleClick}>
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={12} md={12} lg={12}>
+          <Grid item xs={12} sm={12} md={12} lg={4}>
             <TextField
               required
-              id="firstName"
-              name="firstName"
+              id="Name"
+              name="Name"
               label="Non Complet"
               fullWidth
               autoComplete="fname"
+              onChange={e => (formInput = PRC.handleChange(e, "nom"))}
             />
           </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={12}>
+          <Grid item xs={12} sm={12} md={12} lg={4}>
             <TextField
               required
               id="contact"
               name="contact"
               label="Contact"
               fullWidth
-              autoComplete="cont"
+              autoComplete="contact"
+              onChange={e => (formInput = PRC.handleChange(e, "contact"))}
             />
           </Grid>
-          <Grid item xs={12} md={12} lg={12}>
+          <Grid item xs={12} md={12} lg={4}>
             <TextField
               required
               id="domicile"
               name="domicile"
               label="Domicile"
               fullWidth
-              autoComplete="dom"
+              autoComplete="domicile"
+              onChange={e => (formInput = PRC.handleChange(e, "domicile"))}
             />
           </Grid>
           <Grid item xs={12}>
@@ -186,7 +196,7 @@ export default function FormNewDoc(props) {
               <MenuItem value={20}>Travaux de bornage</MenuItem>
             </Select>
           </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={12}>
+          <Grid item xs={12} sm={12} md={12} lg={4}>
             <TextField
               id="dateTrav"
               name="dateTrav"
@@ -196,7 +206,7 @@ export default function FormNewDoc(props) {
               fullWidth
             />
           </Grid>
-          <Grid item xs={12} md={12} lg={12}>
+          <Grid item xs={12} md={12} lg={4}>
             <TextField
               id="prix"
               name="prix"
@@ -225,15 +235,7 @@ export default function FormNewDoc(props) {
         {state.letter && withLetter()}
         <Grid container spacing={3}>
           <Grid item xs={4}>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              onClick={e => {
-                e.preventDefault;
-              }}
-            >
+            <Button type="submit" fullWidth variant="contained" color="primary">
               Enregistrer
             </Button>
           </Grid>

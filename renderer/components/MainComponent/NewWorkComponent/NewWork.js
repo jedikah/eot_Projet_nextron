@@ -1,37 +1,9 @@
 import React, { useEffect } from "react";
-import { Responsive, WidthProvider } from "react-grid-layout";
 import { makeStyles, createStyles } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
+import { SortablePane, Pane } from "react-sortable-pane";
 
 import FormNewDoc from "../../../redux/containers/FormNewDocCtn";
-
-const ResponsiveGridLayout = WidthProvider(Responsive);
-
-const layoutLarge = [
-  { i: "1", x: 0, y: 0, w: 6, h: 10, maxH: 10, maxW: 6, minH: 4, minW: 2 },
-  { i: "2", x: 4, y: 0, w: 6, h: 10, maxH: 10, maxW: 10, minH: 7, minW: 4 },
-  { i: "3", x: 14, y: 0, w: 4, h: 10, maxH: 10, maxW: 10, minH: 7, minW: 4 }
-];
-const layoutMedium = [
-  { i: "1", x: 0, y: 0, w: 6, h: 8.1, maxH: 8.1, maxW: 6, minH: 4, minW: 2 },
-  { i: "2", x: 4, y: 0, w: 6, h: 8.1, maxH: 8.1, maxW: 10, minH: 4, minW: 4 },
-  { i: "3", x: 14, y: 0, w: 4, h: 8.1, maxH: 8.1, maxW: 10, minH: 4, minW: 4 }
-];
-const layoutSm = [
-  { i: "1", x: 0, y: 0, w: 6, h: 6.75, maxH: 6.75, maxW: 6, minH: 4, minW: 2 },
-  { i: "2", x: 4, y: 0, w: 6, h: 6.75, maxH: 6.75, maxW: 10, minH: 2, minW: 4 },
-  { i: "3", x: 14, y: 0, w: 4, h: 6.75, maxH: 6.75, maxW: 10, minH: 2, minW: 4 }
-];
-const layoutXs = [
-  { i: "1", x: 0, y: 0, w: 6, h: 6.25, maxH: 6.25, maxW: 6, minH: 4, minW: 2 },
-  { i: "2", x: 4, y: 0, w: 6, h: 6.25, maxH: 6.25, maxW: 10, minH: 1, minW: 4 },
-  { i: "3", x: 14, y: 0, w: 4, h: 6.25, maxH: 6.25, maxW: 10, minH: 1, minW: 4 }
-];
-const layoutXxs = [
-  { i: "1", x: 0, y: 0, w: 6, h: 5, maxH: 5, maxW: 6, minH: 4, minW: 2 },
-  { i: "2", x: 4, y: 0, w: 6, h: 5, maxH: 5, maxW: 10, minH: 1, minW: 4 },
-  { i: "3", x: 14, y: 0, w: 4, h: 5, maxH: 5, maxW: 10, minH: 1, minW: 4 }
-];
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -47,69 +19,84 @@ const useStyles = makeStyles(theme =>
   })
 );
 
+const formulaire = () => {
+  return (
+    <div style={{ width: "100%", height: "100%" }}>
+      <div
+        style={{
+          width: "99.3%",
+          background: "grey",
+          color: "white",
+          padding: 2,
+          margin: 0,
+          textAlign: "center",
+          height: "3.5%"
+        }}
+      >
+        Créer un nouveau dossier de travaux
+      </div>
+      <div
+        style={{
+          width: "99%",
+          height: "95%",
+          padding: 15,
+          margin: 5,
+          border: "1px groove grey"
+        }}
+      >
+        <FormNewDoc />
+      </div>
+    </div>
+  );
+};
 const NewWork = props => {
   const classes = useStyles({});
-  let layouts = {
-    lg: layoutLarge,
-    md: layoutMedium,
-    sm: layoutSm,
-    xs: layoutXs,
-    xxs: layoutXxs
-  };
-  useEffect(() => {
-    if (localStorage) layouts = JSON.parse(localStorage.getItem("layouts"));
+  const [state, setState] = React.useState({
+    order: ["0", "1"],
+    panes: {
+      "0": { width: "30%" },
+      "1": { width: "70%" }
+    }
   });
-  let [state, setState] = React.useState({ layouts: layouts });
-  const onLayoutChange = (layout, newLayout) => {
-    setState({ layouts: newLayout });
-    //console.log(Object.values(newLayout));
-    localStorage.setItem("layouts", JSON.stringify(newLayout));
+
+  useEffect(() => {});
+  const orderChange = order => {
+    setState({
+      ...state,
+      order
+    });
   };
+  const panes = ["zero", formulaire()].map((val, key) => (
+    <Pane
+      key={key}
+      size={{ width: state.panes[key].width, height: "100%" }}
+      style={{ border: "1px solid blue" }}
+    >
+      {val}
+    </Pane>
+  ));
 
   return (
-    <ResponsiveGridLayout
-      compactType={"horizontal"}
-      rowHeight={96}
-      margin={[1, 0]}
-      preventCollision={false}
-      isDraggable={false}
-      isResizable={false}
-      className={classes.grid}
-      layouts={state.layouts}
-      autoSize={false}
-      breakpoints={{ lg: 1800, md: 1500, sm: 1300, xs: 1000, xxs: 800 }}
-      cols={{ lg: 16, md: 16, sm: 16, xs: 16, xxs: 16 }}
-      onLayoutChange={(layout, newLayout) => onLayoutChange(layout, newLayout)}
-    >
-      <div key="1" className={classes.root}>
-        ...1
-      </div>
-      <div key="2" className={classes.root}></div>
-      <div key="3" className={classes.root} style={{ flexDirection: "column" }}>
-        <div
-          style={{
-            height: 20,
-            width: "100%",
-            border: "1px solid grey",
-            color: "white",
-            background: "grey",
-            textAlign: "center"
-          }}
-        >
-          Créer un dossier
-        </div>
-        <div
-          style={{
-            width: "100%",
-            height: "100%",
-            border: "1px solid grey",
-            padding: 5
-          }}
-        >
-          <FormNewDoc></FormNewDoc>
-        </div>
-      </div>
-    </ResponsiveGridLayout>
+    <div style={{ border: "1px solid red", width: "100%" }}>
+      <SortablePane
+        isSortable={false}
+        style={{ border: "1px solid green" }}
+        direction="horizontal"
+        margin={10}
+        order={state.order}
+        onOrderChange={order => orderChange(order)}
+        onResizeStop={(e, key, dir, ref, d) => {
+          setState({
+            panes: {
+              ...state.panes,
+              [key]: { width: state.panes[key].width + d.width }
+            }
+          });
+        }}
+      >
+        {panes}
+      </SortablePane>
+    </div>
   );
 };
 

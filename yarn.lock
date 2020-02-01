@@ -929,6 +929,18 @@
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw==
 
+"@daybrush/drag@^0.12.0":
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/@daybrush/drag/-/drag-0.12.0.tgz#36022ce5b03027d6d6c31d512c6cea9c7779410b"
+  integrity sha512-KO9xoEo8KhbNdxJusZ+exOH/HJiyzw3uv+zhKzgsAysZ99cVKKC5TnokzXGB+e4cTn25xnCljMuXpYPLbTXRzw==
+  dependencies:
+    "@daybrush/utils" "^0.10.0"
+
+"@daybrush/utils@^0.10.0", "@daybrush/utils@^0.10.1":
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/@daybrush/utils/-/utils-0.10.1.tgz#212588261fb9638fa3ed223fd0c6e0f3d0f2b43a"
+  integrity sha512-pKnlI3C+u/qgkhypQQT9G7YwEmBp+6XD5ZHzVCKtA0avuku//KGdLoIT6QL78aXI7ZPlJwY31t24+6xkxqdoJg==
+
 "@develar/schema-utils@~2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@develar/schema-utils/-/schema-utils-2.1.0.tgz#eceb1695bfbed6f6bb84666d5d3abe5e1fd54e17"
@@ -936,6 +948,28 @@
   dependencies:
     ajv "^6.1.0"
     ajv-keywords "^3.1.0"
+
+"@egjs/agent@^2.1.5":
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/@egjs/agent/-/agent-2.1.5.tgz#692d2c92b1d8b6f36d0ceccc627199490b445698"
+  integrity sha512-PfdMXd+4WiZN9Xcc1MU31w/RSi6GK6hgufuADRKNY60nXvT34dnXaIyEQlTBkviDfYSOZ8kYW66udyiEMcpqVA==
+
+"@egjs/children-differ@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@egjs/children-differ/-/children-differ-1.0.0.tgz#7f74d2aa47e9ae342cdc8e1e50c440391de1ec53"
+  integrity sha512-NxaJx+dzLUVqLb6iPcu7Mt5m2HDH55VqqZUxGKZ74DKAsL1jxbXSv0jeql0ShN6ZuocULLgr+fztz2bsaBBLkQ==
+  dependencies:
+    "@egjs/list-differ" "^1.0.0"
+
+"@egjs/component@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@egjs/component/-/component-2.1.2.tgz#c466a0a6fc6ba2d479814dcbe6ee4643c25a2e5b"
+  integrity sha512-7tnPiqxbSZ0porzlm0+/O3qZdanMj0zOq0sb17wQXuaRG49XKKKJaO+SacGnZDqf308N5hzJ0m9fZ4+j+VBvXA==
+
+"@egjs/list-differ@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@egjs/list-differ/-/list-differ-1.0.0.tgz#2277aff52e3e4bd9318d5c30ffc3ba3b6216f05e"
+  integrity sha512-HsbMKc0ZAQH+EUeCmI/2PvTYSybmkaWwakU8QGDYYgMVIg9BQ5sM0A0Nnombjxo2+JzXHxmH+jw//yGX+y6GYw==
 
 "@electron/get@^1.0.1":
   version "1.7.2"
@@ -1059,6 +1093,11 @@
     "@babel/runtime" "^7.4.4"
     prop-types "^15.7.2"
     react-is "^16.8.0"
+
+"@moveable/matrix@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@moveable/matrix/-/matrix-0.3.1.tgz#b2a26ea91da4832f0791881975f8d535ea074bc1"
+  integrity sha512-g38XH7RT0SJTZljIeRCM0lI1xRYxyCgQfYEAEnc1IdSlWn1lX5hN9nWRz353hT5remsHn6opgXQxJH1KE7KuTg==
 
 "@restart/context@^2.1.4":
   version "2.1.4"
@@ -2946,6 +2985,14 @@ css-selector-tokenizer@^0.7.0:
     fastparse "^1.1.1"
     regexpu-core "^1.0.0"
 
+css-styled@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/css-styled/-/css-styled-0.1.7.tgz#811122c586360a3746c4d4211296c5f028564dbb"
+  integrity sha512-ypbwCHOxYG0N7cbH2IPH6uZrWi8WqFBkUxPWeT/gtYL4uE+3Te7AsQISsnzeQbOR+/DleziQBQCm6zZsbht/Ig==
+  dependencies:
+    "@daybrush/utils" "^0.10.1"
+    string-hash "^1.1.3"
+
 css-to-react-native@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/css-to-react-native/-/css-to-react-native-3.0.0.tgz#62dbe678072a824a689bcfee011fc96e02a7d756"
@@ -3989,6 +4036,11 @@ fragment-cache@^0.2.1:
   integrity sha1-QpD60n8T6Jvn8zeZxrxaCr//DRk=
   dependencies:
     map-cache "^0.2.2"
+
+framework-utils@^0.3.4:
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/framework-utils/-/framework-utils-0.3.4.tgz#450e63cca680c2a78047691a32ed9f51a748e3a1"
+  integrity sha512-Psekd+sXiHxtjLvK6aqi7vw6sQpShfBQSYlLkxCyhVzpmeTdxv1lCq8BGx++Mm5yw+MUn5IA4WKNO6LZFtOe2Q==
 
 fresh@0.5.2:
   version "0.5.2"
@@ -5768,6 +5820,14 @@ move-concurrently@^1.0.1:
     rimraf "^2.5.4"
     run-queue "^1.0.3"
 
+moveable@^0.13.4:
+  version "0.13.4"
+  resolved "https://registry.yarnpkg.com/moveable/-/moveable-0.13.4.tgz#5c2b0b4af083dcf4f11c1ba755af1507e2c06d17"
+  integrity sha512-/9wjer8Yw4w6z7BNWFValbenDeosPj6Z+7yUiPPWoOP186tVOvIVsB2S5Y+D9Nfk04DMEgWfnguNN5xO/dC+IQ==
+  dependencies:
+    "@egjs/component" "^2.1.2"
+    preact-moveable "^0.15.5"
+
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
@@ -7067,6 +7127,22 @@ postcss@^7.0.0, postcss@^7.0.14, postcss@^7.0.16, postcss@^7.0.17, postcss@^7.0.
     source-map "^0.6.1"
     supports-color "^6.1.0"
 
+preact-css-styled@^0.1.2:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/preact-css-styled/-/preact-css-styled-0.1.3.tgz#8e94eb9e69df39a9f6ebd2dc3573909d2ec92eb0"
+  integrity sha512-VAoEH15l3k+W3s3z6+HTHBtozY+aFYKhFlvJXW6YjtOH53pTT/H8F38b4sgHwIgeG6V7a/TJI2suFXb8k6Z5ng==
+  dependencies:
+    css-styled "^0.1.7"
+    framework-utils "^0.3.4"
+
+preact-moveable@^0.15.5:
+  version "0.15.5"
+  resolved "https://registry.yarnpkg.com/preact-moveable/-/preact-moveable-0.15.5.tgz#9010190fde435863a0469c8cc7981104eeddc5cf"
+  integrity sha512-ArPykijtYjrtR1VsYbM4Tm9OQnNhaZ8zNLn8mluD2d21eH0LKTjVBoS4v3fN28/6C4Q1sW+iAi1ABEIZI3r8qw==
+  dependencies:
+    preact-css-styled "^0.1.2"
+    react-moveable "^0.16.6"
+
 prelude-ls@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.1.2.tgz#21932a549f5e52ffd9a827f570e04be62a97da54"
@@ -7362,6 +7438,14 @@ react-click-outside@tj/react-click-outside:
   version "1.1.1"
   resolved "https://codeload.github.com/tj/react-click-outside/tar.gz/a833ddc5be47490307f9fcc6ed09d8c353108510"
 
+react-css-styled@^0.1.3:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/react-css-styled/-/react-css-styled-0.1.4.tgz#10be3528f335cc5b114330dc4757fcb36309a34b"
+  integrity sha512-iuRtEu5Vy2jno0Bs+GEi4KOjBuXJsmEUD47Jk18FOIcwwheZQSAu1KFHZrL6cg147eL0p7ycV2E8pAyrnNvI5g==
+  dependencies:
+    css-styled "^0.1.7"
+    framework-utils "^0.3.4"
+
 react-dom@^16.12.0:
   version "16.12.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.12.0.tgz#0da4b714b8d13c2038c9396b54a92baea633fe11"
@@ -7477,6 +7561,19 @@ react-motion@^0.5.2:
     prop-types "^15.5.8"
     raf "^3.1.0"
 
+react-moveable@^0.16.6:
+  version "0.16.6"
+  resolved "https://registry.yarnpkg.com/react-moveable/-/react-moveable-0.16.6.tgz#ea9a1030f30fde07ca287e8f25c7a481b87b012a"
+  integrity sha512-RtUBk5bSWER8UL0aE9ZXWTSCw6ZDRA51FjO5a2AnVM3y6wzpaXXuL9rF9qOJdGIb25bfVuHVjbdPAlym1NJBrg==
+  dependencies:
+    "@daybrush/drag" "^0.12.0"
+    "@daybrush/utils" "^0.10.1"
+    "@egjs/agent" "^2.1.5"
+    "@egjs/children-differ" "^1.0.0"
+    "@moveable/matrix" "^0.3.1"
+    framework-utils "^0.3.4"
+    react-css-styled "^0.1.3"
+
 react-overlays@^0.8.0:
   version "0.8.3"
   resolved "https://registry.yarnpkg.com/react-overlays/-/react-overlays-0.8.3.tgz#fad65eea5b24301cca192a169f5dddb0b20d3ac5"
@@ -7550,10 +7647,10 @@ react-resizable@1.x, react-resizable@^1.9.0:
     prop-types "15.x"
     react-draggable "^4.0.3"
 
-react-rnd@^10.1.4:
-  version "10.1.4"
-  resolved "https://registry.yarnpkg.com/react-rnd/-/react-rnd-10.1.4.tgz#435e30e752e4251bb1a2d618ae58e543e542ae62"
-  integrity sha512-m2k5jYNcqhxUfUqnzp0Dj4hfqCnGgkMrCsCDAl+jspNrkz/u3Kpj/GyKFYhPdI3CCaY+25lwfTEP3rAMbb9IxA==
+react-rnd@^10.1.5:
+  version "10.1.5"
+  resolved "https://registry.yarnpkg.com/react-rnd/-/react-rnd-10.1.5.tgz#75b4acfa19243bf41843e71b2e926e4b129e3313"
+  integrity sha512-NCGc62bD1xqS6H+3j0yWfo6Y1btO4136zgphyUvCsY9xfgsWfKY7kWLGxH/vw2jP9MWlAD/sBqyJ1vywcIH6zw==
   dependencies:
     re-resizable "6.1.1"
     react-draggable "4.2.0"
@@ -8486,7 +8583,7 @@ string-convert@^0.2.0:
   resolved "https://registry.yarnpkg.com/string-convert/-/string-convert-0.2.1.tgz#6982cc3049fbb4cd85f8b24568b9d9bf39eeff97"
   integrity sha1-aYLMMEn7tM2F+LJFaLnZvznu/5c=
 
-string-hash@1.1.3:
+string-hash@1.1.3, string-hash@^1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/string-hash/-/string-hash-1.1.3.tgz#e8aafc0ac1855b4666929ed7dd1275df5d6c811b"
   integrity sha1-6Kr8CsGFW0Zmkp7X3RJ1311sgRs=
