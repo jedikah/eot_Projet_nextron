@@ -1,4 +1,4 @@
-export const selectClients = db => {
+export const selectClients = (db, cb) => {
   let sql = "SELECT ";
   sql += "client.IdCli AS IdCli,";
   sql += "client.IdPersonne AS IdPersonne,";
@@ -9,13 +9,9 @@ export const selectClients = db => {
   sql += "client ";
   sql += "INNER JOIN personne ON personne.IdPersonne = client.IdPersonne";
 
-  let select = "";
-
-  db.each(sql, (err, row, cb) => {
-    select.clie;
+  db.all(sql, (err, rows) => {
+    cb(rows);
   });
-
-  return select;
 };
 
 const addClient = (db, params) => {
