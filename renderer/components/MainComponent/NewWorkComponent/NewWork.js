@@ -4,6 +4,7 @@ import Typography from "@material-ui/core/Typography";
 import { SortablePane, Pane } from "react-sortable-pane";
 
 import FormNewDoc from "../../../redux/containers/FormNewDocCtn";
+import AfficherDossier from "./AfficherDossier";
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -49,6 +50,38 @@ const formulaire = () => {
     </div>
   );
 };
+
+const afficher = () => {
+  return (
+    <div style={{ width: "100%", height: "100%" }}>
+      <div
+        style={{
+          width: "99.3%",
+          background: "grey",
+          color: "white",
+          padding: 2,
+          margin: 0,
+          textAlign: "center",
+          height: "3.5%"
+        }}
+      >
+        Liste des dossier
+      </div>
+      <div
+        style={{
+          width: "96.5%",
+          height: "95%",
+          padding: 15,
+          margin: 5,
+          border: "1px groove grey"
+        }}
+      >
+        <AfficherDossier />
+      </div>
+    </div>
+  );
+};
+
 const NewWork = props => {
   const classes = useStyles({});
   const [state, setState] = React.useState({
@@ -66,7 +99,7 @@ const NewWork = props => {
       order
     });
   };
-  const panes = ["zero", formulaire()].map((val, key) => (
+  const panes = [afficher(), formulaire()].map((val, key) => (
     <Pane
       key={key}
       size={{ width: state.panes[key].width, height: "100%" }}
