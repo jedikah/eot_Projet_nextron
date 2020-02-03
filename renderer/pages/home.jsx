@@ -25,19 +25,13 @@ const useStyles = makeStyles(theme =>
   })
 );
 
-const Home = ({ actions, users, clients, travaux, lettreCharges }) => {
+const Home = ({ actions }) => {
   const classes = useStyles({});
-  console.log({ users, clients, travaux, lettreCharges });
   useEffect(() => {
     let path = DB.homeDir("ECM");
     path += "EMC.sqlite";
     const db = DB.connect(path);
     DB.selectUsers(db, rows => actions.initUser({ users: rows }));
-    DB.selectClients(db, rows => actions.initClient({ clients: rows }));
-    DB.selectTravaux(db, rows => actions.initTravau({ travaux: rows }));
-    DB.selectLetreCharges(db, rows =>
-      actions.initLettreCharge({ lettreCharges: rows })
-    );
   }, []);
 
   return (

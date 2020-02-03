@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Head from "next/head";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -10,6 +10,7 @@ import SideNavPage from "../components/SideNavPage";
 import ToolBar from "../components/ToolBar";
 import RemoteWindow from "../components/RemoteWindow";
 import NewWork from "../components/MainComponent/NewWorkComponent/NewWork";
+import * as DB from "../models";
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -41,9 +42,20 @@ const useStyles = makeStyles(theme =>
   })
 );
 
-const Next = () => {
+const Next = ({ actions, users, clients, travaux, lettreCharges }) => {
   const classes = useStyles({});
   const [state, setState] = React.useState("azerty");
+  useEffect(() => {
+    let path = DB.homeDir("ECM");
+    path += "EMC.sqlite";
+    const db = DB.connect(path);
+    DB.selectUsers(db, rows => actions.initUser({ users: rows }));
+    DB.selectClients(db, rows => actions.initClient({ clients: rows }));
+    DB.selectTravaux(db, rows => actions.initTravau({ travaux: rows }));
+    DB.selectLetreCharges(db, rows =>
+      actions.initLettreCharge({ lettreCharges: rows })
+    );
+  }, []);
   return (
     <div className={classes.root}>
       <Container
