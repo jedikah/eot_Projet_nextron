@@ -1,5 +1,4 @@
 import * as types from "../constants/clientActionTypes";
-import * as DB from "../../models/index";
 
 const initialState = {
   clients: []
@@ -11,6 +10,10 @@ const client = (state = initialState, action) => {
   let { clients } = state;
 
   switch (action.type) {
+    case types.INIT_CLIENT:
+      newState.clients = payload.clients;
+      return newState;
+
     case types.ADD_CLIENT:
       clients.push(payload.newClient);
       newState.clients = [...clients];
