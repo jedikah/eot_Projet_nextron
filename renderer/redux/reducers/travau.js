@@ -1,12 +1,8 @@
 import * as types from "../constants/travauActionTypes";
 import * as DB from "../../models/index";
 
-let path = DB.homeDir("ECM");
-path += "EMC.sqlite";
-const db = DB.connect(path);
-
 const initState = {
-  travaux: DB.selectTravaux(db).travaux
+  travaux: []
 };
 
 const travau = (state = initState, action) => {

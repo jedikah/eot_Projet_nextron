@@ -1,6 +1,6 @@
 import * as DB from "../../models/index";
 
-const iniStat = {
+const initState = {
   users: [
     {
       id: 1,

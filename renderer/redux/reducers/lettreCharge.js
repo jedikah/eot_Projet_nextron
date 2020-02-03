@@ -1,12 +1,8 @@
 import * as types from "../constants/lettreChargeActionTypes";
 import * as DB from "../../models/index";
 
-let path = DB.homeDir("ECM");
-path += "EMC.sqlite";
-const db = DB.connect(path);
-
 const initState = {
-  lettreCharges: DB.selectLetreCharges(db).lettreCharges
+  lettreCharges: []
 };
 
 const lettreCharge = (state = initState, action) => {

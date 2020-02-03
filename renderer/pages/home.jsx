@@ -31,12 +31,14 @@ const Home = props => {
   const classes = useStyles({});
 
   useEffect(() => {
-    let path = DB.homeDir("ECM");
-    path += "EMC.sqlite";
-    const db = DB.connect(path);
-    DB.selectUsers(db);
+    async () => {
+      let path = DB.homeDir("ECM");
+      path += "EMC.sqlite";
+      const db = DB.connect(path);
+      DB.selectUsers(db);
 
-    console.log("home", props.users);
+      console.log("home", props.users);
+    };
   });
 
   return (
