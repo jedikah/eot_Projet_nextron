@@ -60,9 +60,6 @@ const SignIn = props => {
     input.passWd = e.target.value;
   };
 
-  useEffect(() => {
-    console.log("users props", props.users);
-  });
   return (
     <div style={{ position: "fixed" }}>
       <Container

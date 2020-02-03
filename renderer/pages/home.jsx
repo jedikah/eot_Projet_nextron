@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
-import Head from "next/head";
+import React, { useEffect } from "react";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
-import { Link } from "../components";
 import ParticleField from "react-particles-webgl";
 
 import HomeCtn from "../redux/containers/HomeCtn";
@@ -27,19 +25,19 @@ const useStyles = makeStyles(theme =>
   })
 );
 
-const Home = ({ actions, users }) => {
+const Home = ({ actions, users, clients, travaux, lettreCharges }) => {
   const classes = useStyles({});
-  console.log("store ", users);
+  console.log({ users, clients, travaux, lettreCharges });
   useEffect(() => {
-    //async () => {
     let path = DB.homeDir("ECM");
     path += "EMC.sqlite";
     const db = DB.connect(path);
-    DB.selectUsers(db, rows => {
-      console.log("home", rows);
-      actions.initUser({ users: rows });
-    });
-    //};
+    DB.selectUsers(db, rows => actions.initUser({ users: rows }));
+    DB.selectClients(db, rows => actions.initClient({ clients: rows }));
+    DB.selectTravaux(db, rows => actions.initTravau({ travaux: rows }));
+    DB.selectLetreCharges(db, rows =>
+      actions.initLettreCharge({ lettreCharges: rows })
+    );
   }, []);
 
   return (

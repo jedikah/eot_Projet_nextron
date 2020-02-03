@@ -1,5 +1,4 @@
 import * as types from "../constants/travauActionTypes";
-import * as DB from "../../models/index";
 
 const initState = {
   travaux: []
