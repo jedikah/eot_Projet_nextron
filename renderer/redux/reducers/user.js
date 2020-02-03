@@ -1,11 +1,14 @@
 import * as DB from "../../models/index";
 
-let path = DB.homeDir("ECM");
-path += "EMC.sqlite";
-const db = DB.connect(path);
-
-const initState = {
-  users: DB.selectUsers(db).users
+const iniStat = {
+  users: [
+    {
+      id: 1,
+      idpers: 1,
+      name: "admin",
+      passWd: "admin"
+    }
+  ]
 };
 
 const user = (state = initState, action) => {
