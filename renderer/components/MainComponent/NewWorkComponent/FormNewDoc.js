@@ -12,6 +12,7 @@ import Divider from "@material-ui/core/Divider";
 
 import * as DB from "../../../models";
 import * as PRC from "./formProcessing";
+import ComboBox from "../ComboBox";
 
 export default function FormNewDoc(props) {
   // DB.createDB(DB.connect(os.homedir + "/EotCM"));
@@ -30,7 +31,7 @@ export default function FormNewDoc(props) {
   const fullYear = () => {
     const year = new Date().getFullYear();
     const month = new Date().getMonth();
-    const date = new Date().getDate();
+    let date = new Date().getDate();
 
     let trais;
     if (month < 9) {
@@ -38,6 +39,8 @@ export default function FormNewDoc(props) {
     } else {
       trais = "-";
     }
+
+    if (date < 10) date = "0" + date;
 
     return year + trais + (new Date().getMonth() + 1) + "-" + date;
   };

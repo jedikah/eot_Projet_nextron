@@ -6,7 +6,9 @@ import * as TravAct from "../actions/travauActions";
 import * as LetterChargeAct from "../actions/lettreChargeActions";
 import FormNewDoc from "../../components/MainComponent/NewWorkComponent/FormNewDoc";
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  clients: state.client.clients
+});
 
 const mapDispatchToProps = dispatch => ({
   actions: {
