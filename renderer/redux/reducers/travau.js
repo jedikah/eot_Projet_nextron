@@ -11,6 +11,10 @@ const travau = (state = initState, action) => {
   let { travaux } = state;
 
   switch (action.type) {
+    case types.INIT_TRAVAU:
+      newState.travaux = payload.travaux;
+      return newState;
+
     case types.ADD_TRAVAU:
       travaux.push(payload.newTravau);
       newState.travaux = [...travaux];
