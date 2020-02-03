@@ -10,9 +10,30 @@ export const selectClients = db => {
   sql += "INNER JOIN personne ON personne.IdPersonne = client.IdPersonne";
 
   let select = "";
-  db.each(sql, (err, row) => {
+
+  db.each(sql, (err, row, cb) => {
     select.clie;
   });
 
   return select;
+};
+
+const addClient = (db, params) => {
+  let sql = "INSERT INTO client VALUES(NULL,?,?,?)";
+  db.run(cli, params, () => {
+    db.all("SELECT last_insert_rowid();", [], (err, id) => {
+      params.unshift(id[0]["last_insert_rowid()"]);
+      let p = {
+        clients: [
+          {
+            IdCli: parms[0],
+            IdPersonne: params[1],
+            Domicile: params[2],
+            Contact: params[3]
+          }
+        ]
+      };
+      cb(p);
+    });
+  });
 };
