@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme =>
 
 const Home = ({ actions, users }) => {
   const classes = useStyles({});
-  console.log("store ", users);
+  console.log("stores ", users);
   useEffect(() => {
     //async () => {
     let path = DB.homeDir("ECM");
