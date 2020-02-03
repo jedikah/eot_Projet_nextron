@@ -27,19 +27,20 @@ const useStyles = makeStyles(theme =>
   })
 );
 
-const Home = props => {
+const Home = ({ actions, users }) => {
   const classes = useStyles({});
-
+  console.log("store ", users);
   useEffect(() => {
-    async () => {
-      let path = DB.homeDir("ECM");
-      path += "EMC.sqlite";
-      const db = DB.connect(path);
-      DB.selectUsers(db);
-
-      console.log("home", props.users);
-    };
-  });
+    //async () => {
+    let path = DB.homeDir("ECM");
+    path += "EMC.sqlite";
+    const db = DB.connect(path);
+    DB.selectUsers(db, rows => {
+      console.log("home", rows);
+      actions.initUser({ users: rows });
+    });
+    //};
+  }, []);
 
   return (
     <div className={classes.root}>

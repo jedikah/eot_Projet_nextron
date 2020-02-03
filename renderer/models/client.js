@@ -9,11 +9,9 @@ export const selectClients = db => {
   sql += "client ";
   sql += "INNER JOIN personne ON personne.IdPersonne = client.IdPersonne";
 
-  let select = {
-    clients: []
-  };
+  let select = "";
   db.each(sql, (err, row) => {
-    select.clients.push(row);
+    select.clie;
   });
 
   return select;

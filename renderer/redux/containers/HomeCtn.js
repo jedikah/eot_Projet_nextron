@@ -1,4 +1,9 @@
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+
+import * as UserAct from "../actions/userActions";
+
+const actions = { ...UserAct };
 
 const mapStateToProps = state => ({
   clients: state.client.clients,
@@ -10,6 +15,8 @@ const mapStateToProps = state => ({
   users: state.user.users
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(actions, dispatch)
+});
 
 export default connect(mapStateToProps, mapDispatchToProps);
