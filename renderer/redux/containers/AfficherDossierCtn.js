@@ -1,4 +1,9 @@
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+
+import * as travauActions from "../actions/travauActions";
+
+const actions = { ...travauActions };
 
 const mapStateToProps = state => ({
   clients: state.client.clients,
@@ -10,4 +15,8 @@ const mapStateToProps = state => ({
   users: state.user.users
 });
 
-export default connect(mapStateToProps);
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(actions, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps);

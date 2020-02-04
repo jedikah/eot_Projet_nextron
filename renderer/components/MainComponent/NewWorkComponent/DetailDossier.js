@@ -64,6 +64,7 @@ const DialogActions = withStyles(theme => ({
 }))(MuiDialogActions);
 
 const DetailDossier = props => {
+  console.log(props);
   return (
     <div>
       <Dialog aria-labelledby="customized-dialog-title" open={props.open}>

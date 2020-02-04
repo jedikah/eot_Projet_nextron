@@ -5,7 +5,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Typography from "@material-ui/core/Typography";
-import DetailDossier from "./DetailDossier";
+import DetailDossier from "../../../redux/containers/DetailDossierCtn";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AffiCherDossier = ({ travaux, clients }) => {
+const AffiCherDossier = ({ actions, travaux, clients, selectedTravau }) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => setOpen(true);
@@ -38,7 +38,10 @@ const AffiCherDossier = ({ travaux, clients }) => {
               <ListItem
                 alignItems="flex-start"
                 button
-                onClick={() => handleClick()}
+                onClick={() => {
+                  handleClick();
+                  actions.setSelectedTravau({ selectedTravau: travau });
+                }}
               >
                 <ListItemText
                   primary={client && client.Nom}
@@ -62,7 +65,7 @@ const AffiCherDossier = ({ travaux, clients }) => {
           );
         })}
       </List>
-      <DetailDossier open={open} handleClose={handleClose} />
+      {open && <DetailDossier open={open} handleClose={handleClose} />}
     </div>
   );
 };
