@@ -6,14 +6,13 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 export default function ComboBox(props) {
   return (
     <Autocomplete
-      debug
+      freeSolo
       onChange={(e, v) => {
         v && props.onChange(e, v.title);
       }}
       id="combo-box-demo"
-      options={top100Films}
-      getOptionLabel={option => option.title}
-      style={{ width: 250 }}
+      options={props.list}
+      getOptionLabel={option => option.Nom}
       renderInput={params => (
         <TextField
           {...params}
