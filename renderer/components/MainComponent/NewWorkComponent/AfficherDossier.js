@@ -18,53 +18,56 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AffiCherDossier = props => {
+const AffiCherDossier = ({ travaux, clients, lettreCharges }) => {
   const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  function handleClick() {
-    handleClickOpen();
-  }
+  const handleClickOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const handleClick = () => handleClickOpen();
+  const filterClients = IdCli =>
+    clients.filter(client => client.IdCli === IdCli)[0];
+  const filterLettreCharges = IdTrav =>
+    lettreCharges.filter(lc => lc.IdTrav === IdTrav)[0];
 
   const classes = useStyles();
   return (
     <div className={classes.root}>
       <List className={classes.root}>
-        {props.travaux.map((item, i) => (
-          <div key={i}>
-            <ListItem
-              alignItems="flex-start"
-              button
-              onClick={() => handleClick()}
-            >
-              <ListItemText
-                primary={item.Nom}
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      component="span"
-                      variant="body2"
-                      className={classes.inline}
-                      color="textPrimary"
-                    >
-                      {item.Prix}
-                    </Typography>
-                    <br />
-                    {item.TypeTrav}
-                  </React.Fragment>
-                }
-              />
-            </ListItem>
+        {travaux.map((item, i) => {
+          return (
+            <div key={i}>
+              <ListItem
+                alignItems="flex-start"
+                button
+                onClick={() => handleClick()}
+              >
+                <ListItemText
+                  primary={item.Nom}
+                  secondary={
+                    <React.Fragment>
+                      <Typography
+                        component="span"
+                        variant="body2"
+                        className={classes.inline}
+                        color="textPrimary"
+                      >
+                        {item.Prix}
+                      </Typography>
+                      <br />
+                      {item.TypeTrav}
+                    </React.Fragment>
+                  }
+                />
+              </ListItem>
 
-            <DetailDossier open={open} handleClose={handleClose} item={item} />
-          </div>
-        ))}
+              <DetailDossier
+                open={open}
+                handleClose={handleClose}
+                item={item}
+              />
+            </div>
+          );
+        })}
       </List>
     </div>
   );
