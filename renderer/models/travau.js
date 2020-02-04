@@ -8,7 +8,8 @@ export const selectTravaux = (db, cb) => {
   sql += "travau.LocalisationTrav AS Localisation,";
   sql += "travau.Fokontany AS Fokontany,";
   sql += "travau.DateTrav AS DateTrav,";
-  sql += "travau.TypeTrav AS TypeTrav ";
+  sql += "travau.TypeTrav AS TypeTrav,";
+  sql += "travau.Prix AS Prix ";
   sql += "FROM ";
   sql += "travau";
 

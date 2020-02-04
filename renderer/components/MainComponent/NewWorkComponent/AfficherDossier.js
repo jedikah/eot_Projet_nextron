@@ -19,7 +19,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AffiCherDossier = props => {
-  console.log(props);
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -34,7 +33,6 @@ const AffiCherDossier = props => {
   }
 
   const classes = useStyles();
-  console.log(props.travaux);
   return (
     <div className={classes.root}>
       <List className={classes.root}>
