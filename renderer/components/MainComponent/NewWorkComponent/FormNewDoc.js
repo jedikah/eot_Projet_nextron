@@ -9,6 +9,11 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Divider from "@material-ui/core/Divider";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker
+} from "@material-ui/pickers";
 
 import * as DB from "../../../models";
 import * as PRC from "./formProcessing";
@@ -154,6 +159,7 @@ export default function FormNewDoc(props) {
     }
   };
 
+  const handleChangeDate = () => () => {};
   const handleClick = e => {
     e.preventDefault();
     console.log(state);
@@ -222,13 +228,17 @@ export default function FormNewDoc(props) {
               onChange={handleChange("DateTrav")}
               fullWidth
             />
-            <TextField
-              id="date"
-              label="Birthday"
-              type="date"
-              defaultValue="2017-05-24"
-              InputLabelProps={{
-                shrink: true
+            <KeyboardDatePicker
+              disableToolbar
+              variant="inline"
+              format="MM/dd/yyyy"
+              margin="normal"
+              id="date-picker-inline"
+              label="Date picker inline"
+              value={""}
+              onChange={handleChange("DateTrav")}
+              KeyboardButtonProps={{
+                "aria-label": "change date"
               }}
             />
           </Grid>
