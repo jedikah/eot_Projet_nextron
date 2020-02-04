@@ -1,7 +1,8 @@
 import * as types from "../constants/travauActionTypes";
 
 const initState = {
-  travaux: []
+  travaux: [],
+  selectedTravau: null
 };
 
 const travau = (state = initState, action) => {
@@ -17,6 +18,10 @@ const travau = (state = initState, action) => {
     case types.ADD_TRAVAU:
       travaux.push(payload.newTravau);
       newState.travaux = [...travaux];
+      return newState;
+
+    case types.SET_SELECTED_TRAVAU:
+      newState.selectedTravau = payload.selectedTravau;
       return newState;
 
     default:

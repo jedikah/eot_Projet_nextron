@@ -1,11 +1,11 @@
 import React from "react";
-import NextCtn from "../../../redux/containers/NextCtn";
+import AfficherDossierCtn from "../../../redux/containers/AfficherDossierCtn";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Typography from "@material-ui/core/Typography";
-import DetailDossier from "./DetailDossier";
+import DetailDossier from "../../../redux/containers/DetailDossierCtn";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -18,57 +18,56 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AffiCherDossier = props => {
+const AffiCherDossier = ({ actions, travaux, clients, selectedTravau }) => {
   const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  function handleClick() {
-    handleClickOpen();
-  }
+  const handleClickOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const handleClick = () => handleClickOpen();
+  const filterClients = IdCli =>
+    clients.filter(client => client.IdCli === IdCli)[0];
 
   const classes = useStyles();
-  console.log(props.travaux);
   return (
     <div className={classes.root}>
       <List className={classes.root}>
-        {props.travaux.map((item, i) => (
-          <div key={i}>
-            <ListItem
-              alignItems="flex-start"
-              button
-              onClick={() => handleClick()}
-            >
-              <ListItemText
-                primary={item.Nom}
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      component="span"
-                      variant="body2"
-                      className={classes.inline}
-                      color="textPrimary"
-                    >
-                      {item.Prix}
-                    </Typography>
-                    <br />
-                    {item.TypeTrav}
-                  </React.Fragment>
-                }
-              />
-            </ListItem>
-
-            <DetailDossier open={open} handleClose={handleClose} item={item} />
-          </div>
-        ))}
+        {travaux.map((travau, i) => {
+          const client = filterClients(travau.IdCli);
+          return (
+            <div key={i}>
+              <ListItem
+                alignItems="flex-start"
+                button
+                onClick={() => {
+                  handleClick();
+                  actions.setSelectedTravau({ selectedTravau: travau });
+                }}
+              >
+                <ListItemText
+                  primary={client && client.Nom}
+                  secondary={
+                    <React.Fragment>
+                      <Typography
+                        component="span"
+                        variant="body2"
+                        className={classes.inline}
+                        color="textPrimary"
+                      >
+                        {travau.Prix}
+                      </Typography>
+                      <br />
+                      {travau.TypeTrav}
+                    </React.Fragment>
+                  }
+                />
+              </ListItem>
+            </div>
+          );
+        })}
       </List>
+      {open && <DetailDossier open={open} handleClose={handleClose} />}
     </div>
   );
 };
 
-export default NextCtn(AffiCherDossier);
+export default AfficherDossierCtn(AffiCherDossier);

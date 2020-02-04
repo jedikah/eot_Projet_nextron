@@ -64,17 +64,14 @@ const DialogActions = withStyles(theme => ({
 }))(MuiDialogActions);
 
 const DetailDossier = props => {
+  console.log(props);
   return (
     <div>
       <Dialog aria-labelledby="customized-dialog-title" open={props.open}>
         <DialogTitle id="customized-dialog-title">
           Détails du dossier
         </DialogTitle>
-        <DialogContent dividers>
-          <Typography gutterBottom>Nom: {props.item.Nom}</Typography>
-          <Typography gutterBottom>Prix: {props.item.Prix}</Typography>
-          <Typography gutterBottom>Titre: {props.item.NomTer}</Typography>
-        </DialogContent>
+        <DialogContent dividers></DialogContent>
         <DialogActions>
           <Button
             autoFocus

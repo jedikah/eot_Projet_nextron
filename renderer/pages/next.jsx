@@ -1,9 +1,6 @@
 import React, { useEffect } from "react";
-import Head from "next/head";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
 import Container from "../components/layouts/Container";
-import { Link } from "../components";
 
 import NextCtn from "../redux/containers/NextCtn";
 import SideNavPage from "../components/SideNavPage";
@@ -42,9 +39,8 @@ const useStyles = makeStyles(theme =>
   })
 );
 
-const Next = ({ actions, users, clients, travaux, lettreCharges }) => {
+const Next = ({ actions }) => {
   const classes = useStyles({});
-  const [state, setState] = React.useState("azerty");
   useEffect(() => {
     let path = DB.homeDir("ECM");
     path += "EMC.sqlite";
