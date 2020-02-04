@@ -33,7 +33,9 @@ const AffiCherDossier = ({ travaux, clients, lettreCharges }) => {
   return (
     <div className={classes.root}>
       <List className={classes.root}>
-        {travaux.map((item, i) => {
+        {travaux.map((travau, i) => {
+          const client = filterClients(travau.IdCli);
+          const lettreCharge = filterLettreCharges(travau.IdTrav);
           return (
             <div key={i}>
               <ListItem
@@ -42,7 +44,7 @@ const AffiCherDossier = ({ travaux, clients, lettreCharges }) => {
                 onClick={() => handleClick()}
               >
                 <ListItemText
-                  primary={item.Nom}
+                  primary={client && client.Nom}
                   secondary={
                     <React.Fragment>
                       <Typography
@@ -51,10 +53,10 @@ const AffiCherDossier = ({ travaux, clients, lettreCharges }) => {
                         className={classes.inline}
                         color="textPrimary"
                       >
-                        {item.Prix}
+                        {travau.Prix}
                       </Typography>
                       <br />
-                      {item.TypeTrav}
+                      {travau.TypeTrav}
                     </React.Fragment>
                   }
                 />
@@ -63,7 +65,7 @@ const AffiCherDossier = ({ travaux, clients, lettreCharges }) => {
               <DetailDossier
                 open={open}
                 handleClose={handleClose}
-                item={item}
+                travau={travau}
               />
             </div>
           );
