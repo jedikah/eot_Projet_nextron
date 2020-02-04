@@ -1,5 +1,5 @@
 import React from "react";
-import NextCtn from "../../../redux/containers/NextCtn";
+import AfficherDossierCtn from "../../../redux/containers/AfficherDossierCtn";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -19,6 +19,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AffiCherDossier = props => {
+  console.log(props);
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -71,4 +72,4 @@ const AffiCherDossier = props => {
   );
 };
 
-export default NextCtn(AffiCherDossier);
+export default AfficherDossierCtn(AffiCherDossier);
