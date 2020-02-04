@@ -15,19 +15,6 @@ import * as PRC from "./formProcessing";
 import ComboBox from "../ComboBox";
 
 export default function FormNewDoc(props) {
-  // DB.createDB(DB.connect(os.homedir + "/EotCM"));
-  //DB.connect();
-  //DB.testPath(os.homedir());
-  // DB.testPath("../../../models/eotdb.sqlite");
-  /*const sqlite3 = require("sqlite3").verbose();
-
-  console.log(new sqlite3.Database("./eotdb.sqlit"));*/
-  let [state, setState] = React.useState({
-    letter: false,
-    typeTrav: ""
-  });
-  let formInput = {};
-
   const fullYear = () => {
     const year = new Date().getFullYear();
     const month = new Date().getMonth();
@@ -44,6 +31,29 @@ export default function FormNewDoc(props) {
 
     return year + trais + (new Date().getMonth() + 1) + "-" + date;
   };
+  let [state, setState] = React.useState({
+    letter: false,
+    formInput: {
+      //table client
+      Nom: "",
+      Contact: "",
+      Domicile: "",
+      //table travaux
+      DateTrav: fullYear(),
+      TypeTrav: "Délimitation",
+      Prix: "",
+      NumTitre: "",
+      NomTer: "",
+      LocalisationTrav: "",
+      Fokontany: "",
+      //table lettre de charge
+      Objet: "",
+      NumRTX: "",
+      DateL: "",
+      VilleL: ""
+    }
+  });
+  let formInput = { TypeTrav: "" };
 
   const withLetter = () => {
     return (
@@ -132,15 +142,21 @@ export default function FormNewDoc(props) {
       </Grid>
     );
   };
-  const handleChange = names => e => {
+  const handleChange = (names, val) => e => {
     if (names === "letter") setState({ ...state, [names]: e.target.checked });
-    else if (names === "typeTrav")
-      setState({ ...state, [names]: e.target.value });
+    else {
+      let f = state.formInput;
+      let value;
+      if (!val) value = e.target.value;
+      if (val) value = val;
+      console.log(val);
+      setState({ ...state, formInput: { ...f, [names]: value } });
+    }
   };
 
   const handleClick = e => {
     e.preventDefault();
-    console.log(formInput);
+    console.log(state);
   };
 
   return (
@@ -148,14 +164,9 @@ export default function FormNewDoc(props) {
       <form onSubmit={handleClick}>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={12} lg={4}>
-            <TextField
-              required
-              id="Name"
-              name="Name"
-              label="Non Complet"
-              fullWidth
-              autoComplete="fname"
-              onChange={e => (formInput = PRC.handleChange(e, "nom"))}
+            <ComboBox
+              onChange={(e, v) => handleChange("Nom", v)(e)}
+              onInputChange={handleChange("Nom")}
             />
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={4}>
@@ -166,7 +177,7 @@ export default function FormNewDoc(props) {
               label="Contact"
               fullWidth
               autoComplete="contact"
-              onChange={e => (formInput = PRC.handleChange(e, "contact"))}
+              onChange={handleChange("Contact")}
             />
           </Grid>
           <Grid item xs={12} md={12} lg={4}>
@@ -177,7 +188,7 @@ export default function FormNewDoc(props) {
               label="Domicile"
               fullWidth
               autoComplete="domicile"
-              onChange={e => (formInput = PRC.handleChange(e, "domicile"))}
+              onChange={handleChange("Domicile")}
             />
           </Grid>
           <Grid item xs={12}>
@@ -188,15 +199,17 @@ export default function FormNewDoc(props) {
               displayEmpty
               labelId="demo-simple-select-helper-label"
               id="demo-simple-select-helper"
-              defaultValue={10}
+              defaultValue={"Délimitation"}
               value={state.typeTrav}
-              onChange={handleChange("typeTrav")}
+              onChange={handleChange("TypeTrav")}
             >
               <MenuItem value="">
                 <em>Choisir un type de Travaux...</em>
               </MenuItem>
-              <MenuItem value={10}>Travaux de délimitation</MenuItem>
-              <MenuItem value={20}>Travaux de bornage</MenuItem>
+              <MenuItem value={"Délimitation"}>
+                Travaux de délimitation
+              </MenuItem>
+              <MenuItem value={"Bornage"}>Travaux de bornage</MenuItem>
             </Select>
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={4}>
@@ -204,9 +217,19 @@ export default function FormNewDoc(props) {
               id="dateTrav"
               name="dateTrav"
               label="Date de debut de travaux:"
-              defaultValue={fullYear()}
+              defaultValue={state.formInput.DateTrav}
               type="date"
+              onChange={handleChange("DateTrav")}
               fullWidth
+            />
+            <TextField
+              id="date"
+              label="Birthday"
+              type="date"
+              defaultValue="2017-05-24"
+              InputLabelProps={{
+                shrink: true
+              }}
             />
           </Grid>
           <Grid item xs={12} md={12} lg={4}>
@@ -220,7 +243,7 @@ export default function FormNewDoc(props) {
             />
           </Grid>
         </Grid>
-        {state.typeTrav === 20 && titre()}
+        {state.formInput.TypeTrav === "Bornage" && titre()}
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <FormControlLabel

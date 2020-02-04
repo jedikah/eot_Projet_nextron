@@ -1,49 +1,53 @@
 let inputs = {
   //table client
-  nom: "",
-  contact: "",
-  domicile: "",
+  Nom: "",
+  Contact: "",
+  Domicile: "",
   //table travaux
-  dateTrav: "",
-  prix: "",
-  numTitre: "",
-  nomTer: "",
-  localisation: "",
-  fokontanyTer: "",
+  DateTrav: "",
+  TypeTrav: "",
+  Prix: "",
+  NumTitre: "",
+  NomTer: "",
+  LocalisationTrav: "",
+  Fokontany: "",
   //table lettre de charge
-  objet: "",
-  numRTX: "",
-  dateL: "",
-  villeL: ""
+  Objet: "",
+  NumRTX: "",
+  DateL: "",
+  VilleL: ""
 };
 
 export const handleChange = (e, input) => {
   if (input === "nom") {
-    inputs.nom = e.target.value;
+    inputs.Nom = e.target.value;
   } else if (input === "contact") {
-    inputs.contact = e.target.value;
+    inputs.Contact = e.target.value;
   } else if (input === "domicile") {
-    inputs.domicile = e.target.value;
+    inputs.Domicile = e.target.value;
+  } else if (input == "TypeTrav") {
   } else if (input === "dateTrav") {
-    inputs.dateTrav = e.target.value;
+    inputs.DateTrav = e.target.value;
   } else if (input === "prix") {
-    inputs.prix = e.target.value;
+    inputs.Prix = e.target.value;
   } else if (input === "numTitre") {
-    inputs.numTitre = e.target.value;
+    inputs.NumTitre = e.target.value;
   } else if (input === "nomTer") {
-    inputs.nomTer = e.target.value;
+    inputs.NomTer = e.target.value;
   } else if (input === "localisation") {
-    inputs.localisation = e.target.value;
+    inputs.LocalisationTrav = e.target.value;
   } else if (input === "fokontanyTer") {
-    inputs.fokontanyTer = e.target.value;
+    inputs.Fokontany = e.target.value;
   } else if (input === "objet") {
-    inputs.objet = e.target.value;
+    inputs.Objet = e.target.value;
   } else if (input === "numRTX") {
-    inputs.numRTX = e.target.value;
+    inputs.NumRTX = e.target.value;
   } else if (input === "dateL") {
-    inputs.dateL = e.target.value;
+    inputs.DateL = e.target.value;
   } else if (input === "villeL") {
-    inputs.villeL = e.target.value;
+    inputs.VilleL = e.target.value;
+  } else {
+    inputs.Nom = input.title;
   }
   return inputs;
 };

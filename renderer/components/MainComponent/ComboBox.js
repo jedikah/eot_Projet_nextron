@@ -3,15 +3,26 @@ import React from "react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
-export default function ComboBox() {
+export default function ComboBox(props) {
   return (
     <Autocomplete
+      debug
+      onChange={(e, v) => {
+        v && props.onChange(e, v.title);
+      }}
       id="combo-box-demo"
       options={top100Films}
       getOptionLabel={option => option.title}
-      style={{ width: 300 }}
+      style={{ width: 250 }}
       renderInput={params => (
-        <TextField {...params} label="Combo box" variant="outlined" fullWidth />
+        <TextField
+          {...params}
+          onChange={props.onInputChange}
+          required
+          label="Nom client"
+          variant="outlined"
+          fullWidth
+        />
       )}
     />
   );
