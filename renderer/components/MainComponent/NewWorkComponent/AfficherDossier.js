@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AffiCherDossier = ({ travaux, clients, lettreCharges }) => {
+const AffiCherDossier = ({ travaux, clients }) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => setOpen(true);
@@ -26,8 +26,6 @@ const AffiCherDossier = ({ travaux, clients, lettreCharges }) => {
   const handleClick = () => handleClickOpen();
   const filterClients = IdCli =>
     clients.filter(client => client.IdCli === IdCli)[0];
-  const filterLettreCharges = IdTrav =>
-    lettreCharges.filter(lc => lc.IdTrav === IdTrav)[0];
 
   const classes = useStyles();
   return (
@@ -35,7 +33,6 @@ const AffiCherDossier = ({ travaux, clients, lettreCharges }) => {
       <List className={classes.root}>
         {travaux.map((travau, i) => {
           const client = filterClients(travau.IdCli);
-          const lettreCharge = filterLettreCharges(travau.IdTrav);
           return (
             <div key={i}>
               <ListItem
@@ -61,16 +58,11 @@ const AffiCherDossier = ({ travaux, clients, lettreCharges }) => {
                   }
                 />
               </ListItem>
-
-              <DetailDossier
-                open={open}
-                handleClose={handleClose}
-                travau={travau}
-              />
             </div>
           );
         })}
       </List>
+      <DetailDossier open={open} handleClose={handleClose} />
     </div>
   );
 };
