@@ -17,3 +17,25 @@ export const selectTravaux = (db, cb) => {
 
   db.all(sql, (err, rows) => cb(rows));
 };
+
+export const addTravaux = (db, params, cb) => {
+  let sql = "INSERT INTO travau ";
+  sql += "VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  db.run(sql, params, err => {
+    db.all("SELECT last_insert_rowid()", (err, lastId) => {
+      let newTrav = {};
+      params.unshift(lastId[0]["last_insert_rowid()"]);
+      newTrav.IdTrav = params[0];
+      newTrav.IdCli = params[1];
+      newTrav.IdFact = params[2];
+      newTrav.NumTitre = params[3];
+      newTrav.NomTer = params[4];
+      newTrav.LocalisationTrav = params[5];
+      newTrav.Fokontany = params[6];
+      newTrav.DateTrav = params[7];
+      newTrav.TypeTrav = params[8];
+      newTrav.Prix = params[9];
+      cb(newTrav);
+    });
+  });
+};
