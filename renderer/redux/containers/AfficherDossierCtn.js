@@ -8,6 +8,7 @@ const actions = { ...travauActions };
 const mapStateToProps = state => ({
   clients: state.client.clients,
   travaux: state.travau.travaux,
+  selectedTravau: state.travau.selectedTravau,
   factures: state.facture.factures,
   convocations: state.convocation.convocations,
   pvs: state.pv.pvs,
