@@ -57,6 +57,8 @@ const AffiCherDossier = ({ actions, travaux, clients, selectedTravau }) => {
                       </Typography>
                       <br />
                       {travau.TypeTrav}
+                      <br />
+                      {travau.DateTrav}
                     </React.Fragment>
                   }
                 />
