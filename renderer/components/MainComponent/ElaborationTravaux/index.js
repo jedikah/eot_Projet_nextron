@@ -3,6 +3,7 @@ import { makeStyles, createStyles } from "@material-ui/core";
 import { SortablePane, Pane } from "react-sortable-pane";
 
 import AfficherDossier from "../NewWorkComponent/AfficherDossier";
+import FormConvocation from "./FromConvocation";
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -63,7 +64,7 @@ const formulaireConvocation = () => {
           height: "3.5%"
         }}
       >
-        Créer une convocation
+        Créer /Modifier une convocation
       </div>
       <div
         style={{
@@ -74,7 +75,7 @@ const formulaireConvocation = () => {
           border: "1px groove grey"
         }}
       >
-        <p>formulaire ajout convocation</p>
+        <FormConvocation />
       </div>
     </div>
   );
