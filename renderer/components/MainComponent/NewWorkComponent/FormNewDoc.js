@@ -215,40 +215,6 @@ export default function FormNewDoc(props) {
       </Grid>
     );
   };
-  const handleChange = (names, val) => e => {
-    if (names === "letter") setState({ ...state, [names]: e.target.checked });
-    else if (names === "NomSaisie") {
-      let f = state.formInput;
-      setState({
-        ...state,
-        formInput: { ...f, Nom: e.target.value },
-        match: false
-      });
-    } else {
-      let f = state.formInput;
-      let value;
-      if (!val) {
-        value = e.target.value;
-        setState({
-          ...state,
-          formInput: { ...f, [names]: value }
-        });
-      }
-      if (val) {
-        value = val;
-        setState({
-          ...state,
-          formInput: { ...f, [names]: value.Nom },
-          currentIdCli: value.IdCli,
-          match: true
-        });
-      }
-    }
-  };
-
-  const handleChangeDate = (name, date) => e => {
-    setState({ ...state, formInput: { ...f, [name]: date } });
-  };
 
   return (
     <React.Fragment>
