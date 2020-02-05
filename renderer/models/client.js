@@ -16,7 +16,7 @@ export const selectClients = (db, cb) => {
 
 export const addClient = (db, params) => {
   let sql = "INSERT INTO client VALUES(NULL,?,?,?)";
-  db.run(cli, params, () => {
+  db.run(sql, params, () => {
     db.all("SELECT last_insert_rowid();", [], (err, id) => {
       params.unshift(id[0]["last_insert_rowid()"]);
       let p = {
