@@ -13,8 +13,12 @@ const actions = {
   ...lettreChargeActions
 };
 
+const mapStateToProps = state => ({
+  routeMenu: state.menu.routeMenu
+});
+
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(actions, dispatch)
 });
 
-export default connect(null, mapDispatchToProps);
+export default connect(mapStateToProps, mapDispatchToProps);

@@ -1,13 +1,15 @@
 import React, { useEffect } from "react";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
-import Container from "../components/layouts/Container";
 
+import * as DB from "../models";
+import { ROUTE_MENU } from "../redux/reducers/menu";
 import NextCtn from "../redux/containers/NextCtn";
+import Container from "../components/layouts/Container";
 import SideNavPage from "../components/SideNavPage";
 import ToolBar from "../components/ToolBar";
 import RemoteWindow from "../components/RemoteWindow";
 import NewWork from "../components/MainComponent/NewWorkComponent/NewWork";
-import * as DB from "../models";
+import ElaborationTravaux from "../components/MainComponent/ElaborationTravaux";
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -39,7 +41,7 @@ const useStyles = makeStyles(theme =>
   })
 );
 
-const Next = ({ actions }) => {
+const Next = ({ actions, routeMenu }) => {
   const classes = useStyles({});
   useEffect(() => {
     let path = DB.homeDir("ECM");
@@ -68,10 +70,11 @@ const Next = ({ actions }) => {
           <SideNavPage />
           <div className={classes.innerMain}>
             <div>
-              <ToolBar></ToolBar>
+              <ToolBar />
             </div>
             <div className={classes.contenue}>
-              <NewWork></NewWork>
+              {routeMenu === ROUTE_MENU.NEWDOC && <NewWork />}
+              {routeMenu === ROUTE_MENU.ELABORATION && <ElaborationTravaux />}
             </div>
           </div>
         </Container>

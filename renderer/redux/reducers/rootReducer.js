@@ -7,6 +7,7 @@ import convocation from "./convocation";
 import pv from "./pv";
 import lettreCharge from "./lettreCharge";
 import user from "./user";
+import menu from "./menu";
 
 const rootReducer = combineReducers({
   client,
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
   convocation,
   pv,
   lettreCharge,
-  user
+  user,
+  menu
 });
 
 export default rootReducer;
