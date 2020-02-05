@@ -26,17 +26,22 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AffiCherDossier = ({ actions, travaux, clients, selectedTravau }) => {
+  if (selectedTravau === null) selectedTravau = { IdTrav: null };
+
+  const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = travau => e => {
+  const selectTravau = travau =>
     actions.setSelectedTravau({ selectedTravau: travau });
-    setOpen(true);
-  };
   const handleClose = () => setOpen(false);
   const filterClients = IdCli =>
     clients.filter(client => client.IdCli === IdCli)[0];
 
-  const classes = useStyles();
+  const handleClickOpen = travau => e => {
+    selectTravau(travau);
+    setOpen(true);
+  };
+
   return (
     <div className={classes.root}>
       <List className={classes.root}>
@@ -44,7 +49,12 @@ const AffiCherDossier = ({ actions, travaux, clients, selectedTravau }) => {
           const client = filterClients(travau.IdCli);
           return (
             <div key={i}>
-              <ListItem button alignItems="flex-start">
+              <ListItem
+                button
+                alignItems="flex-start"
+                selected={travau.IdTrav === selectedTravau.IdTrav}
+                onClick={() => selectTravau(travau)}
+              >
                 <ListItemIcon>
                   <FolderIcon />
                 </ListItemIcon>
