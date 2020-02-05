@@ -13,6 +13,8 @@ if (isProd) {
 (async () => {
   await app.whenReady();
 
+  require("../renderer/module/electron-devtools");
+
   const mainWindow = createWindow("main", {
     width: 900,
     height: 500,
