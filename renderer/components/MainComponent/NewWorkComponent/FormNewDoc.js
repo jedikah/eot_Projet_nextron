@@ -1,6 +1,5 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -9,29 +8,24 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Divider from "@material-ui/core/Divider";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker
-} from "@material-ui/pickers";
+import { KeyboardDatePicker } from "@material-ui/pickers";
 
 import * as DB from "../../../models";
-import * as PRC from "./formProcessing";
+import moment from "../../../module/moment";
 import ComboBox from "../ComboBox";
-import moment, { currentMoment } from "../../../module/moment";
 
 export default function FormNewDoc(props) {
   let path = DB.homeDir("ECM");
   path += "EMC.sqlite";
   const db = DB.connect(path);
 
-  let [state, setState] = React.useState({
+  const [state, setState] = React.useState({
     letter: false,
     match: false,
     currentIdCli: "",
     formInput: {
       //table client
-      Nom: "",
+      Nom: "joe",
       Contact: "",
       Domicile: "",
       //table travaux
@@ -49,6 +43,71 @@ export default function FormNewDoc(props) {
       VilleL: ""
     }
   });
+
+  const handleChangeDate = (name, date) => e =>
+    setState({ ...state, formInput: { ...f, [name]: date } });
+
+  const handleChange = (names, val) => e => {
+    if (names === "letter") setState({ ...state, [names]: e.target.checked });
+    else if ((names = "changeCombobox" && val)) {
+      let nom = val;
+      let currentIdCli = filterClientIdByName(val);
+      let f = state.formInput;
+      setState({
+        ...state,
+        formInput: { ...f, Nom: nom },
+        currentIdCli: currentIdCli,
+        match: matchClient(nom)
+      });
+    } else {
+      let f = state.formInput;
+      setState({
+        ...state,
+        formInput: { ...f, [names]: e.target.value }
+      });
+    }
+  };
+
+  const filterClientIdByName = name => {
+    const clients = props.clients;
+    let filtredList = clients.filter(client => client.Nom === name);
+    if (filtredList.length === 1) return filtredList[0].IdCli;
+    else return "";
+  };
+
+  const matchClient = Nom => {
+    let match = false;
+    props.clients.forEach(element => {
+      if (element.Nom === Nom) match = true;
+    });
+    return match;
+  };
+
+  const handleClick = e => {
+    e.preventDefault();
+    let IdCli;
+    if (state.match) {
+      IdCli = state.currentIdCli;
+    }
+
+    DB.addTravaux(
+      db,
+      [
+        IdCli,
+        "",
+        state.formInput.NumTitre,
+        state.formInput.NomTer,
+        state.formInput.LocalisationTrav,
+        state.formInput.Fokontany,
+        state.formInput.DateTrav,
+        state.formInput.TypeTrav,
+        state.formInput.Prix
+      ],
+      newTrav => {
+        console.log(newTrav);
+      }
+    );
+  };
 
   const withLetter = () => {
     return (
@@ -156,73 +215,7 @@ export default function FormNewDoc(props) {
       </Grid>
     );
   };
-  const handleChange = (names, val) => e => {
-    if (names === "letter") setState({ ...state, [names]: e.target.checked });
-    else if (names === "NomSaisie") {
-      let f = state.formInput;
-      setState({
-        ...state,
-        formInput: { ...f, Nom: e.target.value },
-        match: matchClient(e.target.value)
-      });
-    } else {
-      let f = state.formInput;
-      let value;
-      if (!val) {
-        value = e.target.value;
-        setState({
-          ...state,
-          formInput: { ...f, [names]: value }
-        });
-      }
-      if (val) {
-        value = val;
-        console.log(val);
-        setState({
-          ...state,
-          formInput: { ...f, [names]: value.Nom },
-          currentIdCli: value.IdCli,
-          match: matchClient(value.Nom)
-        });
-      }
-    }
-  };
-  const matchClient = Nom => {
-    let match = false;
-    props.clients.forEach(element => {
-      if (element.Nom === Nom) match = true;
-    });
-    return match;
-  };
-  const handleChangeDate = (name, date) => e => {
-    setState({ ...state, formInput: { ...f, [name]: date } });
-  };
 
-  const handleClick = e => {
-    e.preventDefault();
-    let IdCli;
-    if (state.match) {
-      IdCli = state.currentIdCli;
-    }
-
-    DB.addTravaux(
-      db,
-      [
-        IdCli,
-        "",
-        state.formInput.NumTitre,
-        state.formInput.NomTer,
-        state.formInput.LocalisationTrav,
-        state.formInput.Fokontany,
-        state.formInput.DateTrav,
-        state.formInput.TypeTrav,
-        state.formInput.Prix
-      ],
-      newTrav => {
-        console.log(newTrav);
-      }
-    );
-  };
   return (
     <React.Fragment>
       <form onSubmit={handleClick}>
@@ -230,11 +223,7 @@ export default function FormNewDoc(props) {
           <Grid item xs={6} sm={6} md={4} lg={4}>
             <ComboBox
               list={props.clients}
-              onChange={(e, v, raison) => {
-                //console.log(raison);
-                handleChange("Nom", v, raison)(e);
-              }}
-              onInputChange={handleChange("NomSaisie")}
+              onInputChange={(e, v) => handleChange("changeCombobox", v)(e)}
             />
           </Grid>
           <Grid item xs={6} sm={6} md={4} lg={4}>
