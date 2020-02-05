@@ -194,7 +194,7 @@ export default function FormNewDoc(props) {
     e.preventDefault();
     matchClient();
   };
-  console.log(state.match);
+
   return (
     <React.Fragment>
       <form onSubmit={handleClick}>

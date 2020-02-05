@@ -13,6 +13,7 @@ import orange from "@material-ui/core/colors/orange";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Divider from "@material-ui/core/Divider";
+import { KeyboardDatePicker } from "@material-ui/pickers";
 
 const styles = theme => ({
   root: {
@@ -21,7 +22,8 @@ const styles = theme => ({
     color: orange[500],
     height: "35px",
     padding: 0,
-    marginLeft: "10px"
+    marginLeft: "10px",
+    width: "1000px"
   },
   closeButton: {
     padding: 0,
@@ -52,7 +54,8 @@ const DialogTitle = withStyles(styles)(props => {
 
 const DialogContent = withStyles(theme => ({
   root: {
-    padding: theme.spacing(2)
+    padding: theme.spacing(5),
+    width: "1000px"
   }
 }))(MuiDialogContent);
 
@@ -61,7 +64,8 @@ const DialogActions = withStyles(theme => ({
     margin: 0,
     padding: theme.spacing(1),
     color: orange[800],
-    height: "35px"
+    height: "35px",
+    width: "1000px"
   }
 }))(MuiDialogActions);
 
@@ -94,7 +98,7 @@ const DetailDossier = props => {
   const titre = () => {
     return (
       <Grid container spacing={3}>
-        <Grid item xs={12} md={12} lg={4}>
+        <Grid item xs={6} sm={6} md={4} lg={4}>
           <TextField
             id="numTitre"
             name="numTitre"
@@ -102,9 +106,10 @@ const DetailDossier = props => {
             fullWidth
             autoComplete="dom"
             defaultValue={travau.NumTitre}
+            variant="outlined"
           />
         </Grid>
-        <Grid item xs={12} md={12} lg={4}>
+        <Grid item xs={6} sm={6} md={4} lg={4}>
           <TextField
             id="nmTerrain"
             name="nmTerrain"
@@ -112,9 +117,10 @@ const DetailDossier = props => {
             fullWidth
             autoComplete="dom"
             defaultValue={travau.NomTer}
+            variant="outlined"
           />
         </Grid>
-        <Grid item xs={12} md={12} lg={4}>
+        <Grid item xs={6} sm={6} md={4} lg={4}>
           <TextField
             id="localisation"
             name="localisation"
@@ -122,9 +128,10 @@ const DetailDossier = props => {
             fullWidth
             autoComplete="dom"
             defaultValue={travau.LocalisationTrav}
+            variant="outlined"
           />
         </Grid>
-        <Grid item xs={12} md={12} lg={4}>
+        <Grid item xs={6} sm={6} md={4} lg={4}>
           <TextField
             id="fokontany"
             name="fokontany"
@@ -132,6 +139,7 @@ const DetailDossier = props => {
             fullWidth
             autoComplete="dom"
             defaultValue={travau.Fokontany}
+            variant="outlined"
           />
         </Grid>
       </Grid>
@@ -142,7 +150,7 @@ const DetailDossier = props => {
     return (
       <Grid container spacing={3}>
         <Divider />
-        <Grid item xs={12} sm={12} md={12} lg={4}>
+        <Grid item xs={6} sm={6} md={4} lg={4}>
           <TextField
             id="objet"
             name="objet"
@@ -150,9 +158,10 @@ const DetailDossier = props => {
             fullWidth
             autoComplete="billing country"
             defaultValue={lettreCharge[0].Objet}
+            variant="outlined"
           />
         </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={4}>
+        <Grid item xs={6} sm={6} md={4} lg={4}>
           <TextField
             id="numRTX"
             name="numRTX"
@@ -160,20 +169,26 @@ const DetailDossier = props => {
             fullWidth
             autoComplete="numRTX"
             defaultValue={lettreCharge[0].NumRTX}
+            variant="outlined"
           />
         </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={4}>
-          <TextField
+
+        <Grid item xs={6} sm={6} md={4} lg={4}>
+          <KeyboardDatePicker
+            disableToolbar
+            variant="inline"
+            format="LL"
+            margin="normal"
             id="dateL"
-            name="dateL"
             label="Lettre de charge fait le : (Date)"
-            defaultValue={lettreCharge[0].DateL}
-            //defaultValue={fullYear()}
-            type="date"
-            fullWidth
+            value={lettreCharge[0].DateL}
+            //onChange={date => handleChangeDate("DateTrav", date)}
+            KeyboardButtonProps={{
+              "aria-label": "change date"
+            }}
           />
         </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={4}>
+        <Grid item xs={6} sm={6} md={4} lg={4}>
           <TextField
             id="ville"
             name="ville"
@@ -181,12 +196,13 @@ const DetailDossier = props => {
             defaultValue={lettreCharge[0].VilleL}
             fullWidth
             autoComplete="billing postal-code"
+            variant="outlined"
           />
         </Grid>
       </Grid>
     );
   };
-  console.log(props);
+
   return (
     <div>
       <Dialog aria-labelledby="customized-dialog-title" open={props.open}>
@@ -197,7 +213,7 @@ const DetailDossier = props => {
           <React.Fragment>
             <form /*onSubmit={}*/>
               <Grid container spacing={3}>
-                <Grid item xs={12} sm={12} md={12} lg={4}>
+                <Grid item xs={6} sm={6} md={4} lg={4}>
                   <TextField
                     required
                     id="Nom Client"
@@ -206,10 +222,11 @@ const DetailDossier = props => {
                     fullWidth
                     autoComplete="Nom Client"
                     defaultValue={client.Nom}
+                    variant="outlined"
                     //onChange={handleChange("Contact")}
                   />
                 </Grid>
-                <Grid item xs={12} sm={12} md={12} lg={4}>
+                <Grid item xs={6} sm={6} md={4} lg={4}>
                   <TextField
                     required
                     id="contact"
@@ -218,10 +235,11 @@ const DetailDossier = props => {
                     fullWidth
                     autoComplete="contact"
                     defaultValue={client.Contact}
+                    variant="outlined"
                     //onChange={handleChange("Contact")}
                   />
                 </Grid>
-                <Grid item xs={12} md={12} lg={4}>
+                <Grid item xs={6} sm={6} md={4} lg={4}>
                   <TextField
                     required
                     id="domicile"
@@ -230,34 +248,30 @@ const DetailDossier = props => {
                     fullWidth
                     autoComplete="domicile"
                     defaultValue={client.Domicile}
+                    variant="outlined"
                     //onChange={handleChange("Domicile")}
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={6} sm={6} md={4} lg={4}>
                   <p>Type travaux : {travau.TypeTrav}</p>
                 </Grid>
                 {travau.TypeTrav === "Bornage" && titre()}
-                <Grid item xs={12} sm={12} md={12} lg={4}>
-                  <TextField
-                    id="dateTrav"
-                    name="dateTrav"
-                    label="Date de debut de travaux:"
-                    defaultValue={travau.DateTrav}
-                    type="date"
-                    //onChange={handleChange("DateTrav")}
-                    fullWidth
-                  />
-                  <TextField
-                    id="date"
-                    label="Birthday"
-                    type="date"
-                    defaultValue="2017-05-24"
-                    InputLabelProps={{
-                      shrink: true
+                <Grid item xs={6} sm={6} md={4} lg={4}>
+                  <KeyboardDatePicker
+                    disableToolbar
+                    variant="inline"
+                    format="LL"
+                    margin="normal"
+                    id="dateTrav: "
+                    label="Date des travaux: "
+                    value={travau.DateTrav}
+                    //onChange={date => handleChangeDate("DateTrav", date)}
+                    KeyboardButtonProps={{
+                      "aria-label": "change date"
                     }}
                   />
                 </Grid>
-                <Grid item xs={12} md={12} lg={4}>
+                <Grid item xs={6} sm={6} md={4} lg={4}>
                   <TextField
                     id="prix"
                     name="prix"
@@ -266,10 +280,15 @@ const DetailDossier = props => {
                     fullWidth
                     autoComplete="dom"
                     defaultValue={travau.Prix}
+                    variant="outlined"
                   />
                 </Grid>
               </Grid>
-              {lettreCharge.length && withLetter()}
+              {lettreCharge.length ? (
+                withLetter()
+              ) : (
+                <p>Pas de lettre de charge</p>
+              )}
               <Grid container spacing={3}>
                 <Grid item xs={4}>
                   <Button
