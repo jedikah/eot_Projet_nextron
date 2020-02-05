@@ -7,6 +7,8 @@ import { theme } from "../lib";
 import { Provider } from "react-redux";
 import withRedux from "next-redux-wrapper";
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import MomentUtils from "@date-io/moment";
 
 import myStore from "../redux/myStore";
 
@@ -24,15 +26,17 @@ class MyApp extends App {
     const { Component, pageProps, store } = this.props;
     return (
       <Provider store={store}>
-        <React.Fragment>
-          <Head>
-            <title>EOT Manager</title>
-          </Head>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Component {...pageProps} store={myStore} />
-          </ThemeProvider>
-        </React.Fragment>
+        <MuiPickersUtilsProvider utils={MomentUtils}>
+          <React.Fragment>
+            <Head>
+              <title>EOT Manager</title>
+            </Head>
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <Component {...pageProps} store={myStore} />
+            </ThemeProvider>
+          </React.Fragment>
+        </MuiPickersUtilsProvider>
       </Provider>
     );
   }

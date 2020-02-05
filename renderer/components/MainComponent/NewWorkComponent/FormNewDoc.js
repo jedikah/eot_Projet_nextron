@@ -9,28 +9,24 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Divider from "@material-ui/core/Divider";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker
+} from "@material-ui/pickers";
 
 import * as DB from "../../../models";
 import * as PRC from "./formProcessing";
 import ComboBox from "../ComboBox";
+import moment, { currentMoment } from "../../../module/moment";
 
 export default function FormNewDoc(props) {
-  const fullYear = () => {
-    const year = new Date().getFullYear();
-    const month = new Date().getMonth();
-    let date = new Date().getDate();
-
-    let trais;
-    if (month < 9) {
-      trais = "-0";
-    } else {
-      trais = "-";
-    }
-
-    if (date < 10) date = "0" + date;
-
-    return year + trais + (new Date().getMonth() + 1) + "-" + date;
-  };
+  const listCli = props.clients.map(item => {
+    delete item.IdPersonne;
+    delete item.Domicile;
+    delete item.Contact;
+    return item;
+  });
   let [state, setState] = React.useState({
     letter: false,
     formInput: {
@@ -39,7 +35,7 @@ export default function FormNewDoc(props) {
       Contact: "",
       Domicile: "",
       //table travaux
-      DateTrav: fullYear(),
+      DateTrav: moment(),
       TypeTrav: "Délimitation",
       Prix: "",
       NumTitre: "",
@@ -49,7 +45,7 @@ export default function FormNewDoc(props) {
       //table lettre de charge
       Objet: "",
       NumRTX: "",
-      DateL: "",
+      DateL: moment(),
       VilleL: ""
     }
   });
@@ -59,41 +55,52 @@ export default function FormNewDoc(props) {
     return (
       <Grid container spacing={3}>
         <Divider />
-        <Grid item xs={12} sm={12} md={12} lg={4}>
+        <Grid item xs={6} sm={6} md={4} lg={4}>
           <TextField
+            variant="outlined"
             id="objet"
             name="objet"
             label="Objet"
             fullWidth
             autoComplete="billing country"
+            onChange={handleChange("Objet")}
           />
         </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={4}>
+        <Grid item xs={6} sm={6} md={4} lg={4}>
           <TextField
+            variant="outlined"
             id="numRTX"
             name="numRTX"
             label="N° RTX"
             fullWidth
             autoComplete="numRTX"
+            onChange={handleChange("NumRTX")}
           />
         </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={4}>
-          <TextField
-            id="dateL"
-            name="dateL"
-            label="Lettre de charge fait le : (Date)"
-            defaultValue={fullYear()}
-            type="date"
-            fullWidth
+        <Grid item xs={6} sm={6} md={4} lg={4}>
+          <KeyboardDatePicker
+            disableToolbar
+            variant="inline"
+            format="LL"
+            margin="normal"
+            id="date-picker-inline"
+            label="Date picker inline"
+            value={state.formInput.DateL}
+            onChange={date => handleChangeDate("DateL", date)}
+            KeyboardButtonProps={{
+              "aria-label": "change date"
+            }}
           />
         </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={4}>
+        <Grid item xs={6} sm={6} md={4} lg={4}>
           <TextField
+            variant="outlined"
             id="ville"
             name="ville"
             label="Lettre de charge fait à: (Ville)"
             fullWidth
             autoComplete="billing postal-code"
+            onChange={handleChange("VilleL")}
           />
         </Grid>
       </Grid>
@@ -103,57 +110,67 @@ export default function FormNewDoc(props) {
   const titre = () => {
     return (
       <Grid container spacing={3}>
-        <Grid item xs={12} md={12} lg={4}>
+        <Grid item xs={6} md={4} lg={4}>
           <TextField
             id="numTitre"
             name="numTitre"
             label="N° titre"
             fullWidth
             autoComplete="dom"
+            onChange={handleChange("NumTitre")}
+            variant="outlined"
           />
         </Grid>
-        <Grid item xs={12} md={12} lg={4}>
+        <Grid item xs={6} md={4} lg={4}>
           <TextField
             id="nmTerrain"
             name="nmTerrain"
             label="Nom du terrain"
             fullWidth
             autoComplete="dom"
+            onChange={handleChange("NomTer")}
+            variant="outlined"
           />
         </Grid>
-        <Grid item xs={12} md={12} lg={4}>
+        <Grid item xs={6} md={4} lg={4}>
           <TextField
             id="localisation"
             name="localisation"
             label="Localisation"
             fullWidth
             autoComplete="dom"
+            onChange={handleChange("LocalisationTrav")}
+            variant="outlined"
           />
         </Grid>
-        <Grid item xs={12} md={12} lg={4}>
+        <Grid item xs={6} md={4} lg={4}>
           <TextField
             id="fokontany"
             name="fokontany"
             label="Fokontany du terrain titré"
             fullWidth
             autoComplete="dom"
+            onChange={handleChange("Fokontany")}
+            variant="outlined"
           />
         </Grid>
       </Grid>
     );
   };
-  const handleChange = (names, val) => e => {
+  const handleChange = (names, val, exist) => e => {
     if (names === "letter") setState({ ...state, [names]: e.target.checked });
     else {
       let f = state.formInput;
       let value;
       if (!val) value = e.target.value;
       if (val) value = val;
-      console.log(val);
       setState({ ...state, formInput: { ...f, [names]: value } });
     }
   };
 
+  const handleChangeDate = (name, date) => e => {
+    setState({ ...state, formInput: { ...f, [name]: date } });
+  };
   const handleClick = e => {
     e.preventDefault();
     console.log(state);
@@ -163,13 +180,14 @@ export default function FormNewDoc(props) {
     <React.Fragment>
       <form onSubmit={handleClick}>
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={12} md={12} lg={4}>
+          <Grid item xs={6} sm={6} md={4} lg={4}>
             <ComboBox
-              onChange={(e, v) => handleChange("Nom", v)(e)}
+              list={listCli}
+              onChange={(e, v, exist) => handleChange("Nom", v, exist)(e)}
               onInputChange={handleChange("Nom")}
             />
           </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={4}>
+          <Grid item xs={6} sm={6} md={4} lg={4}>
             <TextField
               required
               id="contact"
@@ -178,9 +196,10 @@ export default function FormNewDoc(props) {
               fullWidth
               autoComplete="contact"
               onChange={handleChange("Contact")}
+              variant="outlined"
             />
           </Grid>
-          <Grid item xs={12} md={12} lg={4}>
+          <Grid item xs={6} md={4} lg={4}>
             <TextField
               required
               id="domicile"
@@ -189,6 +208,7 @@ export default function FormNewDoc(props) {
               fullWidth
               autoComplete="domicile"
               onChange={handleChange("Domicile")}
+              variant="outlined"
             />
           </Grid>
           <Grid item xs={12}>
@@ -202,37 +222,30 @@ export default function FormNewDoc(props) {
               defaultValue={"Délimitation"}
               value={state.typeTrav}
               onChange={handleChange("TypeTrav")}
+              variant="outlined"
             >
-              <MenuItem value="">
-                <em>Choisir un type de Travaux...</em>
-              </MenuItem>
               <MenuItem value={"Délimitation"}>
                 Travaux de délimitation
               </MenuItem>
               <MenuItem value={"Bornage"}>Travaux de bornage</MenuItem>
             </Select>
           </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={4}>
-            <TextField
-              id="dateTrav"
-              name="dateTrav"
-              label="Date de debut de travaux:"
-              defaultValue={state.formInput.DateTrav}
-              type="date"
-              onChange={handleChange("DateTrav")}
-              fullWidth
-            />
-            <TextField
-              id="date"
-              label="Birthday"
-              type="date"
-              defaultValue="2017-05-24"
-              InputLabelProps={{
-                shrink: true
+          <Grid item xs={6} sm={6} md={4} lg={4}>
+            <KeyboardDatePicker
+              disableToolbar
+              variant="inline"
+              format="LL"
+              margin="normal"
+              id="date-picker-inline"
+              label="Date picker inline"
+              value={state.formInput.DateTrav}
+              onChange={date => handleChangeDate("DateTrav", date)}
+              KeyboardButtonProps={{
+                "aria-label": "change date"
               }}
             />
           </Grid>
-          <Grid item xs={12} md={12} lg={4}>
+          <Grid item xs={6} md={4} lg={4}>
             <TextField
               id="prix"
               name="prix"
@@ -240,12 +253,14 @@ export default function FormNewDoc(props) {
               type="number"
               fullWidth
               autoComplete="dom"
+              variant="outlined"
+              onChange={handleChange("Prix")}
             />
           </Grid>
         </Grid>
         {state.formInput.TypeTrav === "Bornage" && titre()}
         <Grid container spacing={3}>
-          <Grid item xs={12}>
+          <Grid item xs={6}>
             <FormControlLabel
               control={
                 <Checkbox

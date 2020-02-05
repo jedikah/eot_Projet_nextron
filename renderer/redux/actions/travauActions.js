@@ -9,3 +9,8 @@ export const addTravaux = payload => ({
   type: types.ADD_TRAVAU,
   payload
 });
+
+export const setSelectedTravau = payload => ({
+  type: types.SET_SELECTED_TRAVAU,
+  payload
+});
