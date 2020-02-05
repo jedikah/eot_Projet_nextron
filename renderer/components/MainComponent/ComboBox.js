@@ -8,7 +8,7 @@ export default function ComboBox(props) {
     <Autocomplete
       freeSolo
       onChange={(e, v) => {
-        v && props.onChange(e, v.Nom);
+        v && props.onChange(e, v);
       }}
       id="combo-box-demo"
       options={props.list}

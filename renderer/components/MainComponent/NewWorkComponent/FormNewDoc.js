@@ -28,6 +28,7 @@ export default function FormNewDoc(props) {
   let [state, setState] = React.useState({
     letter: false,
     match: false,
+    currentIdCli: "",
     formInput: {
       //table client
       Nom: "",
@@ -48,7 +49,6 @@ export default function FormNewDoc(props) {
       VilleL: ""
     }
   });
-  let formInput = { TypeTrav: "" };
 
   const withLetter = () => {
     return (
@@ -158,18 +158,28 @@ export default function FormNewDoc(props) {
   };
   const handleChange = (names, val) => e => {
     if (names === "letter") setState({ ...state, [names]: e.target.checked });
-    else {
+    else if (names === "NomSaisie") {
+      let f = state.formInput;
+      setState({
+        ...state,
+        formInput: { ...f, Nom: e.target.value }
+      });
+    } else {
       let f = state.formInput;
       let value;
       if (!val) {
         value = e.target.value;
-        setState({ ...state, formInput: { ...f, [names]: value } });
+        setState({
+          ...state,
+          formInput: { ...f, [names]: value }
+        });
       }
       if (val) {
         value = val;
         setState({
           ...state,
-          formInput: { ...f, [names]: value },
+          formInput: { ...f, [names]: value.Nom },
+          currentIdCli: value.IdCli,
           match: true
         });
       }
@@ -192,9 +202,29 @@ export default function FormNewDoc(props) {
   };
   const handleClick = e => {
     e.preventDefault();
-    matchClient();
+    let IdCli;
+    if (state.match) {
+      IdCli = state.currentIdCli;
+    }
+
+    DB.addTravaux(
+      db,
+      [
+        IdCli,
+        "",
+        state.formInput.NumTitre,
+        state.formInput.NomTer,
+        state.formInput.LocalisationTrav,
+        state.formInput.Fokontany,
+        state.formInput.DateTrav,
+        state.formInput.TypeTrav,
+        state.formInput.Prix
+      ],
+      params => {
+        console.log(params);
+      }
+    );
   };
-  console.log(state.match);
   return (
     <React.Fragment>
       <form onSubmit={handleClick}>
@@ -205,7 +235,7 @@ export default function FormNewDoc(props) {
               onChange={(e, v) => {
                 handleChange("Nom", v)(e);
               }}
-              onInputChange={handleChange("Nom")}
+              onInputChange={handleChange("NomSaisie")}
             />
           </Grid>
           <Grid item xs={6} sm={6} md={4} lg={4}>

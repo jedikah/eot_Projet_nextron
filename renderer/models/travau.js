@@ -18,11 +18,13 @@ export const selectTravaux = (db, cb) => {
 
 export const addTravaux = (db, params, cb) => {
   let sql = "INSERT INTO travau ";
-  sql += "VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  sql += "VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   db.run(sql, params, err => {
+    console.log("errrr:  ", err);
     db.all("SELECT last_insert_rowid()", (err, lastId) => {
       let newTrav = {};
       params.unshift(lastId[0]["last_insert_rowid()"]);
+      console.log("last row id:", lastId[0]);
       newTrav.IdTrav = params[0];
       newTrav.IdCli = params[1];
       newTrav.IdFact = params[2];
