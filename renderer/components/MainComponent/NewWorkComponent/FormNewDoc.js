@@ -83,7 +83,7 @@ export default function FormNewDoc(props) {
             format="LL"
             margin="normal"
             id="date-picker-inline"
-            label="Date picker inline"
+            label="Lettre de charge fait le:"
             value={state.formInput.DateL}
             onChange={date => handleChangeDate("DateL", date)}
             KeyboardButtonProps={{
@@ -161,9 +161,18 @@ export default function FormNewDoc(props) {
     else {
       let f = state.formInput;
       let value;
-      if (!val) value = e.target.value;
-      if (val) value = val;
-      setState({ ...state, formInput: { ...f, [names]: value } });
+      if (!val) {
+        value = e.target.value;
+        setState({ ...state, formInput: { ...f, [names]: value } });
+      }
+      if (val) {
+        value = val;
+        setState({
+          ...state,
+          formInput: { ...f, [names]: value },
+          match: true
+        });
+      }
     }
   };
 
@@ -176,17 +185,16 @@ export default function FormNewDoc(props) {
       if (element.Nom === state.formInput.Nom) {
         setState({ ...state, match: true });
       }
-      DB.addClient(db, params => {
+      /*DB.addClient(db, params => {
         console.log(params);
-      });
+      });*/
     });
   };
   const handleClick = e => {
     e.preventDefault();
     matchClient();
-    console.log(state.match);
   };
-
+  console.log(state.match);
   return (
     <React.Fragment>
       <form onSubmit={handleClick}>
@@ -196,14 +204,14 @@ export default function FormNewDoc(props) {
               list={props.clients}
               onChange={(e, v) => {
                 handleChange("Nom", v)(e);
-                matchClient;
               }}
               onInputChange={handleChange("Nom")}
             />
           </Grid>
           <Grid item xs={6} sm={6} md={4} lg={4}>
             <TextField
-              required
+              required={!state.match}
+              disabled={state.match}
               id="contact"
               name="contact"
               label="Contact"
@@ -215,7 +223,8 @@ export default function FormNewDoc(props) {
           </Grid>
           <Grid item xs={6} md={4} lg={4}>
             <TextField
-              required
+              required={!state.match}
+              disabled={state.match}
               id="domicile"
               name="domicile"
               label="Domicile"
@@ -250,8 +259,8 @@ export default function FormNewDoc(props) {
               variant="inline"
               format="LL"
               margin="normal"
-              id="date-picker-inline"
-              label="Date picker inline"
+              id="dateTrav: "
+              label="Date des travaux: "
               value={state.formInput.DateTrav}
               onChange={date => handleChangeDate("DateTrav", date)}
               KeyboardButtonProps={{

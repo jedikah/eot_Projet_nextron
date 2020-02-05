@@ -10,14 +10,13 @@ export const selectClients = (db, cb) => {
   sql += "INNER JOIN personne ON personne.IdPersonne = client.IdPersonne";
 
   db.all(sql, (err, rows) => {
-    console.log("requete: ", rows);
     cb(rows);
   });
 };
 
 export const addClient = (db, params) => {
   let sql = "INSERT INTO client VALUES(NULL,?,?,?)";
-  db.run(cli, params, () => {
+  db.run(sql, params, () => {
     db.all("SELECT last_insert_rowid();", [], (err, id) => {
       params.unshift(id[0]["last_insert_rowid()"]);
       let p = {
