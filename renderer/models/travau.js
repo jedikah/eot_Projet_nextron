@@ -5,7 +5,7 @@ export const selectTravaux = (db, cb) => {
   sql += "travau.IdFact AS IdFact,";
   sql += "travau.NumTitre AS NumTitre,";
   sql += "travau.NomTer AS NomTer,";
-  sql += "travau.LocalisationTrav AS Localisation,";
+  sql += "travau.LocalisationTrav AS LocalisationTrav,";
   sql += "travau.Fokontany AS Fokontany,";
   sql += "travau.DateTrav AS DateTrav,";
   sql += "travau.TypeTrav AS TypeTrav,";
