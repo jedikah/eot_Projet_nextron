@@ -1,0 +1,1 @@
+export const CHANGE_ROUTE_MENU = "CHANGE_ROUTE_MENU";

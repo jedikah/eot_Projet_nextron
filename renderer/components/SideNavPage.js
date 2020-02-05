@@ -1,6 +1,4 @@
 import { makeStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
@@ -10,6 +8,8 @@ import AddToQueueIcon from "@material-ui/icons/AddToQueue";
 import TodayIcon from "@material-ui/icons/Today";
 import WorkOutlineIcon from "@material-ui/icons/WorkOutline";
 import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
+
+import { ROUTE_MENU } from "../redux/reducers/menu";
 
 const useStyles = makeStyles({
   ListItemIcon: {
@@ -72,18 +72,17 @@ const useStyles = makeStyles({
   }
 });
 
-export default function SideNavPage() {
+const SideNavPage = ({ actions }) => {
   const classes = useStyles();
   const [state, setState] = React.useState({
     hoverMenu: false
   });
 
-  const hoverMenuOn = () => {
-    setState({ hoverMenu: true });
-  };
-  const hoverMenuOff = () => {
-    setState({ hoverMenu: false });
-  };
+  const hoverMenuOn = () => setState({ hoverMenu: true });
+  const hoverMenuOff = () => setState({ hoverMenu: false });
+  const handleChangeMenu = routeMenu => e =>
+    actions.changeRouteMenu({ routeMenu });
+
   React.render;
 
   const sideList = side => (
@@ -113,7 +112,11 @@ export default function SideNavPage() {
       </List>
       <Divider />
       <List className={classes.list1}>
-        <ListItem button style={{ padding: 0 }}>
+        <ListItem
+          button
+          style={{ padding: 0 }}
+          onClick={handleChangeMenu(ROUTE_MENU.NEWDOC)}
+        >
           <ListItemIcon className={classes.ListItemIcon}>
             <AddToQueueIcon />
           </ListItemIcon>
@@ -126,7 +129,11 @@ export default function SideNavPage() {
       </List>
       <Divider />
       <List className={classes.list1}>
-        <ListItem button style={{ padding: 0 }}>
+        <ListItem
+          button
+          style={{ padding: 0 }}
+          onClick={handleChangeMenu(ROUTE_MENU.ELABORATION)}
+        >
           <ListItemIcon className={classes.ListItemIcon}>
             <WorkOutlineIcon />
           </ListItemIcon>
@@ -139,7 +146,11 @@ export default function SideNavPage() {
       </List>
       <Divider />
       <List className={classes.list1}>
-        <ListItem button style={{ padding: 0 }}>
+        <ListItem
+          button
+          style={{ padding: 0 }}
+          onClick={handleChangeMenu(ROUTE_MENU.PLANING)}
+        >
           <ListItemIcon className={classes.ListItemIcon}>
             <TodayIcon />
           </ListItemIcon>
@@ -159,4 +170,6 @@ export default function SideNavPage() {
       <div style={{ overflow: "hidden" }}>{sideList("left")}</div>
     </div>
   );
-}
+};
+
+export default SideNavPage;
