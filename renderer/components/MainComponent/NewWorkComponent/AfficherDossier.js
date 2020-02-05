@@ -28,9 +28,11 @@ const useStyles = makeStyles(theme => ({
 const AffiCherDossier = ({ actions, travaux, clients, selectedTravau }) => {
   const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => setOpen(true);
+  const handleClickOpen = travau => e => {
+    actions.setSelectedTravau({ selectedTravau: travau });
+    setOpen(true);
+  };
   const handleClose = () => setOpen(false);
-  const handleClick = () => handleClickOpen();
   const filterClients = IdCli =>
     clients.filter(client => client.IdCli === IdCli)[0];
 
@@ -42,7 +44,7 @@ const AffiCherDossier = ({ actions, travaux, clients, selectedTravau }) => {
           const client = filterClients(travau.IdCli);
           return (
             <div key={i}>
-              <ListItem alignItems="flex-start">
+              <ListItem button alignItems="flex-start">
                 <ListItemIcon>
                   <FolderIcon />
                 </ListItemIcon>
@@ -70,10 +72,7 @@ const AffiCherDossier = ({ actions, travaux, clients, selectedTravau }) => {
                     variant="outlined"
                     color="primary"
                     startIcon={<DetailsIcon />}
-                    onClick={() => {
-                      handleClick();
-                      actions.setSelectedTravau({ selectedTravau: travau });
-                    }}
+                    onClick={handleClickOpen(travau)}
                   >
                     Detail
                   </Button>
