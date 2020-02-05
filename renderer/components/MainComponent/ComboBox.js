@@ -6,9 +6,13 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 export default function ComboBox(props) {
   return (
     <Autocomplete
-      freeSolo
+      debug
+      loadingText="Chargement..."
+      freeSolo={true}
+      blurOnSelect="mouse"
+      autoHighlight={true}
       onChange={(e, v) => {
-        v && props.onChange(e, v);
+        v && props.onChange(e, v, "");
       }}
       id="combo-box-demo"
       options={props.list}

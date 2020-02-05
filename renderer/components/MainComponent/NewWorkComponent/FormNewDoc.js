@@ -162,7 +162,8 @@ export default function FormNewDoc(props) {
       let f = state.formInput;
       setState({
         ...state,
-        formInput: { ...f, Nom: e.target.value }
+        formInput: { ...f, Nom: e.target.value },
+        match: matchClient(e.target.value)
       });
     } else {
       let f = state.formInput;
@@ -176,16 +177,23 @@ export default function FormNewDoc(props) {
       }
       if (val) {
         value = val;
+        console.log(val);
         setState({
           ...state,
           formInput: { ...f, [names]: value.Nom },
           currentIdCli: value.IdCli,
-          match: true
+          match: matchClient(value.Nom)
         });
       }
     }
   };
-
+  const matchClient = Nom => {
+    let match = false;
+    props.clients.forEach(element => {
+      if (element.Nom === Nom) match = true;
+    });
+    return match;
+  };
   const handleChangeDate = (name, date) => e => {
     setState({ ...state, formInput: { ...f, [name]: date } });
   };
@@ -222,8 +230,9 @@ export default function FormNewDoc(props) {
           <Grid item xs={6} sm={6} md={4} lg={4}>
             <ComboBox
               list={props.clients}
-              onChange={(e, v) => {
-                handleChange("Nom", v)(e);
+              onChange={(e, v, raison) => {
+                //console.log(raison);
+                handleChange("Nom", v, raison)(e);
               }}
               onInputChange={handleChange("NomSaisie")}
             />
