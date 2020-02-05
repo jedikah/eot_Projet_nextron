@@ -5,7 +5,7 @@ import * as DB from "../models";
 import { ROUTE_MENU } from "../redux/reducers/menu";
 import NextCtn from "../redux/containers/NextCtn";
 import Container from "../components/layouts/Container";
-import SideNavPage from "../components/SideNavPage";
+import SideNavPage from "../redux/containers/SideNavPageCtn";
 import ToolBar from "../components/ToolBar";
 import RemoteWindow from "../components/RemoteWindow";
 import NewWork from "../components/MainComponent/NewWorkComponent/NewWork";

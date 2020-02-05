@@ -10,6 +10,7 @@ export const selectClients = (db, cb) => {
   sql += "INNER JOIN personne ON personne.IdPersonne = client.IdPersonne";
 
   db.all(sql, (err, rows) => {
+    console.log("les request", rows);
     cb(rows);
   });
 };
