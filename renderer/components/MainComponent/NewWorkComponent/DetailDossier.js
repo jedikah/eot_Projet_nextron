@@ -66,9 +66,7 @@ const DialogActions = withStyles(theme => ({
 }))(MuiDialogActions);
 
 const DetailDossier = props => {
-  const { travau } = props;
-  const { lettreCharge } = props;
-  const { client } = props;
+  const { travau, lettreCharge, client } = props;
 
   let [state, setState] = React.useState({
     letter: false,
@@ -103,6 +101,7 @@ const DetailDossier = props => {
             label="N° titre"
             fullWidth
             autoComplete="dom"
+            defaultValue={travau.NumTitre}
           />
         </Grid>
         <Grid item xs={12} md={12} lg={4}>
@@ -112,6 +111,7 @@ const DetailDossier = props => {
             label="Nom du terrain"
             fullWidth
             autoComplete="dom"
+            defaultValue={travau.NomTer}
           />
         </Grid>
         <Grid item xs={12} md={12} lg={4}>
@@ -121,6 +121,7 @@ const DetailDossier = props => {
             label="Localisation"
             fullWidth
             autoComplete="dom"
+            defaultValue={travau.LocalisationTrav}
           />
         </Grid>
         <Grid item xs={12} md={12} lg={4}>
@@ -130,6 +131,7 @@ const DetailDossier = props => {
             label="Fokontany du terrain titré"
             fullWidth
             autoComplete="dom"
+            defaultValue={travau.Fokontany}
           />
         </Grid>
       </Grid>
@@ -147,6 +149,7 @@ const DetailDossier = props => {
             label="Objet"
             fullWidth
             autoComplete="billing country"
+            defaultValue={lettreCharge[0].Objet}
           />
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={4}>
@@ -156,6 +159,7 @@ const DetailDossier = props => {
             label="N° RTX"
             fullWidth
             autoComplete="numRTX"
+            defaultValue={lettreCharge[0].NumRTX}
           />
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={4}>
@@ -163,6 +167,7 @@ const DetailDossier = props => {
             id="dateL"
             name="dateL"
             label="Lettre de charge fait le : (Date)"
+            defaultValue={lettreCharge[0].DateL}
             //defaultValue={fullYear()}
             type="date"
             fullWidth
@@ -173,6 +178,7 @@ const DetailDossier = props => {
             id="ville"
             name="ville"
             label="Lettre de charge fait à: (Ville)"
+            defaultValue={lettreCharge[0].VilleL}
             fullWidth
             autoComplete="billing postal-code"
           />
@@ -196,9 +202,10 @@ const DetailDossier = props => {
                     required
                     id="Nom Client"
                     name="Nom Client"
+                    label="Nom client"
                     fullWidth
                     autoComplete="Nom Client"
-                    value={client.Nom}
+                    defaultValue={client.Nom}
                     //onChange={handleChange("Contact")}
                   />
                 </Grid>
@@ -207,9 +214,10 @@ const DetailDossier = props => {
                     required
                     id="contact"
                     name="contact"
+                    label="contact"
                     fullWidth
                     autoComplete="contact"
-                    value={client.Contact}
+                    defaultValue={client.Contact}
                     //onChange={handleChange("Contact")}
                   />
                 </Grid>
@@ -218,14 +226,15 @@ const DetailDossier = props => {
                     required
                     id="domicile"
                     name="domicile"
+                    label="domicile"
                     fullWidth
                     autoComplete="domicile"
-                    value={client.Domicile}
+                    defaultValue={client.Domicile}
                     //onChange={handleChange("Domicile")}
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <p>{travau.TypeTrav}</p>
+                  <p>Type travaux : {travau.TypeTrav}</p>
                 </Grid>
                 {travau.TypeTrav === "Bornage" && titre()}
                 <Grid item xs={12} sm={12} md={12} lg={4}>
@@ -233,7 +242,7 @@ const DetailDossier = props => {
                     id="dateTrav"
                     name="dateTrav"
                     label="Date de debut de travaux:"
-                    //defaultValue={state.formInput.DateTrav}
+                    defaultValue={travau.DateTrav}
                     type="date"
                     //onChange={handleChange("DateTrav")}
                     fullWidth
@@ -256,6 +265,7 @@ const DetailDossier = props => {
                     type="number"
                     fullWidth
                     autoComplete="dom"
+                    defaultValue={travau.Prix}
                   />
                 </Grid>
               </Grid>
