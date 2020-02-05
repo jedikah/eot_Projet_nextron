@@ -21,14 +21,13 @@ import ComboBox from "../ComboBox";
 import moment, { currentMoment } from "../../../module/moment";
 
 export default function FormNewDoc(props) {
-  const listCli = props.clients.map(item => {
-    delete item.IdPersonne;
-    delete item.Domicile;
-    delete item.Contact;
-    return item;
-  });
+  let path = DB.homeDir("ECM");
+  path += "EMC.sqlite";
+  const db = DB.connect(path);
+
   let [state, setState] = React.useState({
     letter: false,
+    match: false,
     formInput: {
       //table client
       Nom: "",
@@ -157,7 +156,7 @@ export default function FormNewDoc(props) {
       </Grid>
     );
   };
-  const handleChange = (names, val, exist) => e => {
+  const handleChange = (names, val) => e => {
     if (names === "letter") setState({ ...state, [names]: e.target.checked });
     else {
       let f = state.formInput;
@@ -171,9 +170,21 @@ export default function FormNewDoc(props) {
   const handleChangeDate = (name, date) => e => {
     setState({ ...state, formInput: { ...f, [name]: date } });
   };
+
+  const matchClient = () => {
+    props.clients.forEach(element => {
+      if (element.Nom === state.formInput.Nom) {
+        setState({ ...state, match: true });
+      }
+      DB.addClient(db, params => {
+        console.log(params);
+      });
+    });
+  };
   const handleClick = e => {
     e.preventDefault();
-    console.log(state);
+    matchClient();
+    console.log(state.match);
   };
 
   return (
@@ -182,8 +193,11 @@ export default function FormNewDoc(props) {
         <Grid container spacing={3}>
           <Grid item xs={6} sm={6} md={4} lg={4}>
             <ComboBox
-              list={listCli}
-              onChange={(e, v, exist) => handleChange("Nom", v, exist)(e)}
+              list={props.clients}
+              onChange={(e, v) => {
+                handleChange("Nom", v)(e);
+                matchClient;
+              }}
               onInputChange={handleChange("Nom")}
             />
           </Grid>
