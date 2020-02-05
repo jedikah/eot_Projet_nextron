@@ -39,3 +39,23 @@ export const addTravaux = (db, params, cb) => {
     });
   });
 };
+
+export const updateTravaux = (db, params, cb) => {
+  let sql = "UPDATE travau SET ";
+  sql += "NumTitre = ?, Nomter = ?,";
+  sql += "LocalisationTrav = ?, Fokontany = ?,";
+  sql += "DateTrav = ?, TypeTrav = ?,";
+  sql += "Prix = ? WHERE IdTrav = ?";
+  db.run(
+    sql,
+    params[0],
+    params[1],
+    params[2],
+    params[3],
+    params[4],
+    params[5],
+    params[6],
+    params[7],
+    params[8]
+  );
+};

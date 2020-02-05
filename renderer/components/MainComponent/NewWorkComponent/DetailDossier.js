@@ -1,11 +1,12 @@
 import React from "react";
 
+import { makeStyles } from "@material-ui/core/styles";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-import MuiDialogTitle from "@material-ui/core/DialogTitle";
-import MuiDialogContent from "@material-ui/core/DialogContent";
-import MuiDialogActions from "@material-ui/core/DialogActions";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
@@ -14,6 +15,23 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Divider from "@material-ui/core/Divider";
 import { KeyboardDatePicker } from "@material-ui/pickers";
+import * as DB from "../../../models";
+
+const useStyles = makeStyles(theme => ({
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    margin: "auto",
+    width: "fit-content"
+  },
+  formControl: {
+    marginTop: theme.spacing(2),
+    minWidth: 120
+  },
+  formControlLabel: {
+    marginTop: theme.spacing(1)
+  }
+}));
 
 const styles = theme => ({
   root: {
@@ -22,8 +40,7 @@ const styles = theme => ({
     color: orange[500],
     height: "35px",
     padding: 0,
-    marginLeft: "10px",
-    width: "1000px"
+    marginLeft: "10px"
   },
   closeButton: {
     padding: 0,
@@ -34,10 +51,10 @@ const styles = theme => ({
   }
 });
 
-const DialogTitle = withStyles(styles)(props => {
+const DialogTitles = withStyles(styles)(props => {
   const { children, classes, onClose, ...other } = props;
   return (
-    <MuiDialogTitle disableTypography className={classes.root} {...other}>
+    <DialogTitle disableTypography className={classes.root} {...other}>
       <Typography variant="h6">{children}</Typography>
       {onClose ? (
         <IconButton
@@ -48,52 +65,71 @@ const DialogTitle = withStyles(styles)(props => {
           <CloseIcon />
         </IconButton>
       ) : null}
-    </MuiDialogTitle>
+    </DialogTitle>
   );
 });
 
-const DialogContent = withStyles(theme => ({
-  root: {
-    padding: theme.spacing(5),
-    width: "1000px"
-  }
-}))(MuiDialogContent);
-
-const DialogActions = withStyles(theme => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(1),
-    color: orange[800],
-    height: "35px",
-    width: "1000px"
-  }
-}))(MuiDialogActions);
-
 const DetailDossier = props => {
   const { travau, lettreCharge, client } = props;
+
+  let object = null;
+  let numrtx = null;
+  let date = null;
+  let ville = null;
+
+  if (lettreCharge.length) {
+    (object = lettreCharge[0].Objet),
+      (numrtx = lettreCharge[0].NumRTX),
+      (date = lettreCharge[0].DateL),
+      (ville = lettreCharge[0].VilleL);
+  }
+
+  const classes = useStyles();
+  const [fullWidth, setFullWidth] = React.useState(true);
+  const [maxWidth, setMaxWidth] = React.useState("md");
+
+  let path = DB.homeDir("ECM");
+  path += "EMC.sqlite";
+  const db = DB.connect(path);
 
   let [state, setState] = React.useState({
     letter: false,
     formInput: {
       //table client
-      Nom: "",
-      Contact: "",
-      Domicile: "",
+      Nom: client.Nom,
+      Contact: client.Contact,
+      Domicile: client.Domicile,
       //table travaux
-      DateTrav: /*fullYear()*/ "",
-      TypeTrav: "Délimitation",
-      Prix: "",
-      NumTitre: "",
-      NomTer: "",
-      LocalisationTrav: "",
-      Fokontany: "",
+      DateTrav: travau.DateTrav,
+      TypeTrav: travau.TypeTrav,
+      Prix: travau.Prix,
+      NumTitre: travau.NumTitre,
+      NomTer: travau.NomTer,
+      LocalisationTrav: travau.LocalisationTrav,
+      Fokontany: travau.Fokontany,
       //table lettre de charge
-      Objet: "",
-      NumRTX: "",
-      DateL: "",
-      VilleL: ""
+      Objet: object,
+      NumRTX: numrtx,
+      DateL: date,
+      VilleL: ville
     }
   });
+
+  const handleChange = (names, val) => e => {
+    let f = state.formInput;
+    let value;
+    if (!val) {
+      value = e.target.value;
+      setState({
+        ...state,
+        formInput: { ...f, [names]: value }
+      });
+    }
+  };
+
+  const handleChangeDate = (name, date) => e => {
+    setState({ ...state, formInput: { ...f, [name]: date } });
+  };
 
   const titre = () => {
     return (
@@ -105,8 +141,9 @@ const DetailDossier = props => {
             label="N° titre"
             fullWidth
             autoComplete="dom"
-            defaultValue={travau.NumTitre}
+            defaultValue={state.formInput.NumTitre}
             variant="outlined"
+            onChange={handleChange("NumTitre")}
           />
         </Grid>
         <Grid item xs={6} sm={6} md={4} lg={4}>
@@ -116,8 +153,9 @@ const DetailDossier = props => {
             label="Nom du terrain"
             fullWidth
             autoComplete="dom"
-            defaultValue={travau.NomTer}
+            defaultValue={state.formInput.NomTer}
             variant="outlined"
+            onChange={handleChange("NomTer")}
           />
         </Grid>
         <Grid item xs={6} sm={6} md={4} lg={4}>
@@ -127,8 +165,9 @@ const DetailDossier = props => {
             label="Localisation"
             fullWidth
             autoComplete="dom"
-            defaultValue={travau.LocalisationTrav}
+            defaultValue={state.formInput.LocalisationTrav}
             variant="outlined"
+            onChange={handleChange("LocalisationTrav")}
           />
         </Grid>
         <Grid item xs={6} sm={6} md={4} lg={4}>
@@ -138,8 +177,9 @@ const DetailDossier = props => {
             label="Fokontany du terrain titré"
             fullWidth
             autoComplete="dom"
-            defaultValue={travau.Fokontany}
+            defaultValue={state.formInput.Fokontany}
             variant="outlined"
+            onChange={handleChange("Fokontany")}
           />
         </Grid>
       </Grid>
@@ -157,8 +197,9 @@ const DetailDossier = props => {
             label="Objet"
             fullWidth
             autoComplete="billing country"
-            defaultValue={lettreCharge[0].Objet}
+            defaultValue={state.formInput.Objet}
             variant="outlined"
+            onChange={handleChange("Objet")}
           />
         </Grid>
         <Grid item xs={6} sm={6} md={4} lg={4}>
@@ -168,8 +209,9 @@ const DetailDossier = props => {
             label="N° RTX"
             fullWidth
             autoComplete="numRTX"
-            defaultValue={lettreCharge[0].NumRTX}
+            defaultValue={state.formInput.NumRTX}
             variant="outlined"
+            onChange={handleChange("NumRTX")}
           />
         </Grid>
 
@@ -181,8 +223,8 @@ const DetailDossier = props => {
             margin="normal"
             id="dateL"
             label="Lettre de charge fait le : (Date)"
-            value={lettreCharge[0].DateL}
-            //onChange={date => handleChangeDate("DateTrav", date)}
+            value={state.formInput.DateL}
+            onChange={date => handleChangeDate("DateL", date)}
             KeyboardButtonProps={{
               "aria-label": "change date"
             }}
@@ -193,37 +235,58 @@ const DetailDossier = props => {
             id="ville"
             name="ville"
             label="Lettre de charge fait à: (Ville)"
-            defaultValue={lettreCharge[0].VilleL}
+            defaultValue={state.formInput.VilleL}
             fullWidth
             autoComplete="billing postal-code"
             variant="outlined"
+            onChange={handleChange("VilleL")}
           />
         </Grid>
       </Grid>
     );
   };
 
+  const handleClick = e => {
+    e.preventDefault();
+
+    DB.updateTravaux(db, [
+      state.formInput.NumTitre,
+      state.formInput.NomTer,
+      state.formInput.LocalisationTrav,
+      state.formInput.Fokontany,
+      state.formInput.DateTrav,
+      state.formInput.TypeTrav,
+      state.formInput.Prix,
+      props.travau.IdTrav
+    ]);
+  };
+
   return (
     <div>
-      <Dialog aria-labelledby="customized-dialog-title" open={props.open}>
-        <DialogTitle id="customized-dialog-title">
+      <Dialog
+        fullWidth={fullWidth}
+        maxWidth={maxWidth}
+        aria-labelledby="customized-dialog-title"
+        open={props.open}
+      >
+        <DialogTitles id="customized-dialog-title">
           Détails du dossier
-        </DialogTitle>
+        </DialogTitles>
         <DialogContent dividers>
           <React.Fragment>
-            <form /*onSubmit={}*/>
+            <form className={classes.form} onSubmit={handleClick}>
               <Grid container spacing={3}>
                 <Grid item xs={6} sm={6} md={4} lg={4}>
                   <TextField
                     required
                     id="Nom Client"
-                    name="Nom Client"
+                    name="nom"
                     label="Nom client"
                     fullWidth
                     autoComplete="Nom Client"
-                    defaultValue={client.Nom}
+                    defaultValue={state.formInput.Nom}
                     variant="outlined"
-                    //onChange={handleChange("Contact")}
+                    onChange={handleChange("Nom")}
                   />
                 </Grid>
                 <Grid item xs={6} sm={6} md={4} lg={4}>
@@ -234,9 +297,9 @@ const DetailDossier = props => {
                     label="contact"
                     fullWidth
                     autoComplete="contact"
-                    defaultValue={client.Contact}
+                    defaultValue={state.formInput.Contact}
                     variant="outlined"
-                    //onChange={handleChange("Contact")}
+                    onChange={handleChange("Contact")}
                   />
                 </Grid>
                 <Grid item xs={6} sm={6} md={4} lg={4}>
@@ -247,13 +310,13 @@ const DetailDossier = props => {
                     label="domicile"
                     fullWidth
                     autoComplete="domicile"
-                    defaultValue={client.Domicile}
+                    defaultValue={state.formInput.Domicile}
                     variant="outlined"
-                    //onChange={handleChange("Domicile")}
+                    onChange={handleChange("Domicile")}
                   />
                 </Grid>
                 <Grid item xs={6} sm={6} md={4} lg={4}>
-                  <p>Type travaux : {travau.TypeTrav}</p>
+                  <p>Type travaux : {state.formInput.TypeTrav}</p>
                 </Grid>
                 {travau.TypeTrav === "Bornage" && titre()}
                 <Grid item xs={6} sm={6} md={4} lg={4}>
@@ -264,8 +327,8 @@ const DetailDossier = props => {
                     margin="normal"
                     id="dateTrav: "
                     label="Date des travaux: "
-                    value={travau.DateTrav}
-                    //onChange={date => handleChangeDate("DateTrav", date)}
+                    value={state.formInput.DateTrav}
+                    onChange={date => handleChangeDate("DateTrav", date)}
                     KeyboardButtonProps={{
                       "aria-label": "change date"
                     }}
@@ -279,8 +342,9 @@ const DetailDossier = props => {
                     type="number"
                     fullWidth
                     autoComplete="dom"
-                    defaultValue={travau.Prix}
+                    defaultValue={state.formInput.Prix}
                     variant="outlined"
+                    onChange={handleChange("Prix")}
                   />
                 </Grid>
               </Grid>
@@ -289,6 +353,7 @@ const DetailDossier = props => {
               ) : (
                 <p>Pas de lettre de charge</p>
               )}
+              <br />
               <Grid container spacing={3}>
                 <Grid item xs={4}>
                   <Button
@@ -310,7 +375,7 @@ const DetailDossier = props => {
             onClick={props.handleClose}
             style={{ color: orange[500] }}
           >
-            OK
+            Fermer
           </Button>
         </DialogActions>
       </Dialog>

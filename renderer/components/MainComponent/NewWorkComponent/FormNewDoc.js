@@ -162,7 +162,8 @@ export default function FormNewDoc(props) {
       let f = state.formInput;
       setState({
         ...state,
-        formInput: { ...f, Nom: e.target.value }
+        formInput: { ...f, Nom: e.target.value },
+        match: false
       });
     } else {
       let f = state.formInput;
