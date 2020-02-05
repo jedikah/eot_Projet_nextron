@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme =>
   })
 );
 
-const formulaire = () => {
+const formulairePV = () => {
   return (
     <div style={{ width: "100%", height: "100%" }}>
       <div
@@ -32,7 +32,38 @@ const formulaire = () => {
           height: "3.5%"
         }}
       >
-        Créer un nouveau dossier de travaux
+        Créer un PV
+      </div>
+      <div
+        style={{
+          width: "99%",
+          height: "95%",
+          padding: 15,
+          margin: 5,
+          border: "1px groove grey"
+        }}
+      >
+        <p>formulaire ajout de pv</p>
+      </div>
+    </div>
+  );
+};
+
+const formulaireConvocation = () => {
+  return (
+    <div style={{ width: "100%", height: "100%" }}>
+      <div
+        style={{
+          width: "99.3%",
+          background: "grey",
+          color: "white",
+          padding: 2,
+          margin: 0,
+          textAlign: "center",
+          height: "3.5%"
+        }}
+      >
+        Créer une convocation
       </div>
       <div
         style={{
@@ -82,10 +113,11 @@ const afficher = () => {
 
 const ElaborationTravaux = () => {
   const [state, setState] = React.useState({
-    order: ["0", "1"],
+    order: ["0", "1", "2"],
     panes: {
       "0": { width: "30%" },
-      "1": { width: "70%" }
+      "1": { width: "40%" },
+      "2": { width: "30%" }
     }
   });
 
@@ -96,15 +128,17 @@ const ElaborationTravaux = () => {
       order
     });
   };
-  const panes = [afficher(), formulaire()].map((val, key) => (
-    <Pane
-      key={key}
-      size={{ width: state.panes[key].width, height: "100%" }}
-      style={{ border: "1px solid blue" }}
-    >
-      {val}
-    </Pane>
-  ));
+  const panes = [afficher(), formulaireConvocation(), formulairePV()].map(
+    (val, key) => (
+      <Pane
+        key={key}
+        size={{ width: state.panes[key].width, height: "100%" }}
+        style={{ border: "1px solid blue" }}
+      >
+        {val}
+      </Pane>
+    )
+  );
 
   return (
     <div style={{ border: "1px solid red", width: "100%" }}>
