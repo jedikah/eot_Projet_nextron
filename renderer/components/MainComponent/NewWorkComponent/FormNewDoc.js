@@ -25,7 +25,7 @@ export default function FormNewDoc(props) {
     currentIdCli: "",
     formInput: {
       //table client
-      Nom: "",
+      Nom: "joe",
       Contact: "",
       Domicile: "",
       //table travaux
@@ -49,15 +49,15 @@ export default function FormNewDoc(props) {
 
   const handleChange = (names, val) => e => {
     if (names === "letter") setState({ ...state, [names]: e.target.checked });
-    else if (names === "NomSaisie" || val) {
-      let nom = val ? val.Nom : e.target.value;
-      let currentIdCli = val ? val.IdCli : "";
+    else if ((names = "changeCombobox" && val)) {
+      let nom = val;
+      let currentIdCli = filterClientIdByName(val);
       let f = state.formInput;
       setState({
         ...state,
         formInput: { ...f, Nom: nom },
         currentIdCli: currentIdCli,
-        match: matchClient(value)
+        match: matchClient(nom)
       });
     } else {
       let f = state.formInput;
@@ -66,6 +66,13 @@ export default function FormNewDoc(props) {
         formInput: { ...f, [names]: e.target.value }
       });
     }
+  };
+
+  const filterClientIdByName = name => {
+    const clients = props.clients;
+    let filtredList = clients.filter(client => client.Nom === name);
+    if (filtredList.length === 1) return filtredList[0].IdCli;
+    else return "";
   };
 
   const matchClient = Nom => {
@@ -216,9 +223,7 @@ export default function FormNewDoc(props) {
           <Grid item xs={6} sm={6} md={4} lg={4}>
             <ComboBox
               list={props.clients}
-              onChange={(e, v, raison) => handleChange("Nom", v, raison)(e)}
-              onInputChange={handleChange("NomSaisie")}
-              nomClient={state.formInput.Nom}
+              onInputChange={(e, v) => handleChange("changeCombobox", v)(e)}
             />
           </Grid>
           <Grid item xs={6} sm={6} md={4} lg={4}>

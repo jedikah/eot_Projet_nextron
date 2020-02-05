@@ -11,16 +11,13 @@ export default function ComboBox(props) {
       freeSolo={true}
       blurOnSelect="mouse"
       autoHighlight={true}
-      onChange={(e, v) => {
-        v && props.onChange(e, v, "");
-      }}
+      onInputChange={(e, v) => props.onInputChange(e, v)}
       id="combo-box-demo"
       options={props.list}
       getOptionLabel={option => option.Nom}
       renderInput={params => (
         <TextField
           {...params}
-          onChange={props.onInputChange}
           required
           label="Nom client"
           variant="outlined"
