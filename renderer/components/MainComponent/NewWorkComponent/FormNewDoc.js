@@ -190,16 +190,6 @@ export default function FormNewDoc(props) {
     setState({ ...state, formInput: { ...f, [name]: date } });
   };
 
-  const matchClient = () => {
-    props.clients.forEach(element => {
-      if (element.Nom === state.formInput.Nom) {
-        setState({ ...state, match: true });
-      }
-      /*DB.addClient(db, params => {
-        console.log(params);
-      });*/
-    });
-  };
   const handleClick = e => {
     e.preventDefault();
     let IdCli;
@@ -220,8 +210,8 @@ export default function FormNewDoc(props) {
         state.formInput.TypeTrav,
         state.formInput.Prix
       ],
-      params => {
-        console.log(params);
+      newTrav => {
+        console.log(newTrav);
       }
     );
   };

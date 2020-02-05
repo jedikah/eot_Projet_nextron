@@ -9,8 +9,8 @@ import DetailDossier from "../../../redux/containers/DetailDossierCtn";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: "100%",
-    maxWidth: 360,
+    //width: "100%",
+    //maxWidth: 360,
     backgroundColor: theme.palette.background.paper
   },
   inline: {
@@ -57,6 +57,8 @@ const AffiCherDossier = ({ actions, travaux, clients, selectedTravau }) => {
                       </Typography>
                       <br />
                       {travau.TypeTrav}
+                      <br />
+                      {travau.DateTrav}
                     </React.Fragment>
                   }
                 />

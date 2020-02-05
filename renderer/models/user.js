@@ -12,12 +12,6 @@ export const selectUsers = (db, cb) => {
 
   //select = Promise((resolve, reject) => {
   db.all(sql, (err, rows) => {
-    //select.users.push(row);
-    //if(!err) resolve(rows)
-    //else reject()
     cb(rows);
   });
-  //})
-
-  //return select;
 };
