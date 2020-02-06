@@ -263,6 +263,7 @@ const DetailDossier = props => {
     e.preventDefault();
 
     DB.updateTravaux(db, [
+      state.formInput.NumReq,
       state.formInput.NumTitre,
       state.formInput.NomTer,
       state.formInput.LocalisationTrav,
