@@ -87,13 +87,7 @@ export default function FormNewDoc(props) {
     return match;
   };
 
-  const handleClick = e => {
-    e.preventDefault();
-    let IdCli;
-    if (state.match) {
-      IdCli = state.currentIdCli;
-    }
-
+  const addClients = IdCli => {
     DB.addTravaux(
       db,
       [
@@ -109,11 +103,35 @@ export default function FormNewDoc(props) {
         state.formInput.Prix
       ],
       newTrav => {
-        //props.actions.travau.addTravaux({ newTrav });
-        //console.log(newTrav);
-        console.log(state.formInput.DateTrav.format());
+        props.actions.travau.addTravaux({ newTrav });
       }
     );
+  };
+
+  const handleClick = e => {
+    e.preventDefault();
+
+    if (state.match) {
+      addClients(state.currentIdCli);
+    } else {
+      DB.addPersone(db, state.formInput.Nom, IdPers => {
+        DB.addClient(
+          db,
+          [IdPers, state.formInput.Domicile, state.formInput.Contact],
+          newClient => {
+            let copieNewClient = {};
+            copieNewClient.IdCli = newClient.IdCli;
+            copieNewClient.IdPersonne = newClient.IdPersonne;
+            copieNewClient.Nom = state.formInput.Nom;
+            copieNewClient.Domicile = newClient.Domicile;
+            copieNewClient.Contact = newClient.Contact;
+
+            props.actions.client.addClients({ copieNewClient });
+            addClients(newClient.IdCli);
+          }
+        );
+      });
+    }
   };
 
   const withLetter = () => {

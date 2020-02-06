@@ -6,7 +6,6 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 export default function ComboBox(props) {
   return (
     <Autocomplete
-      debug
       loadingText="Chargement..."
       freeSolo={true}
       blurOnSelect="mouse"
