@@ -38,6 +38,7 @@ export default function FormNewDoc(props) {
       LocalisationTrav: "",
       Fokontany: "",
       //table lettre de charge
+      DateRTX: moment(),
       Objet: "",
       NumRTX: "",
       DateL: moment(),
@@ -103,6 +104,19 @@ export default function FormNewDoc(props) {
         state.formInput.Prix
       ],
       newTrav => {
+        DB.addLettreCharge(
+          db,
+          [
+            newTrav.IdTrav,
+            state.formInput.DateRTX.format(DATE_FORMAT),
+            state.formInput.VilleL,
+            state.formInput.DateL,
+            state.formInput.Objet
+          ],
+          newLettre => {
+            props.actions.lettreCharge.addLettreCharge({ newLettre });
+          }
+        );
         props.actions.travau.addTravaux({ newTrav });
       }
     );
@@ -138,6 +152,21 @@ export default function FormNewDoc(props) {
     return (
       <Grid container spacing={3}>
         <Divider />
+        <Grid item xs={6} sm={6} md={4} lg={4}>
+          <KeyboardDatePicker
+            disableToolbar
+            variant="inline"
+            format="LL"
+            margin="normal"
+            id="date-picker-inline"
+            label="Date RTX:"
+            value={state.formInput.DateRTX}
+            onChange={date => handleChangeDate("DateRTX", date)}
+            KeyboardButtonProps={{
+              "aria-label": "change date"
+            }}
+          />
+        </Grid>
         <Grid item xs={6} sm={6} md={4} lg={4}>
           <TextField
             variant="outlined"

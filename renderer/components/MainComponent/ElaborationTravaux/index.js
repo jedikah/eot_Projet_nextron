@@ -3,6 +3,7 @@ import { SortablePane, Pane } from "react-sortable-pane";
 
 import AfficherDossier from "../NewWorkComponent/AfficherDossier";
 import FormConvocation from "../../../redux/containers/FormConvocationCtn";
+import FormPv from "./FormPv";
 
 const formulairePV = () => {
   return (

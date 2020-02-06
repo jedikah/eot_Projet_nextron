@@ -53,18 +53,6 @@ const FormConvocation = ({ IdTrav }) => {
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <TextField
               required
-              id="numRequisition"
-              name="numRequisition"
-              label="Numero de requisition: "
-              fullWidth
-              autoComplete="numRegistre"
-              onChange={handleChange("NumReq")}
-              variant="outlined"
-            />
-          </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={12}>
-            <TextField
-              required
               id="nomPersConv"
               name="nomPersConv"
               label="Nom de la personne à convoquer"
