@@ -73,7 +73,8 @@ const afficher = () => {
           height: "95%",
           padding: 15,
           margin: 5,
-          border: "1px groove grey"
+          border: "1px groove grey",
+          overflow: "auto"
         }}
       >
         <AfficherDossier />
@@ -88,7 +89,7 @@ const NewWork = props => {
     order: ["0", "1"],
     panes: {
       "0": { width: "30%" },
-      "1": { width: "70%" }
+      "1": { width: "69%" }
     }
   });
 

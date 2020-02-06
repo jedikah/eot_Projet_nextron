@@ -3,6 +3,7 @@ export const selectTravaux = (db, cb) => {
   sql += "travau.IdTrav AS IdTrav,";
   sql += "travau.IdCli AS IdCli,";
   sql += "travau.IdFact AS IdFact,";
+  sql += "travau.NumReq AS NumReq,";
   sql += "travau.NumTitre AS NumTitre,";
   sql += "travau.NomTer AS NomTer,";
   sql += "travau.LocalisationTrav AS LocalisationTrav,";
@@ -18,7 +19,7 @@ export const selectTravaux = (db, cb) => {
 
 export const addTravaux = (db, params, cb) => {
   let sql = "INSERT INTO travau ";
-  sql += "VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  sql += "VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   db.run(sql, params, err => {
     console.log("errrr:  ", err);
     db.all("SELECT last_insert_rowid()", (err, lastId) => {
@@ -28,13 +29,14 @@ export const addTravaux = (db, params, cb) => {
       newTrav.IdTrav = params[0];
       newTrav.IdCli = params[1];
       newTrav.IdFact = params[2];
-      newTrav.NumTitre = params[3];
-      newTrav.NomTer = params[4];
-      newTrav.LocalisationTrav = params[5];
-      newTrav.Fokontany = params[6];
-      newTrav.DateTrav = params[7];
-      newTrav.TypeTrav = params[8];
-      newTrav.Prix = params[9];
+      newTrav.NumReq = params[3];
+      newTrav.NumTitre = params[4];
+      newTrav.NomTer = params[5];
+      newTrav.LocalisationTrav = params[6];
+      newTrav.Fokontany = params[7];
+      newTrav.DateTrav = params[8];
+      newTrav.TypeTrav = params[9];
+      newTrav.Prix = params[10];
       cb(newTrav);
     });
   });
@@ -42,7 +44,7 @@ export const addTravaux = (db, params, cb) => {
 
 export const updateTravaux = (db, params, cb) => {
   let sql = "UPDATE travau SET ";
-  sql += "NumTitre = ?, Nomter = ?,";
+  sql += "NumReq = ?, NumTitre = ?, Nomter = ?,";
   sql += "LocalisationTrav = ?, Fokontany = ?,";
   sql += "DateTrav = ?, TypeTrav = ?,";
   sql += "Prix = ? WHERE IdTrav = ?";
@@ -56,6 +58,7 @@ export const updateTravaux = (db, params, cb) => {
     params[5],
     params[6],
     params[7],
-    params[8]
+    params[8],
+    params[9]
   );
 };

@@ -103,6 +103,7 @@ const DetailDossier = props => {
       DateTrav: travau.DateTrav,
       TypeTrav: travau.TypeTrav,
       Prix: travau.Prix,
+      NumReq: travau.NumReq,
       NumTitre: travau.NumTitre,
       NomTer: travau.NomTer,
       LocalisationTrav: travau.LocalisationTrav,
@@ -134,6 +135,18 @@ const DetailDossier = props => {
   const titre = () => {
     return (
       <Grid container spacing={3}>
+        <Grid item xs={6} sm={6} md={4} lg={4}>
+          <TextField
+            id="numReq"
+            name="numReq"
+            label="N° de Requisition"
+            fullWidth
+            autoComplete="dom"
+            defaultValue={state.formInput.NumReq}
+            onChange={handleChange("NumReq")}
+            variant="outlined"
+          />
+        </Grid>
         <Grid item xs={6} sm={6} md={4} lg={4}>
           <TextField
             id="numTitre"

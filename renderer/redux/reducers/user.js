@@ -1,4 +1,3 @@
-import * as DB from "../../models/index";
 import * as types from "../constants/userActionTypes";
 
 const initState = {
