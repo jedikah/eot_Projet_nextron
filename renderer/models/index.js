@@ -86,14 +86,12 @@ const client = db => {
 
 const convocation = db => {
   let sql = "CREATE TABLE convocation (";
-  sql += "NumRegistre INTEGER   NOT NULL,";
-  sql += "IdTrav      INTEGER   NOT NULL,";
-  sql += "NumPV       INTEGER   NOT NULL,";
-  sql += "NomPersConv TEXT (25) NOT NULL,";
-  sql += "DateConv    TEXT (10) NOT NULL,";
-  sql += "VilleConv   TEXT (15) NOT NULL,";
-  sql += "HeureConv   TEXT (5)  NOT NULL,";
-  sql += "NumReq      TEXT (6)  NOT NULL,";
+  sql += "NumRegistre INTEGER  ,";
+  sql += "IdTrav      INTEGER  ,";
+  sql += "NomPersConv TEXT (25),";
+  sql += "DateConv    TEXT (10),";
+  sql += "VilleConv   TEXT (15),";
+  sql += "HeureConv   TEXT (5) ,";
   sql += "PRIMARY KEY (";
   sql += "NumRegistre ASC";
   sql += "));";
@@ -116,12 +114,12 @@ const facture = db => {
 
 const lettrecharge = db => {
   let sql = "CREATE TABLE lettrecharge (";
-  sql += "NumRTX  TEXT (7)  NOT NULL,";
-  sql += "IdTrav  INTEGER   NOT NULL,";
-  sql += "DateRTX TEXT (10) NOT NULL,";
-  sql += "VilleL  TEXT (15) NOT NULL,";
-  sql += "DateL   TEXT (10) NOT NULL,";
-  sql += "Objet   TEXT (80) NOT NULL,";
+  sql += "NumRTX  TEXT (7) ,";
+  sql += "IdTrav  INTEGER  ,";
+  sql += "DateRTX TEXT (10),";
+  sql += "VilleL  TEXT (15),";
+  sql += "DateL   TEXT (10),";
+  sql += "Objet   TEXT (80),";
   sql += "PRIMARY KEY (";
   sql += "NumRTX ASC";
   sql += "),";
@@ -247,7 +245,7 @@ const INDEX = db => {
   db.run(sql);
   //-- Index : convocation_IdTrav
   db.run("DROP INDEX IF EXISTS convocation_IdTrav;");
-  sql = "CREATE UNIQUE INDEX convocation_IdTrav ON convocation (";
+  sql = "CREATE INDEX convocation_IdTrav ON convocation (";
   sql += '"IdTrav" ASC    );';
   db.run(sql);
   //-- Index : facture_IdClient

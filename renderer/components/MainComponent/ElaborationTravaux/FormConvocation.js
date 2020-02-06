@@ -10,7 +10,8 @@ import {
 
 import moment, { currentMoment } from "../../../module/moment";
 
-const FormConvocation = () => {
+const FormConvocation = ({ IdTrav }) => {
+  console.log(IdTrav);
   const [state, setState] = React.useState({
     formConv: {
       NumRegistre: "",
@@ -46,18 +47,6 @@ const FormConvocation = () => {
               fullWidth
               autoComplete="numRegistre"
               onChange={handleChange("NumRegistre")}
-              variant="outlined"
-            />
-          </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={12}>
-            <TextField
-              required
-              id="numRequisition"
-              name="numRequisition"
-              label="Numero de requisition: "
-              fullWidth
-              autoComplete="numRegistre"
-              onChange={handleChange("NumReq")}
               variant="outlined"
             />
           </Grid>

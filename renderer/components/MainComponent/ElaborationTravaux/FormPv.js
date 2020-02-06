@@ -39,86 +39,51 @@ const FormConvocation = () => {
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <TextField
-              required
-              id="numRegistre"
-              name="numRegistre"
-              label="Numero de registre: "
+              id="PieceJust"
+              name="PieceJust"
+              label="Pièce justificative: "
               fullWidth
-              autoComplete="numRegistre"
-              onChange={handleChange("NumRegistre")}
+              autoComplete="PieceJust"
+              onChange={handleChange("PieceJust")}
               variant="outlined"
             />
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <TextField
-              required
-              id="numRequisition"
-              name="numRequisition"
-              label="Numero de requisition: "
+              id="commune"
+              name="commune"
+              label="Commune: "
               fullWidth
-              autoComplete="numRegistre"
-              onChange={handleChange("NumReq")}
+              autoComplete="commune"
+              onChange={handleChange("Commune")}
               variant="outlined"
             />
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <TextField
-              required
-              id="nomPersConv"
-              name="nomPersConv"
-              label="Nom de la personne à convoquer"
+              id="District"
+              name="District"
+              label="District"
               fullWidth
-              autoComplete="nomPersConv"
-              onChange={handleChange("NomPersConv")}
+              autoComplete="District"
+              onChange={handleChange("District")}
               variant="outlined"
-            />
-          </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={12}>
-            <KeyboardDatePicker
-              disableToolbar
-              variant="inline"
-              format="LL"
-              margin="normal"
-              id="dateConv"
-              label="Convoqué (e) à la date: "
-              value={state.DateConv}
-              mask="__/__/____"
-              onChange={date => handleChangeDate("DateConv", date)}
-              KeyboardButtonProps={{
-                "aria-label": "change date"
-              }}
             />
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <TextField
-              required
-              id="villeConv"
-              name="villeConv"
-              label="Convoqué (e) à: (ville)"
+              id="region"
+              name="region"
+              label="Région"
               fullWidth
-              autoComplete="villeConv"
+              autoComplete="region"
               variant="outlined"
-              onChange={handleChange("VilleConv")}
+              onChange={handleChange("Region")}
             />
           </Grid>
-        </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={12}>
-          <KeyboardTimePicker
-            variant="dialog"
-            format="LT"
-            margin="normal"
-            id="time-picker"
-            label="Convoqué à l'heure suivante:"
-            value={state.HeureConv}
-            mask="__/__/____"
-            onChange={date => handleChangeDate("HeureConv", date)}
-            KeyboardButtonProps={{
-              "aria-label": "change time"
-            }}
-          />
         </Grid>
         <Grid container spacing={3}>
-          <Grid item xs={4}>
+          <Grid item xs={6}>
             <Button type="submit" fullWidth variant="contained" color="primary">
               Enregistrer
             </Button>
