@@ -5,12 +5,14 @@ import * as userActions from "../actions/userActions";
 import * as clientActions from "../actions/clientActions";
 import * as travauActions from "../actions/travauActions";
 import * as lettreChargeActions from "../actions/lettreChargeActions";
+import * as convocationActions from "../actions/convocationActions";
 
 const actions = {
   ...userActions,
   ...clientActions,
   ...travauActions,
-  ...lettreChargeActions
+  ...lettreChargeActions,
+  ...convocationActions
 };
 
 const mapStateToProps = state => ({
