@@ -14,3 +14,8 @@ export const setSelectedTravau = payload => ({
   type: types.SET_SELECTED_TRAVAU,
   payload
 });
+
+export const updateTravau = payload => ({
+  type: types.UPDATE_TRAVAU,
+  payload
+});

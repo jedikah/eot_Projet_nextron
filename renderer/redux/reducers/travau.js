@@ -24,6 +24,14 @@ const travau = (state = initState, action) => {
       newState.selectedTravau = payload.selectedTravau;
       return newState;
 
+    case types.UPDATE_TRAVAU:
+      const indexTrav = travaux.findIndex(
+        item => item.IdTrav === payload.updateTrav.IdTrav
+      );
+      travaux[indexTrav] = payload.updateTrav;
+      newState.travaux = [...travaux];
+      return newState;
+
     default:
       return state;
   }

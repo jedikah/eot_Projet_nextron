@@ -35,5 +35,14 @@ export const updateLettreCharge = (db, params, cb) => {
   sql += "NumRTX = ?, DateRTX = ?,";
   sql += "VilleL = ?, DateL = ?, ";
   sql += "Objet = ? WHERE IdTrav = ?";
-  db.run(sql, params[0], params[1], params[2], params[3], params[4], params[5]);
+  db.run(sql, params, err => {
+    let updateLettreCharge = {};
+    (updateLettreCharge.NumRTX = params[0]),
+      (updateLettreCharge.DateRTX = params[1]),
+      (updateLettreCharge.VilleL = params[2]),
+      (updateLettreCharge.DateL = params[3]),
+      (updateLettreCharge.Objet = params[4]),
+      (updateLettreCharge.IdTrav = params[5]);
+    cb(updateLettreCharge);
+  });
 };
