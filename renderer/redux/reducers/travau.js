@@ -25,7 +25,11 @@ const travau = (state = initState, action) => {
       return newState;
 
     case types.UPDATE_TRAVAU:
-      travaux.map(function(IdTrav, index) {});
+      const indexTrav = travaux.findIndex(
+        item => item.IdTrav === payload.updateTrav.IdTrav
+      );
+      travaux[indexTrav] = payload.updateTrav;
+      newState.travaux = [...travaux];
       return newState;
 
     default:

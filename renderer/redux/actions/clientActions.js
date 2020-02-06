@@ -9,3 +9,8 @@ export const addClients = payload => ({
   type: types.ADD_CLIENT,
   payload
 });
+
+export const updateClients = payload => ({
+  type: types.UPDATE_CLIENT,
+  payload
+});

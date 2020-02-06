@@ -19,6 +19,14 @@ const client = (state = initialState, action) => {
       newState.clients = [...clients];
       return newState;
 
+    case types.UPDATE_CLIENT:
+      const indexCli = clients.findIndex(
+        item => item.IdCli === payload.updateClient.IdCli
+      );
+      clients[indexCli] = payload.updateClient;
+      newState.clients = [...clients];
+      return newState;
+
     default:
       return state;
   }

@@ -9,3 +9,8 @@ export const addLettreCharge = payload => ({
   type: types.ADD_LETTRE_CHARGE,
   payload
 });
+
+export const updateLettreCharge = payload => ({
+  type: types.UPDATE_LETTRE_CHARGE,
+  payload
+});

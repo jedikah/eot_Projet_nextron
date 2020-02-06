@@ -20,6 +20,14 @@ const lettreCharge = (state = initState, action) => {
       newState.lettreCharges = [...lettreCharges];
       return newState;
 
+    case types.UPDATE_LETTRE_CHARGE:
+      const indexLettre = lettreCharges.findIndex(
+        item => item.IdTrav === payload.updateLettreCharge.IdTrav
+      );
+      lettreCharges[indexLettre] = payload.updateLettreCharge;
+      newState.lettreCharges = [...lettreCharges];
+      return newState;
+
     default:
       return state;
   }

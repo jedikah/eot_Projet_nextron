@@ -1,3 +1,5 @@
+import { updateClients } from "../redux/actions/clientActions";
+
 export const selectClients = (db, cb) => {
   let sql = "SELECT ";
   sql += "client.IdCli AS IdCli,";
@@ -32,7 +34,16 @@ export const addClient = (db, params, cb) => {
 
 export const updateClient = (db, params, cb) => {
   let sql = "UPDATE client SET ";
+  sql += "IdPersonne = ?, ";
   sql += "Domicile = ?, ";
   sql += "Contact = ? WHERE IdCli = ?";
-  db.run(sql, params[0], params[1], params[2]);
+  db.run(sql, params, err => {
+    let updateClient = {};
+    (updateClient.IdPersonne = params[0]),
+      (updateClient.Domicile = params[1]),
+      (updateClient.Contact = params[2]),
+      (updateClient.IdCli = params[3]),
+      (updateClient.Nom = params[4]);
+    cb(updateClient);
+  });
 };
