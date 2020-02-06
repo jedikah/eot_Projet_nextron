@@ -5,7 +5,7 @@ export const initClient = payload => ({
   payload
 });
 
-export const addClient = payload => ({
+export const addClients = payload => ({
   type: types.ADD_CLIENT,
   payload
 });

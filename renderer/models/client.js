@@ -14,22 +14,18 @@ export const selectClients = (db, cb) => {
   });
 };
 
-export const addClient = (db, params) => {
-  let sql = "INSERT INTO client VALUES(NULL,?,?,?)";
-  db.run(sql, params, () => {
-    db.all("SELECT last_insert_rowid();", [], (err, id) => {
+export const addClient = (db, params, cb) => {
+  let sql = "INSERT INTO client VALUES (NULL,?,?,?)";
+  db.run(sql, params, err1 => {
+    db.all("SELECT last_insert_rowid();", (err2, id) => {
+      let newClients = {};
       params.unshift(id[0]["last_insert_rowid()"]);
-      let p = {
-        clients: [
-          {
-            IdCli: parms[0],
-            IdPersonne: params[1],
-            Domicile: params[2],
-            Contact: params[3]
-          }
-        ]
-      };
-      cb(p);
+
+      newClients.IdCli = params[0];
+      newClients.IdPersonne = params[1];
+      newClients.Domicile = params[2];
+      newClients.Contact = params[3];
+      cb(newClients);
     });
   });
 };
