@@ -32,6 +32,7 @@ export default function FormNewDoc(props) {
       DateTrav: moment(),
       TypeTrav: "Délimitation",
       Prix: "",
+      NumReq: "",
       NumTitre: "",
       NomTer: "",
       LocalisationTrav: "",
@@ -48,6 +49,7 @@ export default function FormNewDoc(props) {
     setState({ ...state, formInput: { ...f, [name]: date } });
 
   const handleChange = (names, val) => e => {
+    let name = names;
     if (names === "letter") setState({ ...state, [names]: e.target.checked });
     else if ((names = "changeCombobox" && val)) {
       let nom = val;
@@ -63,7 +65,7 @@ export default function FormNewDoc(props) {
       let f = state.formInput;
       setState({
         ...state,
-        formInput: { ...f, [names]: e.target.value }
+        formInput: { ...f, [name]: e.target.value }
       });
     }
   };
@@ -95,6 +97,7 @@ export default function FormNewDoc(props) {
       [
         IdCli,
         "",
+        state.formInput.NumReq,
         state.formInput.NumTitre,
         state.formInput.NomTer,
         state.formInput.LocalisationTrav,
@@ -170,6 +173,17 @@ export default function FormNewDoc(props) {
       <Grid container spacing={3}>
         <Grid item xs={6} md={4} lg={4}>
           <TextField
+            id="numReq"
+            name="numReq"
+            label="N° de Requisition"
+            fullWidth
+            autoComplete="dom"
+            onChange={handleChange("NumReq")}
+            variant="outlined"
+          />
+        </Grid>
+        <Grid item xs={6} md={4} lg={4}>
+          <TextField
             id="numTitre"
             name="numTitre"
             label="N° titre"
@@ -215,7 +229,6 @@ export default function FormNewDoc(props) {
       </Grid>
     );
   };
-
   return (
     <React.Fragment>
       <form onSubmit={handleClick}>
@@ -274,7 +287,7 @@ export default function FormNewDoc(props) {
           <Grid item xs={6} sm={6} md={4} lg={4}>
             <KeyboardDatePicker
               disableToolbar
-              variant="inline"
+              variant="outlined"
               format="LL"
               margin="normal"
               id="dateTrav: "

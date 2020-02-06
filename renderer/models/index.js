@@ -156,10 +156,10 @@ const personne = db => {
 const PV = db => {
   let sql = "CREATE TABLE pv (";
   sql += "NumPV           INTEGER   NOT NULL,";
-  sql += "Circonscription TEXT (15) NOT NULL,";
-  sql += "Commune         TEXT (15) NOT NULL,";
-  sql += "District        TEXT (15) NOT NULL,";
-  sql += "Region          TEXT (15) NOT NULL,";
+  sql += "PieceJust       TEXT (300),";
+  sql += "Commune         TEXT (15),";
+  sql += "District        TEXT (15),";
+  sql += "Region          TEXT (15),";
   sql += "PRIMARY KEY (";
   sql += "NumPV ASC";
   sql += "),";
@@ -189,7 +189,8 @@ const travau = db => {
   sql += "IdTrav           INTEGER   NOT NULL,";
   sql += "IdCli            INTEGER   NOT NULL,";
   sql += "IdFact           INTEGER   DEFAULT NULL,";
-  sql += "NumTitre         TEXT (6)  DEFAULT NULL,";
+  sql += "NumReq           TEXT (7)  DEFAULT NULL,";
+  sql += "NumTitre         TEXT (7)  DEFAULT NULL,";
   sql += "NomTer           TEXT (30) DEFAULT NULL,";
   sql += "LocalisationTrav TEXT (20) DEFAULT NULL,";
   sql += "Fokontany        TEXT (15) DEFAULT NULL,";
