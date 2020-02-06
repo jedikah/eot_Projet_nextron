@@ -38,8 +38,6 @@ const AffiCherDossier = ({
   selectedTravau,
   convocations
 }) => {
-  if (selectedTravau === null) selectedTravau = { IdTrav: null };
-
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
@@ -48,8 +46,13 @@ const AffiCherDossier = ({
     clients.filter(client => client.IdCli === IdCli)[0];
   const filterConvocations = IdTrav =>
     convocations.filter(convocation => convocation.IdTrav === IdTrav);
-  const selectTravau = travau =>
-    actions.setSelectedTravau({ selectedTravau: travau });
+
+  const selectTravau = travau => {
+    if (!selectedTravau) actions.setSelectedTravau({ selectedTravau: travau });
+    else if (selectedTravau && selectedTravau.IdTrav !== travau.IdTrav)
+      actions.setSelectedTravau({ selectedTravau: travau });
+    else actions.setSelectedTravau({ selectedTravau: null });
+  };
 
   const handleClickOpen = travau => e => {
     selectTravau(travau);
@@ -60,7 +63,9 @@ const AffiCherDossier = ({
     <div className={classes.root}>
       <List className={classes.root}>
         {travaux.map((travau, i) => {
+          if (selectedTravau === null) selectedTravau = { IdTrav: null };
           const client = filterClients(travau.IdCli);
+          const convocations = filterConvocations(travau.IdTrav);
           const isSelected = travau.IdTrav === selectedTravau.IdTrav;
           return (
             <div key={i}>
@@ -108,7 +113,7 @@ const AffiCherDossier = ({
 
               <Collapse in={isSelected} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                  {filterConvocations(travau.IdTrav).map(convocation => (
+                  {convocations.map(convocation => (
                     <ListItem
                       key={convocation.NumRegistre}
                       button
