@@ -4,6 +4,7 @@ import { SortablePane, Pane } from "react-sortable-pane";
 
 import AfficherDossier from "../NewWorkComponent/AfficherDossier";
 import FormConvocation from "./FromConvocation";
+import FormPv from "./FormPv";
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -44,7 +45,7 @@ const formulairePV = () => {
           border: "1px groove grey"
         }}
       >
-        <p>formulaire ajout de pv</p>
+        <FormPv />
       </div>
     </div>
   );
