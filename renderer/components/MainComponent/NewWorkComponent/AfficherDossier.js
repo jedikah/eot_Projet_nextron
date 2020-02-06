@@ -31,17 +31,25 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AffiCherDossier = ({ actions, travaux, clients, selectedTravau }) => {
+const AffiCherDossier = ({
+  actions,
+  travaux,
+  clients,
+  selectedTravau,
+  convocations
+}) => {
   if (selectedTravau === null) selectedTravau = { IdTrav: null };
 
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
-  const selectTravau = travau =>
-    actions.setSelectedTravau({ selectedTravau: travau });
   const handleClose = () => setOpen(false);
   const filterClients = IdCli =>
     clients.filter(client => client.IdCli === IdCli)[0];
+  const filterConvocations = IdTrav =>
+    convocations.filter(convocation => convocation.IdTrav === IdTrav);
+  const selectTravau = travau =>
+    actions.setSelectedTravau({ selectedTravau: travau });
 
   const handleClickOpen = travau => e => {
     selectTravau(travau);
@@ -100,12 +108,18 @@ const AffiCherDossier = ({ actions, travaux, clients, selectedTravau }) => {
 
               <Collapse in={isSelected} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                  <ListItem button className={classes.nested}>
-                    <ListItemIcon>
-                      <ContactMailIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Starred" />
-                  </ListItem>
+                  {filterConvocations(travau.IdTrav).map(convocation => (
+                    <ListItem
+                      key={convocation.NumRegistre}
+                      button
+                      className={classes.nested}
+                    >
+                      <ListItemIcon>
+                        <ContactMailIcon />
+                      </ListItemIcon>
+                      <ListItemText primary={convocation.NomPersConv} />
+                    </ListItem>
+                  ))}
                 </List>
               </Collapse>
               <Divider />
