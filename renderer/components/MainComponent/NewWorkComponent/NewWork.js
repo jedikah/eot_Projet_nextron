@@ -89,7 +89,7 @@ const NewWork = props => {
     order: ["0", "1"],
     panes: {
       "0": { width: "30%" },
-      "1": { width: "69%" }
+      "1": { width: "70%" }
     }
   });
 
@@ -104,7 +104,7 @@ const NewWork = props => {
     <Pane
       key={key}
       size={{ width: state.panes[key].width, height: "100%" }}
-      style={{ border: "1px solid blue" }}
+      style={{ border: "1px solid blue", miWidth: 300 }}
     >
       {val}
     </Pane>
@@ -113,10 +113,11 @@ const NewWork = props => {
   return (
     <div style={{ border: "1px solid red", width: "100%" }}>
       <SortablePane
+        disableEffect={true}
         isSortable={false}
         style={{ border: "1px solid green" }}
         direction="horizontal"
-        margin={10}
+        margin={5}
         order={state.order}
         onOrderChange={order => orderChange(order)}
         onResizeStop={(e, key, dir, ref, d) => {

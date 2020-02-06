@@ -316,7 +316,6 @@ export default function FormNewDoc(props) {
           </Grid>
           <Grid item xs={6} md={4} lg={4}>
             <TextField
-              required={!state.match}
               disabled={state.match}
               id="domicile"
               name="domicile"

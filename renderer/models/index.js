@@ -74,7 +74,7 @@ const client = db => {
   let sql = "CREATE TABLE client (";
   sql += "IdCli      INTEGER   NOT NULL,";
   sql += "IdPersonne INTEGER   NOT NULL,";
-  sql += "Domicile   TEXT (20) NOT NULL,";
+  sql += "Domicile   TEXT (20) ,";
   sql += "Contact    TEXT (10) NOT NULL,";
   sql += "PRIMARY KEY (";
   sql += "IdCli";
