@@ -2,6 +2,7 @@ export * from "./user";
 export * from "./client";
 export * from "./lettreCharghe";
 export * from "./travau";
+export * from "./personne";
 
 const fs = require("fs");
 

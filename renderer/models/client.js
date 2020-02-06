@@ -33,3 +33,10 @@ export const addClient = (db, params) => {
     });
   });
 };
+
+export const updateClient = (db, params, cb) => {
+  let sql = "UPDATE client SET ";
+  sql += "Domicile = ?, ";
+  sql += "Contact = ? WHERE IdCli = ?";
+  db.run(sql, params[0], params[1], params[2]);
+};

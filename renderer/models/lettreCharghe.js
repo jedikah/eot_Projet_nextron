@@ -12,3 +12,11 @@ export const selectLetreCharges = (db, cb) => {
 
   db.all(sql, (err, rows) => cb(rows));
 };
+
+export const updateLettreCharge = (db, params, cb) => {
+  let sql = "UPDATE lettrecharge SET ";
+  sql += "NumRTX = ?, DateRTX = ?,";
+  sql += "VilleL = ?, DateL = ?, ";
+  sql += "Objet = ? WHERE IdTrav = ?";
+  db.run(sql, params[0], params[1], params[2], params[3], params[4], params[5]);
+};
