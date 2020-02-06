@@ -10,7 +10,8 @@ import {
 
 import moment, { currentMoment } from "../../../module/moment";
 
-const FormConvocation = () => {
+const FormConvocation = ({ IdTrav }) => {
+  console.log(IdTrav);
   const [state, setState] = React.useState({
     formConv: {
       NumRegistre: "",

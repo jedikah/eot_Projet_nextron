@@ -1,23 +1,8 @@
 import React, { useEffect } from "react";
-import { makeStyles, createStyles } from "@material-ui/core";
 import { SortablePane, Pane } from "react-sortable-pane";
 
 import AfficherDossier from "../NewWorkComponent/AfficherDossier";
-import FormConvocation from "./FromConvocation";
-
-const useStyles = makeStyles(theme =>
-  createStyles({
-    grid: {
-      border: "1px solid green",
-      width: "100%"
-    },
-    root: {
-      border: "1px solid red",
-      display: "flex",
-      padding: 5
-    }
-  })
-);
+import FormConvocation from "../../../redux/containers/FormConvocationCtn";
 
 const formulairePV = () => {
   return (
