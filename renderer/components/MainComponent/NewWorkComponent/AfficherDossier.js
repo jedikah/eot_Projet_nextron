@@ -43,7 +43,7 @@ const AffiCherDossier = ({ actions, travaux, clients, selectedTravau }) => {
   };
 
   return (
-    <div className={classes.root} style={{ overflow: "auto" }}>
+    <div className={classes.root}>
       <List className={classes.root}>
         {travaux.map((travau, i) => {
           const client = filterClients(travau.IdCli);

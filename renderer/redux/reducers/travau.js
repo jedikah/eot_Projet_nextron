@@ -16,7 +16,7 @@ const travau = (state = initState, action) => {
       return newState;
 
     case types.ADD_TRAVAU:
-      travaux.push(payload.newTravau);
+      travaux.push(payload.newTrav);
       newState.travaux = [...travaux];
       return newState;
 
