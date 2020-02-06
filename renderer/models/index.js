@@ -114,6 +114,7 @@ const facture = db => {
 
 const lettrecharge = db => {
   let sql = "CREATE TABLE lettrecharge (";
+  sql += "IdLC    INTEGER ,";
   sql += "NumRTX  TEXT (7) ,";
   sql += "IdTrav  INTEGER  ,";
   sql += "DateRTX TEXT (10),";
@@ -121,7 +122,7 @@ const lettrecharge = db => {
   sql += "DateL   TEXT (10),";
   sql += "Objet   TEXT (80),";
   sql += "PRIMARY KEY (";
-  sql += "NumRTX ASC";
+  sql += "IdLC ASC";
   sql += "))";
   db.run(sql);
 };
@@ -134,6 +135,9 @@ const personne = db => {
   sql += "IdPersonne ASC";
   sql += "),";
   sql += "CONSTRAINT IdPersonne UNIQUE (";
+  sql += "IdPersonne ASC";
+  sql += "),";
+  sql += "CONSTRAINT Nom UNIQUE (";
   sql += "IdPersonne ASC";
   sql += "));";
   db.run(sql);

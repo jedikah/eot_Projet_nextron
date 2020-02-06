@@ -15,7 +15,7 @@ export const selectLetreCharges = (db, cb) => {
 
 export const addLettreCharge = (db, params, cb) => {
   console.log(params);
-  const sql = "INSERT INTO lettrecharge VALUES (?, ?, ?, ?, ?, ?)";
+  const sql = "INSERT INTO lettrecharge VALUES (NULL, ?, ?, ?, ?, ?, ?)";
 
   db.run(sql, params, err => {
     let newLettre = {};

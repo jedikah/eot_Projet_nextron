@@ -114,8 +114,8 @@ export default function FormNewDoc(props) {
             state.formInput.DateL.format(DATE_FORMAT),
             state.formInput.Objet
           ],
-          newLettre => {
-            props.actions.lettreCharge.addLettreCharge({ newLettre });
+          newLettreCharge => {
+            props.actions.lettreCharge.addLettreCharge({ newLettreCharge });
           }
         );
         props.actions.travau.addTravaux({ newTrav });
@@ -123,9 +123,14 @@ export default function FormNewDoc(props) {
     );
   };
 
+  const verifieNom = () => {
+    props.clients.forEach(element => {
+      if (element.Nom === state.formInput.Nom) console.log("pareil");
+    });
+  };
   const handleClick = e => {
     e.preventDefault();
-
+    verifieNom();
     if (state.match) {
       addDB(state.currentIdCli);
     } else {
@@ -143,6 +148,11 @@ export default function FormNewDoc(props) {
 
             props.actions.client.addClients({ copieNewClient });
             addDB(newClient.IdCli);
+            setState({
+              ...state,
+              match: true,
+              currentIdCli: newClient.IdCli
+            });
           }
         );
       });
