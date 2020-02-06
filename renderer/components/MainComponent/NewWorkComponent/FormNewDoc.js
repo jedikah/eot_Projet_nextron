@@ -11,7 +11,7 @@ import Divider from "@material-ui/core/Divider";
 import { KeyboardDatePicker } from "@material-ui/pickers";
 
 import * as DB from "../../../models";
-import moment from "../../../module/moment";
+import moment, { DATE_FORMAT } from "../../../module/moment";
 import ComboBox from "../ComboBox";
 
 export default function FormNewDoc(props) {
@@ -45,8 +45,10 @@ export default function FormNewDoc(props) {
     }
   });
 
-  const handleChangeDate = (name, date) => e =>
+  const handleChangeDate = (name, date) => {
+    const f = state.formInput;
     setState({ ...state, formInput: { ...f, [name]: date } });
+  };
 
   const handleChange = (names, val) => e => {
     let name = names;
@@ -102,12 +104,14 @@ export default function FormNewDoc(props) {
         state.formInput.NomTer,
         state.formInput.LocalisationTrav,
         state.formInput.Fokontany,
-        state.formInput.DateTrav,
+        state.formInput.DateTrav.format(DATE_FORMAT),
         state.formInput.TypeTrav,
         state.formInput.Prix
       ],
       newTrav => {
-        console.log(newTrav);
+        //props.actions.travau.addTravaux({ newTrav });
+        //console.log(newTrav);
+        console.log(state.formInput.DateTrav.format());
       }
     );
   };
