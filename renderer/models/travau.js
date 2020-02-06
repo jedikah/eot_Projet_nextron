@@ -1,3 +1,5 @@
+import { updateTravau } from "../redux/actions/travauActions";
+
 export const selectTravaux = (db, cb) => {
   let sql = "SELECT ";
   sql += "travau.IdTrav AS IdTrav,";
@@ -42,21 +44,24 @@ export const addTravaux = (db, params, cb) => {
 
 export const updateTravaux = (db, params, cb) => {
   let sql = "UPDATE travau SET ";
-  sql += "NumReq = ?, NumTitre = ?, Nomter = ?,";
+  sql += "NumReq = ?, NumTitre = ?, NomTer = ?,";
   sql += "LocalisationTrav = ?, Fokontany = ?,";
   sql += "DateTrav = ?, TypeTrav = ?,";
-  sql += "Prix = ? WHERE IdTrav = ?";
-  db.run(
-    sql,
-    params[0],
-    params[1],
-    params[2],
-    params[3],
-    params[4],
-    params[5],
-    params[6],
-    params[7],
-    params[8],
-    params[9]
-  );
+  sql += "Prix = ?, IdCli = ?,";
+  sql += "IdFact = ? WHERE IdTrav = ?";
+  db.run(sql, params, err => {
+    let updateTrav = {};
+    updateTrav.NumReq = params[0];
+    updateTrav.NumTitre = params[1];
+    updateTrav.NomTer = params[2];
+    updateTrav.LocalisationTrav = params[3];
+    updateTrav.Fokontany = params[4];
+    updateTrav.DateTrav = params[5];
+    updateTrav.TypeTrav = params[6];
+    updateTrav.Prix = params[7];
+    updateTrav.IdCli = params[8];
+    updateTrav.IdFact = params[9];
+    updateTrav.IdTrav = params[10];
+    cb(updateTrav);
+  });
 };

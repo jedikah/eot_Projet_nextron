@@ -282,35 +282,57 @@ const DetailDossier = props => {
   const handleClick = e => {
     e.preventDefault();
 
-    DB.updateTravaux(db, [
-      state.formInput.NumReq,
-      state.formInput.NumTitre,
-      state.formInput.NomTer,
-      state.formInput.LocalisationTrav,
-      state.formInput.Fokontany,
-      state.formInput.DateTrav.format(DATE_FORMAT),
-      state.formInput.TypeTrav,
-      state.formInput.Prix,
-      props.travau.IdTrav
-    ]);
+    DB.updateTravaux(
+      db,
+      [
+        state.formInput.NumReq,
+        state.formInput.NumTitre,
+        state.formInput.NomTer,
+        state.formInput.LocalisationTrav,
+        state.formInput.Fokontany,
+        state.formInput.DateTrav.format(DATE_FORMAT),
+        state.formInput.TypeTrav,
+        state.formInput.Prix,
+        props.travau.IdCli,
+        props.travau.IdFact,
+        props.travau.IdTrav
+      ],
+      updateTrav => {
+        props.actions.travau.updateTravau({ updateTrav });
+      }
+    );
 
-    DB.updateClient(db, [
-      state.formInput.Domicile,
-      state.formInput.Contact,
-      props.travau.IdCli
-    ]);
-
-    DB.updatePersonne(db, [state.formInput.Nom, props.client.IdPersonne]);
+    DB.updateClient(
+      db,
+      [
+        props.client.IdPersonne,
+        state.formInput.Domicile,
+        state.formInput.Contact,
+        props.travau.IdCli,
+        state.formInput.Nom
+      ],
+      updateClient => {
+        props.actions.client.updateClients({ updateClient });
+      }
+    );
   };
 
-  DB.updateLettreCharge(db, [
-    state.formInput.NumRTX,
-    state.formInput.DateRTX.format(DATE_FORMAT),
-    state.formInput.VilleL,
-    state.formInput.DateL.format(DATE_FORMAT),
-    state.formInput.Objet,
-    props.travau.IdTrav
-  ]);
+  DB.updatePersonne(db, [state.formInput.Nom, props.client.IdPersonne]);
+
+  DB.updateLettreCharge(
+    db,
+    [
+      state.formInput.NumRTX,
+      state.formInput.DateRTX.format(DATE_FORMAT),
+      state.formInput.VilleL,
+      state.formInput.DateL.format(DATE_FORMAT),
+      state.formInput.Objet,
+      props.travau.IdTrav
+    ],
+    updateLettreCharge => {
+      props.actions.lettreCharge.updateLettreCharge({ updateLettreCharge });
+    }
+  );
 
   return (
     <div>

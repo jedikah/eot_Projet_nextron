@@ -88,7 +88,7 @@ export default function FormNewDoc(props) {
     return match;
   };
 
-  const addClients = IdCli => {
+  const addDB = IdCli => {
     DB.addTravaux(
       db,
       [
@@ -107,10 +107,11 @@ export default function FormNewDoc(props) {
         DB.addLettreCharge(
           db,
           [
+            state.formInput.NumRTX,
             newTrav.IdTrav,
             state.formInput.DateRTX.format(DATE_FORMAT),
             state.formInput.VilleL,
-            state.formInput.DateL,
+            state.formInput.DateL.format(DATE_FORMAT),
             state.formInput.Objet
           ],
           newLettre => {
@@ -126,7 +127,7 @@ export default function FormNewDoc(props) {
     e.preventDefault();
 
     if (state.match) {
-      addClients(state.currentIdCli);
+      addDB(state.currentIdCli);
     } else {
       DB.addPersone(db, state.formInput.Nom, IdPers => {
         DB.addClient(
@@ -141,7 +142,7 @@ export default function FormNewDoc(props) {
             copieNewClient.Contact = newClient.Contact;
 
             props.actions.client.addClients({ copieNewClient });
-            addClients(newClient.IdCli);
+            addDB(newClient.IdCli);
           }
         );
       });
