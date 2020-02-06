@@ -15,7 +15,7 @@ const client = (state = initialState, action) => {
       return newState;
 
     case types.ADD_CLIENT:
-      clients.push(payload.newClient);
+      clients.push(payload.copieNewClient);
       newState.clients = [...clients];
       return newState;
 
