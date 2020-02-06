@@ -122,10 +122,7 @@ const lettrecharge = db => {
   sql += "Objet   TEXT (80),";
   sql += "PRIMARY KEY (";
   sql += "NumRTX ASC";
-  sql += "),";
-  sql += "CONSTRAINT NumRTX UNIQUE (";
-  sql += "NumRTX ASC";
-  sql += "));";
+  sql += "))";
   db.run(sql);
 };
 
@@ -235,7 +232,7 @@ const user = db => {
 const INDEX = db => {
   //-- Index :
   db.run('DROP INDEX IF EXISTS "";');
-  let sql = 'CREATE UNIQUE INDEX "" ON lettrecharge (';
+  let sql = 'CREATE INDEX "" ON lettrecharge (';
   sql += '"IdTrav" ASC);';
   db.run(sql);
   //-- Index : client_IdPersonne

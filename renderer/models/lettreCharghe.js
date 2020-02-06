@@ -14,21 +14,19 @@ export const selectLetreCharges = (db, cb) => {
 };
 
 export const addLettreCharge = (db, params, cb) => {
-  console.log({ params });
-  const sql = "INSERT INTO lettrecharge VALUES (NULL, ?, ?, ?, ?, ?)";
+  console.log(params);
+  const sql = "INSERT INTO lettrecharge VALUES (?, ?, ?, ?, ?, ?)";
 
   db.run(sql, params, err => {
-    db.all("SELECT last_insert_rowid()", (err, lastId) => {
-      let newLettre = {};
-
-      newLettre.NumRTX = lastId[0]["last_insert_rowid()"];
-      newLettre.IdTrav = params[0];
-      newLettre.DateRTX = params[1];
-      newLettre.VilleL = params[2];
-      newLettre.DateL = params[3];
-      newLettre.Objet = params[4];
-      cb(newLettre);
-    });
+    let newLettre = {};
+    console.log(err);
+    newLettre.NumRTX = params[0];
+    newLettre.IdTrav = params[1];
+    newLettre.DateRTX = params[2];
+    newLettre.VilleL = params[3];
+    newLettre.DateL = params[4];
+    newLettre.Objet = params[5];
+    cb(newLettre);
   });
 };
 
