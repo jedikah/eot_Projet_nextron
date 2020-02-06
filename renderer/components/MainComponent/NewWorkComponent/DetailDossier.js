@@ -16,6 +16,7 @@ import TextField from "@material-ui/core/TextField";
 import Divider from "@material-ui/core/Divider";
 import { KeyboardDatePicker } from "@material-ui/pickers";
 import * as DB from "../../../models";
+import moment, { DATE_FORMAT } from "../../../module/moment";
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -74,14 +75,14 @@ const DetailDossier = props => {
 
   let object = null;
   let numrtx = null;
-  let date = null;
+  let datel = null;
   let ville = null;
   let datertx = null;
 
   if (lettreCharge.length) {
     (object = lettreCharge[0].Objet),
       (numrtx = lettreCharge[0].NumRTX),
-      (date = lettreCharge[0].DateL),
+      (datel = lettreCharge[0].DateL),
       (ville = lettreCharge[0].VilleL);
     datertx = lettreCharge[0].DateRTX;
   }
@@ -102,7 +103,7 @@ const DetailDossier = props => {
       Contact: client.Contact,
       Domicile: client.Domicile,
       //table travaux
-      DateTrav: travau.DateTrav,
+      DateTrav: moment(travau.DateTrav, DATE_FORMAT),
       TypeTrav: travau.TypeTrav,
       Prix: travau.Prix,
       NumReq: travau.NumReq,
@@ -113,9 +114,9 @@ const DetailDossier = props => {
       //table lettre de charge
       Objet: object,
       NumRTX: numrtx,
-      DateL: date,
+      DateL: moment(datel, DATE_FORMAT),
       VilleL: ville,
-      DateRTX: datertx
+      DateRTX: moment(datertx, DATE_FORMAT)
     }
   });
 
@@ -131,7 +132,8 @@ const DetailDossier = props => {
     }
   };
 
-  const handleChangeDate = (name, date) => e => {
+  const handleChangeDate = (name, date) => {
+    const f = state.formInput;
     setState({ ...state, formInput: { ...f, [name]: date } });
   };
 
@@ -286,7 +288,7 @@ const DetailDossier = props => {
       state.formInput.NomTer,
       state.formInput.LocalisationTrav,
       state.formInput.Fokontany,
-      state.formInput.DateTrav,
+      state.formInput.DateTrav.format(DATE_FORMAT),
       state.formInput.TypeTrav,
       state.formInput.Prix,
       props.travau.IdTrav
@@ -303,9 +305,9 @@ const DetailDossier = props => {
 
   DB.updateLettreCharge(db, [
     state.formInput.NumRTX,
-    state.formInput.DateRTX,
+    state.formInput.DateRTX.format(DATE_FORMAT),
     state.formInput.VilleL,
-    state.formInput.DateL,
+    state.formInput.DateL.format(DATE_FORMAT),
     state.formInput.Objet,
     props.travau.IdTrav
   ]);
