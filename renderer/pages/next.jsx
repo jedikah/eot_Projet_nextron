@@ -53,6 +53,9 @@ const Next = ({ actions, routeMenu }) => {
     DB.selectLetreCharges(db, rows =>
       actions.initLettreCharge({ lettreCharges: rows })
     );
+    DB.selectConvocations(db, rows =>
+      actions.initConvocation({ convocations: rows })
+    );
   }, []);
   return (
     <div className={classes.root}>

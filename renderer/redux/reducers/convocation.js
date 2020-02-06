@@ -1,32 +1,18 @@
-const SIMULATION = {
-  convocations: [
-    {
-      numRegistre: "000001",
-      nomPersConv: "Michael kwan",
-      dateConv: "jj-mm-aaaa",
-      villeConv: "nom ville",
-      heureConv: "hh:mm",
-      numReq: "req0003"
-    },
-    {
-      numRegistre: "000002",
-      nomPersConv: "Gabriel kwan",
-      dateConv: "jj-mm-aaaa",
-      villeConv: "nom ville",
-      heureConv: "hh:mm",
-      numReq: "req0004"
-    }
-  ]
-};
+import * as types from "../constants/convocationActionTypes";
 
 const initstate = {
-  convocations: [...SIMULATION.convocations]
+  convocations: []
 };
 
 const convocation = (state = initstate, action) => {
   let newState = { ...state };
   let payload = action.payload;
+
   switch (action.type) {
+    case types.INIT_CONVOCATION:
+      newState.convocations = payload.convocations;
+      return newState;
+
     default:
       return state;
   }

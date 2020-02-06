@@ -78,7 +78,8 @@ const afficher = () => {
           padding: 2,
           margin: 0,
           textAlign: "center",
-          height: "3.5%"
+          height: "3.5%",
+          overflow: "auto"
         }}
       >
         Liste des dossier

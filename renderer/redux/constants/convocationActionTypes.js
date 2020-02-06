@@ -1,0 +1,1 @@
+export const INIT_CONVOCATION = "INIT_CONVOCATION";
