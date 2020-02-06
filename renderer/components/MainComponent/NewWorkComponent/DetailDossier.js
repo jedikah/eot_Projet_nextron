@@ -76,12 +76,14 @@ const DetailDossier = props => {
   let numrtx = null;
   let date = null;
   let ville = null;
+  let datertx = null;
 
   if (lettreCharge.length) {
     (object = lettreCharge[0].Objet),
       (numrtx = lettreCharge[0].NumRTX),
       (date = lettreCharge[0].DateL),
       (ville = lettreCharge[0].VilleL);
+    datertx = lettreCharge[0].DateRTX;
   }
 
   const classes = useStyles();
@@ -112,7 +114,8 @@ const DetailDossier = props => {
       Objet: object,
       NumRTX: numrtx,
       DateL: date,
-      VilleL: ville
+      VilleL: ville,
+      DateRTX: datertx
     }
   });
 
@@ -255,6 +258,21 @@ const DetailDossier = props => {
             onChange={handleChange("VilleL")}
           />
         </Grid>
+        <Grid item xs={6} sm={6} md={4} lg={4}>
+          <KeyboardDatePicker
+            disableToolbar
+            variant="inline"
+            format="LL"
+            margin="normal"
+            id="datertx"
+            label="Date RTX"
+            value={state.formInput.DateRTX}
+            onChange={date => handleChangeDate("DateRTX", date)}
+            KeyboardButtonProps={{
+              "aria-label": "change date"
+            }}
+          />
+        </Grid>
       </Grid>
     );
   };
@@ -273,7 +291,24 @@ const DetailDossier = props => {
       state.formInput.Prix,
       props.travau.IdTrav
     ]);
+
+    DB.updateClient(db, [
+      state.formInput.Domicile,
+      state.formInput.Contact,
+      props.travau.IdCli
+    ]);
+
+    DB.updatePersonne(db, [state.formInput.Nom, props.client.IdPersonne]);
   };
+
+  DB.updateLettreCharge(db, [
+    state.formInput.NumRTX,
+    state.formInput.DateRTX,
+    state.formInput.VilleL,
+    state.formInput.DateL,
+    state.formInput.Objet,
+    props.travau.IdTrav
+  ]);
 
   return (
     <div>
