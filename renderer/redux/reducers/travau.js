@@ -24,6 +24,10 @@ const travau = (state = initState, action) => {
       newState.selectedTravau = payload.selectedTravau;
       return newState;
 
+    case types.UPDATE_TRAVAU:
+      travaux.map(function(IdTrav, index) {});
+      return newState;
+
     default:
       return state;
   }

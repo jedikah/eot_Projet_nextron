@@ -282,17 +282,27 @@ const DetailDossier = props => {
   const handleClick = e => {
     e.preventDefault();
 
-    DB.updateTravaux(db, [
-      state.formInput.NumReq,
-      state.formInput.NumTitre,
-      state.formInput.NomTer,
-      state.formInput.LocalisationTrav,
-      state.formInput.Fokontany,
-      state.formInput.DateTrav.format(DATE_FORMAT),
-      state.formInput.TypeTrav,
-      state.formInput.Prix,
-      props.travau.IdTrav
-    ]);
+    DB.updateTravaux(
+      db,
+      [
+        state.formInput.NumReq,
+        state.formInput.NumTitre,
+        state.formInput.NomTer,
+        state.formInput.LocalisationTrav,
+        state.formInput.Fokontany,
+        state.formInput.DateTrav.format(DATE_FORMAT),
+        state.formInput.TypeTrav,
+        state.formInput.Prix,
+        props.travau.IdTrav
+      ],
+      updateTrav => {
+        //props.actions.travau.addTravaux({ newTrav });
+        //console.log(newTrav);
+        console.log("update", updateTrav);
+      }
+    );
+
+    //actions.updateTravau({});
 
     DB.updateClient(db, [
       state.formInput.Domicile,
