@@ -10,21 +10,25 @@ import {
 
 import moment, { currentMoment } from "../../../module/moment";
 
-const FormConvocation = ({ IdTrav }) => {
+const FormConvocation = ({ IdTrav, client, actions }) => {
   console.log(IdTrav);
   const [state, setState] = React.useState({
     formConv: {
       NumRegistre: "",
-      IdTrav: "",
+      IdTrav: IdTrav,
       NumPv: "",
       NomPersConv: "",
-      DateConv: "",
+      DateConv: moment(),
       VilleConv: "",
       HeureConv: moment(),
       NumReq: ""
     }
   });
-  const handleChange = names => {};
+  console.log(state.formConv);
+  const handleChange = names => e => {
+    const formConv = state.formConv;
+    setState({ ...state, formConv: { ...formConv, [names]: e.target.value } });
+  };
 
   const handleClick = e => {
     e.preventDefault();

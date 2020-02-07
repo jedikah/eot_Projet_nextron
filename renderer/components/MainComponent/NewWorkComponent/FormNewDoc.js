@@ -104,20 +104,21 @@ export default function FormNewDoc(props) {
         state.formInput.Prix
       ],
       newTrav => {
-        DB.addLettreCharge(
-          db,
-          [
-            state.formInput.NumRTX,
-            newTrav.IdTrav,
-            state.formInput.DateRTX.format(DATE_FORMAT),
-            state.formInput.VilleL,
-            state.formInput.DateL.format(DATE_FORMAT),
-            state.formInput.Objet
-          ],
-          newLettreCharge => {
-            props.actions.lettreCharge.addLettreCharge({ newLettreCharge });
-          }
-        );
+        if (state.letter === true)
+          DB.addLettreCharge(
+            db,
+            [
+              state.formInput.NumRTX,
+              newTrav.IdTrav,
+              state.formInput.DateRTX.format(DATE_FORMAT),
+              state.formInput.VilleL,
+              state.formInput.DateL.format(DATE_FORMAT),
+              state.formInput.Objet
+            ],
+            newLettreCharge => {
+              props.actions.lettreCharge.addLettreCharge({ newLettreCharge });
+            }
+          );
         props.actions.travau.addTravaux({ newTrav });
       }
     );

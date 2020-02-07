@@ -55,7 +55,7 @@ const AffiCherDossier = ({
   };
 
   const handleClickOpen = travau => e => {
-    selectTravau(travau);
+    actions.setSelectedTravau({ selectedTravau: travau });
     setOpen(true);
   };
 
