@@ -11,7 +11,7 @@ import {
 import moment, { currentMoment } from "../../../module/moment";
 import * as DB from "../../../models";
 
-const FormConvocation = ({ IdTrav }) => {
+const FormConvocation = ({ IdTrav, client, actions }) => {
   let path = DB.homeDir("ECM");
   path += "EMC.sqlite";
   const db = DB.connect(path);
@@ -19,26 +19,19 @@ const FormConvocation = ({ IdTrav }) => {
   const [state, setState] = React.useState({
     formConv: {
       NumRegistre: "",
-      IdTrav: "",
+      IdTrav: IdTrav,
       NumPv: "",
       NomPersConv: "",
-      DateConv: "",
+      DateConv: moment(),
       VilleConv: "",
       HeureConv: moment(),
       NumReq: ""
     }
   });
 
-  const handleChange = (names, val) => e => {
-    let f = state.formConv;
-    let value;
-    if (!val) {
-      value = e.target.value;
-      setState({
-        ...state,
-        formConv: { ...f, [names]: value }
-      });
-    }
+  const handleChange = names => e => {
+    const formConv = state.formConv;
+    setState({ ...state, formConv: { ...formConv, [names]: e.target.value } });
   };
 
   const handleClick = e => {
