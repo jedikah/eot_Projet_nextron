@@ -8,10 +8,10 @@ import {
   KeyboardDatePicker
 } from "@material-ui/pickers";
 
-import moment, { currentMoment } from "../../../module/moment";
+import moment, { DATE_FORMAT } from "../../../module/moment";
 import * as DB from "../../../models";
 
-const FormConvocation = ({ IdTrav }) => {
+const FormConvocation = ({ IdTrav, client, actions }) => {
   let path = DB.homeDir("ECM");
   path += "EMC.sqlite";
   const db = DB.connect(path);
@@ -19,26 +19,19 @@ const FormConvocation = ({ IdTrav }) => {
   const [state, setState] = React.useState({
     formConv: {
       NumRegistre: "",
-      IdTrav: "",
+      IdTrav: IdTrav,
       NumPv: "",
       NomPersConv: "",
-      DateConv: "",
+      DateConv: moment(),
       VilleConv: "",
       HeureConv: moment(),
       NumReq: ""
     }
   });
 
-  const handleChange = (names, val) => e => {
-    let f = state.formConv;
-    let value;
-    if (!val) {
-      value = e.target.value;
-      setState({
-        ...state,
-        formConv: { ...f, [names]: value }
-      });
-    }
+  const handleChange = names => e => {
+    const formConv = state.formConv;
+    setState({ ...state, formConv: { ...formConv, [names]: e.target.value } });
   };
 
   const handleClick = e => {
@@ -51,9 +44,9 @@ const FormConvocation = ({ IdTrav }) => {
           state.formConv.NumRegistre,
           IdTrav,
           state.formConv.NomPersConv,
-          state.formConv.DateConv,
+          state.formConv.DateConv.format(DATE_FORMAT),
           state.formConv.VilleConv,
-          state.formConv.HeureConv
+          state.formConv.HeureConv.format("LT")
         ],
         newConvocation => {
           /*add newConvocation in store*/
@@ -65,7 +58,7 @@ const FormConvocation = ({ IdTrav }) => {
   };
 
   const handleChangeDate = (names, date) => {
-    setState({ ...state, formConv: { ...setState.formConv, [names]: date } });
+    setState({ ...state, formConv: { ...state.formConv, [names]: date } });
   };
 
   return (
@@ -104,8 +97,7 @@ const FormConvocation = ({ IdTrav }) => {
               margin="normal"
               id="dateConv"
               label="Convoqué (e) à la date: "
-              value={state.DateConv}
-              mask="__/__/____"
+              value={state.formConv.DateConv}
               onChange={date => handleChangeDate("DateConv", date)}
               KeyboardButtonProps={{
                 "aria-label": "change date"
@@ -132,8 +124,7 @@ const FormConvocation = ({ IdTrav }) => {
             margin="normal"
             id="time-picker"
             label="Convoqué à l'heure suivante:"
-            value={state.HeureConv}
-            mask="__/__/____"
+            value={state.formConv.HeureConv}
             onChange={date => handleChangeDate("HeureConv", date)}
             KeyboardButtonProps={{
               "aria-label": "change time"
