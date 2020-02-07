@@ -12,3 +12,17 @@ export const selectConvocations = (db, cb) => {
     cb(rows);
   });
 };
+
+export const addConvoction = (db, params, cb) => {
+  let sql = "INSERT INTO convocation VALUES ( ?, ? ,? ,? ,? ,? )";
+  db.run(sql, params, err => {
+    let newConvocation = {};
+    (newConvocation.NumRegistre = params[0]),
+      (newConvocation.IdTrav = params[1]),
+      (newConvocation.NomPersConv = params[2]),
+      (newConvocation.DateConv = params[3]),
+      (newConvocation.VilleConv = params[4]),
+      (newConvocation.HeureConv = params[5]);
+    cb(newConvocation);
+  });
+};

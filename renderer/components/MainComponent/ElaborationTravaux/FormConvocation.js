@@ -9,9 +9,13 @@ import {
 } from "@material-ui/pickers";
 
 import moment, { currentMoment } from "../../../module/moment";
+import * as DB from "../../../models";
 
 const FormConvocation = ({ IdTrav }) => {
-  console.log(IdTrav);
+  let path = DB.homeDir("ECM");
+  path += "EMC.sqlite";
+  const db = DB.connect(path);
+
   const [state, setState] = React.useState({
     formConv: {
       NumRegistre: "",
@@ -24,16 +28,46 @@ const FormConvocation = ({ IdTrav }) => {
       NumReq: ""
     }
   });
-  const handleChange = names => {};
+
+  const handleChange = (names, val) => e => {
+    let f = state.formConv;
+    let value;
+    if (!val) {
+      value = e.target.value;
+      setState({
+        ...state,
+        formConv: { ...f, [names]: value }
+      });
+    }
+  };
 
   const handleClick = e => {
     e.preventDefault();
+
+    if (IdTrav) {
+      DB.addConvoction(
+        db,
+        [
+          state.formConv.NumRegistre,
+          IdTrav,
+          state.formConv.NomPersConv,
+          state.formConv.DateConv,
+          state.formConv.VilleConv,
+          state.formConv.HeureConv
+        ],
+        newConvocation => {
+          /*add newConvocation in store*/
+        }
+      );
+    } else {
+      console.log("Choississez un travau");
+    }
   };
 
   const handleChangeDate = (names, date) => {
     setState({ ...state, formConv: { ...setState.formConv, [names]: date } });
   };
-  console.log(state.formConv.DateConv);
+
   return (
     <React.Fragment>
       <form onSubmit={handleClick}>
