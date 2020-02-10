@@ -9,3 +9,8 @@ export const addConvocations = payload => ({
   type: types.ADD_CONVOCATION,
   payload
 });
+
+export const setConvocationItems = payload => ({
+  type: types.SET_CONVOCATION_ITEMS,
+  payload
+});

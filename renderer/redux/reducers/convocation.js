@@ -1,13 +1,14 @@
 import * as types from "../constants/convocationActionTypes";
 
 const initstate = {
-  convocations: []
+  convocations: [],
+  convocationItems: []
 };
 
 const convocation = (state = initstate, action) => {
   let newState = { ...state };
   let payload = action.payload;
-  const { convocations } = state;
+  let { convocations, convocationItems } = state;
 
   switch (action.type) {
     case types.INIT_CONVOCATION:
@@ -17,6 +18,11 @@ const convocation = (state = initstate, action) => {
     case types.ADD_CONVOCATION:
       convocations.push(payload.newConvocation);
       newState.convocations = [...convocations];
+      return newState;
+
+    case types.SET_CONVOCATION_ITEMS:
+      convocationItems = payload.setItems;
+      newState.convocationItems = convocationItems;
       return newState;
 
     default:

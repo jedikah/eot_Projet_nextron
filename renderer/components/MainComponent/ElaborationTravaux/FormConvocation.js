@@ -11,7 +11,6 @@ const FormConvocation = ({ IdTrav, client, actions }) => {
   let path = DB.homeDir("ECM");
   path += "EMC.sqlite";
   const db = DB.connect(path);
-
   const [state, setState] = React.useState({
     formConv: {
       NumRegistre: "",

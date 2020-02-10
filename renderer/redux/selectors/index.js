@@ -8,9 +8,12 @@ export const getTravauClient = createSelector(
   [getTravau, getClient],
   (travauReducer, clientReducer) => {
     let selectedTravau = travauReducer.selectedTravau;
-    return clientReducer.clients.filter(
-      client => client.IdCli === selectedTravau.IdCli
-    )[0];
+
+    if (selectedTravau !== null)
+      return clientReducer.clients.filter(
+        client => client.IdCli === selectedTravau.IdCli
+      )[0];
+    else return null;
   }
 );
 
@@ -18,8 +21,10 @@ export const getTravauLettreCharge = createSelector(
   [getTravau, getLettreCharge],
   (travauReducer, lettreChargeReducer) => {
     let selectedTravau = travauReducer.selectedTravau;
-    return lettreChargeReducer.lettreCharges.filter(
-      lc => lc.IdTrav === selectedTravau.IdTrav
-    );
+    if (selectedTravau !== null)
+      return lettreChargeReducer.lettreCharges.filter(
+        lc => lc.IdTrav === selectedTravau.IdTrav
+      );
+    else return null;
   }
 );

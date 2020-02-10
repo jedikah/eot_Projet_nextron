@@ -8,9 +8,10 @@ import {
   KeyboardDatePicker
 } from "@material-ui/pickers";
 
+import FormPvCtn from "../../../redux/containers/FormPvCtn";
 import moment, { currentMoment } from "../../../module/moment";
 
-const FormConvocation = () => {
+const FormConvocation = ({ convocations, travaux, client }) => {
   const [state, setState] = React.useState({
     formConv: {
       NumRegistre: "",
@@ -23,6 +24,7 @@ const FormConvocation = () => {
       NumReq: ""
     }
   });
+
   const handleChange = names => {};
 
   const handleClick = e => {
@@ -32,7 +34,7 @@ const FormConvocation = () => {
   const handleChangeDate = (names, date) => {
     setState({ ...state, formConv: { ...setState.formConv, [names]: date } });
   };
-  console.log(state.formConv.DateConv);
+
   return (
     <React.Fragment>
       <form onSubmit={handleClick}>
@@ -94,4 +96,4 @@ const FormConvocation = () => {
   );
 };
 
-export default FormConvocation;
+export default FormPvCtn(FormConvocation);
