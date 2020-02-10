@@ -18,6 +18,9 @@ import { KeyboardDatePicker } from "@material-ui/pickers";
 import * as DB from "../../../models";
 import moment, { DATE_FORMAT } from "../../../module/moment";
 
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+
 const useStyles = makeStyles(theme => ({
   form: {
     display: "flex",
@@ -31,8 +34,18 @@ const useStyles = makeStyles(theme => ({
   },
   formControlLabel: {
     marginTop: theme.spacing(1)
+  },
+  root: {
+    width: "100%",
+    "& > * + *": {
+      marginTop: theme.spacing(2)
+    }
   }
 }));
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const styles = theme => ({
   root: {
@@ -90,6 +103,7 @@ const DetailDossier = props => {
   const classes = useStyles();
   const [fullWidth, setFullWidth] = React.useState(true);
   const [maxWidth, setMaxWidth] = React.useState("md");
+  const [open, setOpen] = React.useState(false);
 
   let path = DB.homeDir("ECM");
   path += "EMC.sqlite";
@@ -136,6 +150,14 @@ const DetailDossier = props => {
   const handleChangeDate = (name, date) => {
     const f = state.formInput;
     setState({ ...state, formInput: { ...f, [name]: date } });
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
   };
 
   const titre = () => {
@@ -297,6 +319,8 @@ const DetailDossier = props => {
 
   const handleClick = e => {
     e.preventDefault();
+
+    setOpen(true);
 
     DB.updateTravaux(
       db,
@@ -468,6 +492,13 @@ const DetailDossier = props => {
             Fermer
           </Button>
         </DialogActions>
+        <div className={classes.root}>
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="success">
+              Dossier travaux mise à jour
+            </Alert>
+          </Snackbar>
+        </div>
       </Dialog>
     </div>
   );
