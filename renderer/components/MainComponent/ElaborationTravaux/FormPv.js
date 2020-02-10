@@ -3,6 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
+
 import * as DB from "../../../models";
 
 const FormPv = ({}) => {
@@ -10,6 +11,7 @@ const FormPv = ({}) => {
   path += "EMC.sqlite";
   const db = DB.connect(path);
 
+const FormPv = ({ convocation, travaux, client }) => {
   const [state, setState] = React.useState({
     formConv: {
       PieceJust: "",
@@ -91,4 +93,4 @@ const FormPv = ({}) => {
   );
 };
 
-export default FormPv;
+export default FormPvCtn(FormPv);
