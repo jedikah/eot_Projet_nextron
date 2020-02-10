@@ -50,17 +50,11 @@ const AffiCherDossier = ({
   const filterConvocations = IdTrav =>
     convocations.filter(convocation => convocation.IdTrav === IdTrav);
 
-  const setConvocation = travau => {
-    const setItems = filterConvocations(travau.IdTrav);
-    actions.setConvocationItems({ setItems });
-  };
   const selectTravau = travau => {
     if (!selectedTravau) {
       actions.setSelectedTravau({ selectedTravau: travau });
-      setConvocation(travau);
     } else if (selectedTravau && selectedTravau.IdTrav !== travau.IdTrav) {
       actions.setSelectedTravau({ selectedTravau: travau });
-      setConvocation(travau);
     } else actions.setSelectedTravau({ selectedTravau: null });
   };
 
@@ -75,8 +69,9 @@ const AffiCherDossier = ({
         {travaux.map((travau, i) => {
           if (selectedTravau === null) selectedTravau = { IdTrav: null };
           const client = filterClients(travau.IdCli);
-
+          const convocations = filterConvocations(travau.IdTrav);
           const isSelected = travau.IdTrav === selectedTravau.IdTrav;
+
           return (
             <div key={i}>
               <ListItem
@@ -120,20 +115,18 @@ const AffiCherDossier = ({
                   </Button>
                 </ListItemSecondaryAction>
               </ListItem>
-              <Collapse in={true} timeout="auto" unmountOnExit>
+              <Collapse in={isSelected} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                  {convocationItems.map((convocation, key) => (
+                  {convocations.map((convocation, key) => (
                     <ListItem
-                      key={convocationItems[key].NumRegistre}
+                      key={convocation.NumRegistre}
                       button
                       className={classes.nested}
                     >
                       <ListItemIcon>
                         <ContactMailIcon />
                       </ListItemIcon>
-                      <ListItemText
-                        primary={convocationItems[key].NomPersConv}
-                      />
+                      <ListItemText primary={convocation.NomPersConv} />
                     </ListItem>
                   ))}
                 </List>
