@@ -7,7 +7,7 @@ const initstate = {
 const convocation = (state = initstate, action) => {
   let newState = { ...state };
   let payload = action.payload;
-  const { convocations } = state;
+  let { convocations, convocationItems } = state;
 
   switch (action.type) {
     case types.INIT_CONVOCATION:

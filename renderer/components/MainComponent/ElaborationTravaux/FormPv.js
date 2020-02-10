@@ -2,15 +2,14 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker
-} from "@material-ui/pickers";
 
-import moment, { currentMoment } from "../../../module/moment";
+import * as DB from "../../../models";
 
-const FormConvocation = () => {
+const FormPv = ({}) => {
+  let path = DB.homeDir("ECM");
+  path += "EMC.sqlite";
+  const db = DB.connect(path);
+
   const [state, setState] = React.useState({
     formConv: {
       PieceJust: "",
@@ -92,4 +91,4 @@ const FormConvocation = () => {
   );
 };
 
-export default FormConvocation;
+export default FormPv;

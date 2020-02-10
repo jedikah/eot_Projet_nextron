@@ -2,11 +2,7 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker
-} from "@material-ui/pickers";
+import { KeyboardTimePicker, KeyboardDatePicker } from "@material-ui/pickers";
 
 import moment, { DATE_FORMAT } from "../../../module/moment";
 import * as DB from "../../../models";
@@ -15,7 +11,6 @@ const FormConvocation = ({ IdTrav, client, actions }) => {
   let path = DB.homeDir("ECM");
   path += "EMC.sqlite";
   const db = DB.connect(path);
-
   const [state, setState] = React.useState({
     formConv: {
       NumRegistre: "",

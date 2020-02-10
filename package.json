@@ -22,6 +22,7 @@
     "@zeit/next-less": "^1.0.1",
     "bootstrap": "^4.4.1",
     "css-loader": "^3.4.2",
+    "cuid": "^2.1.8",
     "electron-serve": "^0.4.1",
     "electron-store": "^5.1.0",
     "file-loader": "^5.0.2",
