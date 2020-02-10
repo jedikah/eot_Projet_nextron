@@ -49,7 +49,7 @@ const FormConvocation = ({ IdTrav, client, actions }) => {
           state.formConv.HeureConv.format("LT")
         ],
         newConvocation => {
-          /*add newConvocation in store*/
+          actions.addConvocations({ newConvocation });
         }
       );
     } else {
