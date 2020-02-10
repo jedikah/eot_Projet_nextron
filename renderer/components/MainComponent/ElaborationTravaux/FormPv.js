@@ -11,7 +11,7 @@ import {
 import FormPvCtn from "../../../redux/containers/FormPvCtn";
 import moment, { currentMoment } from "../../../module/moment";
 
-const FormConvocation = ({ convocations, travaux, client }) => {
+const FormConvocation = ({ convocation, travaux, client }) => {
   const [state, setState] = React.useState({
     formConv: {
       NumRegistre: "",

@@ -37,6 +37,7 @@ export default function FormNewDoc(props) {
       NomTer: "",
       LocalisationTrav: "",
       Fokontany: "",
+      DateReq: moment(),
       //table lettre de charge
       DateRTX: moment(),
       Objet: "",
@@ -287,6 +288,21 @@ export default function FormNewDoc(props) {
             autoComplete="dom"
             onChange={handleChange("Fokontany")}
             variant="outlined"
+          />
+        </Grid>
+        <Grid item xs={6} sm={6} md={4} lg={4}>
+          <KeyboardDatePicker
+            disableToolbar
+            variant="inline"
+            format="LL"
+            margin="normal"
+            id="dateReq: "
+            label="Date de requisition: "
+            value={state.formInput.DateReq}
+            onChange={date => handleChangeDate("DateReq", date)}
+            KeyboardButtonProps={{
+              "aria-label": "change date"
+            }}
           />
         </Grid>
       </Grid>

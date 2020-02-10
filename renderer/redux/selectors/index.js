@@ -3,6 +3,7 @@ import { createSelector } from "reselect";
 const getTravau = state => state.travau;
 const getClient = state => state.client;
 const getLettreCharge = state => state.lettreCharge;
+const getConvocation = state => state.convocation;
 
 export const getTravauClient = createSelector(
   [getTravau, getClient],
@@ -24,6 +25,19 @@ export const getTravauLettreCharge = createSelector(
     if (selectedTravau !== null)
       return lettreChargeReducer.lettreCharges.filter(
         lc => lc.IdTrav === selectedTravau.IdTrav
+      );
+    else return null;
+  }
+);
+
+export const getConvocationClient = createSelector(
+  [getTravau, getConvocation],
+  (travauReducer, convocationReducer) => {
+    let selectedTravau = travauReducer.selectedTravau;
+
+    if (selectedTravau !== null)
+      return convocationReducer.convocations.filter(
+        convocation => convocation.IdTrav === selectedTravau.IdTrav
       );
     else return null;
   }
