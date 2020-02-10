@@ -15,7 +15,6 @@ const FormConvocation = ({ IdTrav, client, actions }) => {
   let path = DB.homeDir("ECM");
   path += "EMC.sqlite";
   const db = DB.connect(path);
-
   const [state, setState] = React.useState({
     formConv: {
       NumRegistre: "",
@@ -49,7 +48,7 @@ const FormConvocation = ({ IdTrav, client, actions }) => {
           state.formConv.HeureConv.format("LT")
         ],
         newConvocation => {
-          /*add newConvocation in store*/
+          actions.addConvocations({ newConvocation });
         }
       );
     } else {

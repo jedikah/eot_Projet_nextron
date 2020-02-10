@@ -36,22 +36,32 @@ const AffiCherDossier = ({
   travaux,
   clients,
   selectedTravau,
-  convocations
+  convocations,
+  convocationItems
 }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
   const handleClose = () => setOpen(false);
+
   const filterClients = IdCli =>
     clients.filter(client => client.IdCli === IdCli)[0];
+
   const filterConvocations = IdTrav =>
     convocations.filter(convocation => convocation.IdTrav === IdTrav);
 
+  const setConvocation = travau => {
+    const setItems = filterConvocations(travau.IdTrav);
+    actions.setConvocationItems({ setItems });
+  };
   const selectTravau = travau => {
-    if (!selectedTravau) actions.setSelectedTravau({ selectedTravau: travau });
-    else if (selectedTravau && selectedTravau.IdTrav !== travau.IdTrav)
+    if (!selectedTravau) {
       actions.setSelectedTravau({ selectedTravau: travau });
-    else actions.setSelectedTravau({ selectedTravau: null });
+      setConvocation(travau);
+    } else if (selectedTravau && selectedTravau.IdTrav !== travau.IdTrav) {
+      actions.setSelectedTravau({ selectedTravau: travau });
+      setConvocation(travau);
+    } else actions.setSelectedTravau({ selectedTravau: null });
   };
 
   const handleClickOpen = travau => e => {
@@ -65,7 +75,7 @@ const AffiCherDossier = ({
         {travaux.map((travau, i) => {
           if (selectedTravau === null) selectedTravau = { IdTrav: null };
           const client = filterClients(travau.IdCli);
-          const convocations = filterConvocations(travau.IdTrav);
+
           const isSelected = travau.IdTrav === selectedTravau.IdTrav;
           return (
             <div key={i}>
@@ -110,19 +120,20 @@ const AffiCherDossier = ({
                   </Button>
                 </ListItemSecondaryAction>
               </ListItem>
-
-              <Collapse in={isSelected} timeout="auto" unmountOnExit>
+              <Collapse in={true} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                  {convocations.map(convocation => (
+                  {convocationItems.map((convocation, key) => (
                     <ListItem
-                      key={convocation.NumRegistre}
+                      key={convocationItems[key].NumRegistre}
                       button
                       className={classes.nested}
                     >
                       <ListItemIcon>
                         <ContactMailIcon />
                       </ListItemIcon>
-                      <ListItemText primary={convocation.NomPersConv} />
+                      <ListItemText
+                        primary={convocationItems[key].NomPersConv}
+                      />
                     </ListItem>
                   ))}
                 </List>
