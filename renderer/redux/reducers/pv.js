@@ -1,3 +1,5 @@
+import * as types from "../constants/pvActionTypes";
+
 const SIMULATION = {
   pvs: [
     {
@@ -26,6 +28,10 @@ const pv = (state = initState, action) => {
   let payload = action.payload;
 
   switch (action.type) {
+    case types.ADD_PV:
+      newState.pvs = [...state.pvs, payload.pv];
+      return newState;
+
     default:
       return state;
   }
