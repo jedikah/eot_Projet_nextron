@@ -3,15 +3,14 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
-
+import FormPvCtn from "../../../redux/containers/FormPvCtn";
 import * as DB from "../../../models";
 
-const FormPv = ({}) => {
+const FormPv = ({ convocation, travau, client }) => {
   let path = DB.homeDir("ECM");
   path += "EMC.sqlite";
   const db = DB.connect(path);
 
-const FormPv = ({ convocation, travaux, client }) => {
   const [state, setState] = React.useState({
     formConv: {
       PieceJust: "",
@@ -31,7 +30,9 @@ const FormPv = ({ convocation, travaux, client }) => {
     e.preventDefault();
   };
 
-  console.log(state.formConv.DateConv);
+  console.log(client);
+  console.log(travau);
+  console.log(convocation);
   return (
     <React.Fragment>
       <form onSubmit={handleClick}>
