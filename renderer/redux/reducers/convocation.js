@@ -17,7 +17,7 @@ const convocation = (state = initstate, action) => {
 
     case types.ADD_CONVOCATION:
       convocations.push(payload.newConvocation);
-      newState.clients = [...convocations];
+      newState.convocations = [...convocations];
       return newState;
 
     case types.SET_CONVOCATION_ITEMS:

@@ -16,6 +16,7 @@ export const selectConvocations = (db, cb) => {
 export const addConvoction = (db, params, cb) => {
   let sql = "INSERT INTO convocation VALUES ( ?, ? ,? ,? ,? ,? )";
   db.run(sql, params, err => {
+    console.log(params);
     let newConvocation = {};
     (newConvocation.NumRegistre = params[0]),
       (newConvocation.IdTrav = params[1]),
