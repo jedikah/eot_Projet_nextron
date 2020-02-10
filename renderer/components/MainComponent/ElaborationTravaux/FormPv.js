@@ -13,25 +13,23 @@ import moment, { currentMoment } from "../../../module/moment";
 const FormConvocation = () => {
   const [state, setState] = React.useState({
     formConv: {
-      NumRegistre: "",
-      IdTrav: "",
-      NumPv: "",
-      NomPersConv: "",
-      DateConv: "",
-      VilleConv: "",
-      HeureConv: moment(),
-      NumReq: ""
+      PieceJust: "",
+      Commune: "",
+      District: "",
+      region: ""
     }
   });
-  const handleChange = names => {};
+  const handleChange = names => e => {
+    setState({
+      ...state,
+      formConv: { ...setState.formConv, [names]: e.target.value }
+    });
+  };
 
   const handleClick = e => {
     e.preventDefault();
   };
 
-  const handleChangeDate = (names, date) => {
-    setState({ ...state, formConv: { ...setState.formConv, [names]: date } });
-  };
   console.log(state.formConv.DateConv);
   return (
     <React.Fragment>

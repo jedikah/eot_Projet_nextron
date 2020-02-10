@@ -4,6 +4,7 @@ export * from "./lettreCharghe";
 export * from "./travau";
 export * from "./personne";
 export * from "./convocation";
+export * from "./PV";
 
 const fs = require("fs");
 
