@@ -2,16 +2,11 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker
-} from "@material-ui/pickers";
 
 import FormPvCtn from "../../../redux/containers/FormPvCtn";
 import moment, { currentMoment } from "../../../module/moment";
 
-const FormConvocation = ({ convocation, travaux, client }) => {
+const FormPv = ({ convocation, travaux, client }) => {
   const [state, setState] = React.useState({
     formConv: {
       NumRegistre: "",
@@ -96,4 +91,4 @@ const FormConvocation = ({ convocation, travaux, client }) => {
   );
 };
 
-export default FormPvCtn(FormConvocation);
+export default FormPvCtn(FormPv);
