@@ -107,6 +107,7 @@ const DetailDossier = props => {
       TypeTrav: travau.TypeTrav,
       Prix: travau.Prix,
       NumReq: travau.NumReq,
+      DateReq: moment(travau.DateReq, DATE_FORMAT),
       NumTitre: travau.NumTitre,
       NomTer: travau.NomTer,
       LocalisationTrav: travau.LocalisationTrav,
@@ -200,6 +201,21 @@ const DetailDossier = props => {
             onChange={handleChange("Fokontany")}
           />
         </Grid>
+        <Grid item xs={6} sm={6} md={4} lg={4}>
+          <KeyboardDatePicker
+            disableToolbar
+            variant="inline"
+            format="LL"
+            margin="normal"
+            id="dateReq: "
+            label="Date de requisition: "
+            value={state.formInput.DateReq}
+            onChange={date => handleChangeDate("DateReq", date)}
+            KeyboardButtonProps={{
+              "aria-label": "change date"
+            }}
+          />
+        </Grid>
       </Grid>
     );
   };
@@ -286,6 +302,7 @@ const DetailDossier = props => {
       db,
       [
         state.formInput.NumReq,
+        state.formInput.DateReq.format(DATE_FORMAT),
         state.formInput.NumTitre,
         state.formInput.NomTer,
         state.formInput.LocalisationTrav,

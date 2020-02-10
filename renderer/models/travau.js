@@ -6,6 +6,7 @@ export const selectTravaux = (db, cb) => {
   sql += "travau.IdCli AS IdCli,";
   sql += "travau.IdFact AS IdFact,";
   sql += "travau.NumReq AS NumReq,";
+  sql += "travau.DateReq AS DateReq,";
   sql += "travau.NumTitre AS NumTitre,";
   sql += "travau.NomTer AS NomTer,";
   sql += "travau.LocalisationTrav AS LocalisationTrav,";
@@ -21,7 +22,7 @@ export const selectTravaux = (db, cb) => {
 
 export const addTravaux = (db, params, cb) => {
   let sql = "INSERT INTO travau ";
-  sql += "VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  sql += "VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   db.run(sql, params, err => {
     db.all("SELECT last_insert_rowid()", (err, lastId) => {
       let newTrav = {};
@@ -30,13 +31,14 @@ export const addTravaux = (db, params, cb) => {
       newTrav.IdCli = params[1];
       newTrav.IdFact = params[2];
       newTrav.NumReq = params[3];
-      newTrav.NumTitre = params[4];
-      newTrav.NomTer = params[5];
-      newTrav.LocalisationTrav = params[6];
-      newTrav.Fokontany = params[7];
-      newTrav.DateTrav = params[8];
-      newTrav.TypeTrav = params[9];
-      newTrav.Prix = params[10];
+      newTrav.DateReq = params[4];
+      newTrav.NumTitre = params[5];
+      newTrav.NomTer = params[6];
+      newTrav.LocalisationTrav = params[7];
+      newTrav.Fokontany = params[8];
+      newTrav.DateTrav = params[9];
+      newTrav.TypeTrav = params[10];
+      newTrav.Prix = params[11];
       cb(newTrav);
     });
   });
@@ -44,7 +46,8 @@ export const addTravaux = (db, params, cb) => {
 
 export const updateTravaux = (db, params, cb) => {
   let sql = "UPDATE travau SET ";
-  sql += "NumReq = ?, NumTitre = ?, NomTer = ?,";
+  sql += "NumReq = ?, DateReq = ?,";
+  sql += "NumTitre = ?, NomTer = ?,";
   sql += "LocalisationTrav = ?, Fokontany = ?,";
   sql += "DateTrav = ?, TypeTrav = ?,";
   sql += "Prix = ?, IdCli = ?,";
@@ -52,16 +55,17 @@ export const updateTravaux = (db, params, cb) => {
   db.run(sql, params, err => {
     let updateTrav = {};
     updateTrav.NumReq = params[0];
-    updateTrav.NumTitre = params[1];
-    updateTrav.NomTer = params[2];
-    updateTrav.LocalisationTrav = params[3];
-    updateTrav.Fokontany = params[4];
-    updateTrav.DateTrav = params[5];
-    updateTrav.TypeTrav = params[6];
-    updateTrav.Prix = params[7];
-    updateTrav.IdCli = params[8];
-    updateTrav.IdFact = params[9];
-    updateTrav.IdTrav = params[10];
+    updateTrav.DateReq = params[1];
+    updateTrav.NumTitre = params[2];
+    updateTrav.NomTer = params[3];
+    updateTrav.LocalisationTrav = params[4];
+    updateTrav.Fokontany = params[5];
+    updateTrav.DateTrav = params[6];
+    updateTrav.TypeTrav = params[7];
+    updateTrav.Prix = params[8];
+    updateTrav.IdCli = params[9];
+    updateTrav.IdFact = params[10];
+    updateTrav.IdTrav = params[11];
     cb(updateTrav);
   });
 };
