@@ -60,6 +60,7 @@ const Next = ({ actions, routeMenu }) => {
     DB.selectConvocations(db, rows =>
       actions.initConvocation({ convocations: rows })
     );
+    DB.selectPV(db, rows => actions.initPv({ pvs: rows }));
   }, []);
   return (
     <div className={classes.root}>

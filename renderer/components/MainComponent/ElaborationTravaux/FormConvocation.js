@@ -38,6 +38,7 @@ const FormConvocation = ({ IdTrav, client, actions }) => {
         [
           state.formConv.NumRegistre,
           IdTrav,
+          IdTrav,
           state.formConv.NomPersConv,
           state.formConv.DateConv.format(DATE_FORMAT),
           state.formConv.VilleConv,

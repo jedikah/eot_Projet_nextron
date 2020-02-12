@@ -39,6 +39,8 @@ export const addTravaux = (db, params, cb) => {
       newTrav.DateTrav = params[9];
       newTrav.TypeTrav = params[10];
       newTrav.Prix = params[11];
+      sql = "INSERT INTO pv VALUES (?, '', '', '', '')";
+      db.run(sql, params[0]);
       cb(newTrav);
     });
   });

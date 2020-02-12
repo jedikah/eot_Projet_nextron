@@ -1,35 +1,25 @@
 import * as types from "../constants/pvActionTypes";
 
-const SIMULATION = {
-  pvs: [
-    {
-      numPv: "00001",
-      circonscription: "Sambava",
-      commune: "aaaaa",
-      district: "Samabva",
-      region: "SAVA"
-    },
-    {
-      numPv: "00002",
-      circonscription: "Antalaha",
-      commune: "aaaaa",
-      district: "Antalaha",
-      region: "SAVA"
-    }
-  ]
-};
-
 const initState = {
-  pvs: [...SIMULATION.pvs]
+  pvs: []
 };
 
 const pv = (state = initState, action) => {
   let newState = { ...state };
   let payload = action.payload;
+  let { pvs } = state;
 
   switch (action.type) {
+    case types.INIT_PV:
+      newState.pvs = payload.pvs;
+      return newState;
+
     case types.ADD_PV:
-      newState.pvs = [...state.pvs, payload.pv];
+      const indexPV = pvs.findIndex(item => {
+        return item.NumPV === payload.pv.NumPV;
+      });
+      pvs[indexPV] = { ...payload.pv };
+      newState.pvs = [...pvs];
       return newState;
 
     default:
