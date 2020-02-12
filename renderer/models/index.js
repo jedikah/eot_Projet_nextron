@@ -90,6 +90,7 @@ const convocation = db => {
   let sql = "CREATE TABLE convocation (";
   sql += "NumRegistre INTEGER  ,";
   sql += "IdTrav      INTEGER  ,";
+  sql += "NumPV      INTEGER  ,";
   sql += "NomPersConv TEXT (25),";
   sql += "DateConv    TEXT (10),";
   sql += "VilleConv   TEXT (15),";
@@ -192,6 +193,7 @@ const travau = db => {
   sql += "IdCli            INTEGER   NOT NULL,";
   sql += "IdFact           INTEGER   DEFAULT NULL,";
   sql += "NumReq           TEXT (7)  DEFAULT NULL,";
+  sql += "DateReq            DEFAULT NULL,";
   sql += "NumTitre         TEXT (7)  DEFAULT NULL,";
   sql += "NomTer           TEXT (30) DEFAULT NULL,";
   sql += "LocalisationTrav TEXT (20) DEFAULT NULL,";

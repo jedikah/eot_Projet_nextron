@@ -19,7 +19,7 @@ const formulairePV = () => {
           height: "3.5%"
         }}
       >
-        Créer un PV
+        Modifier un PV
       </div>
       <div
         style={{

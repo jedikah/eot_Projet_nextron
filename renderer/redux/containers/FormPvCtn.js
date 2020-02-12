@@ -2,7 +2,11 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import * as FormPv from "../actions/pvActions";
-import { getTravauClient, getConvocationClient, get } from "../selectors";
+import {
+  getTravauClient,
+  getConvocationClient,
+  getPvTravau
+} from "../selectors";
 
 const actions = { ...FormPv };
 
@@ -14,7 +18,8 @@ const mapStateToProps = state => {
     IdTrav,
     convocation: getConvocationClient(state),
     travau: state.travau.selectedTravau,
-    client: getTravauClient(state)
+    client: getTravauClient(state),
+    pv: getPvTravau(state)
   };
 };
 
