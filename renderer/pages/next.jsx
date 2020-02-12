@@ -10,7 +10,7 @@ import ToolBar from "../components/ToolBar";
 import RemoteWindow from "../components/RemoteWindow";
 import NewWork from "../components/MainComponent/NewWorkComponent/NewWork";
 import ElaborationTravaux from "../components/MainComponent/ElaborationTravaux";
-import Planning from "../components/MainComponent/Planning";
+import Planning from "../redux/containers/PlanningCtn";
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -50,10 +50,7 @@ const Next = ({ actions, routeMenu }) => {
     const db = DB.connect(path);
     DB.selectUsers(db, rows => actions.initUser({ users: rows }));
     DB.selectClients(db, rows => actions.initClient({ clients: rows }));
-    DB.selectTravaux(db, rows => {
-      console.log(rows);
-      actions.initTravau({ travaux: rows });
-    });
+    DB.selectTravaux(db, rows => actions.initTravau({ travaux: rows }));
     DB.selectLetreCharges(db, rows =>
       actions.initLettreCharge({ lettreCharges: rows })
     );
