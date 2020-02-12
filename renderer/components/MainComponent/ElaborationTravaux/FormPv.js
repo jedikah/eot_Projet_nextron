@@ -54,7 +54,7 @@ const FormPv = ({ convocation, travau, client, actions, pv }) => {
           travau.IdTrav
         ],
         pv => {
-          actions.addPv({ pv });
+          actions.updatePv({ pv });
         }
       );
     }

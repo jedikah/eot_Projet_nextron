@@ -144,6 +144,14 @@ export default function FormNewDoc(props) {
             }
           );
         props.actions.travau.addTravaux({ newTrav });
+        let newPv = {
+          PieceJust: "",
+          Commune: "",
+          District: "",
+          Region: "",
+          NumPV: newTrav.IdTrav
+        };
+        props.actions.pv.addPv({ newPv });
       }
     );
   };

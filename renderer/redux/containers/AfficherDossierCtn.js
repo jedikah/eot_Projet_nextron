@@ -2,8 +2,9 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import * as travauActions from "../actions/travauActions";
+import * as convocationAction from "../actions/convocationActions";
 
-const actions = { ...travauActions };
+const actions = { ...travauActions, ...convocationAction };
 
 const mapStateToProps = state => ({
   clients: state.client.clients,
@@ -11,6 +12,7 @@ const mapStateToProps = state => ({
   selectedTravau: state.travau.selectedTravau,
   factures: state.facture.factures,
   convocations: state.convocation.convocations,
+  selectedConvocation: state.convocation.selectedConvocation,
   pvs: state.pv.pvs,
   lettreCharges: state.lettreCharge.lettreCharges,
   users: state.user.users

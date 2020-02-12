@@ -15,6 +15,11 @@ const pv = (state = initState, action) => {
       return newState;
 
     case types.ADD_PV:
+      pvs.push(payload.newPv);
+      newState.pvs = [...pvs];
+      return newState;
+
+    case types.UPDATE_PV:
       const indexPV = pvs.findIndex(item => {
         return item.NumPV === payload.pv.NumPV;
       });

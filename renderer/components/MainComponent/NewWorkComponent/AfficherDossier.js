@@ -36,8 +36,8 @@ const AffiCherDossier = ({
   travaux,
   clients,
   selectedTravau,
-  convocations,
-  convocationItems
+  selectedConvocation,
+  convocations
 }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -58,6 +58,17 @@ const AffiCherDossier = ({
     } else actions.setSelectedTravau({ selectedTravau: null });
   };
 
+  const collapseClick = convocation => {
+    if (!selectedConvocation) {
+      actions.setSelectedConvocations({ selectedConvocation: convocation });
+    } else if (
+      selectedConvocation &&
+      selectedConvocation.NumRegistre !== convocation.NumRegistre
+    ) {
+      actions.setSelectedConvocations({ selectedConvocation: convocation });
+    } else actions.setSelectedConvocations({ selectedConvocation: null });
+  };
+
   const handleClickOpen = travau => e => {
     actions.setSelectedTravau({ selectedTravau: travau });
     setOpen(true);
@@ -71,6 +82,7 @@ const AffiCherDossier = ({
           const client = filterClients(travau.IdCli);
           const convocations = filterConvocations(travau.IdTrav);
           const isSelected = travau.IdTrav === selectedTravau.IdTrav;
+          const isSelectedConvocation = selectedConvocation !== null;
 
           return (
             <div key={i}>
@@ -122,9 +134,14 @@ const AffiCherDossier = ({
                       key={convocation.NumRegistre}
                       button
                       className={classes.nested}
+                      onClick={() => collapseClick(convocation)}
                     >
                       <ListItemIcon>
-                        <ContactMailIcon />
+                        <ContactMailIcon
+                          className={
+                            isSelectedConvocation ? classes.coralColor : ""
+                          }
+                        />
                       </ListItemIcon>
                       <ListItemText primary={convocation.NomPersConv} />
                     </ListItem>
