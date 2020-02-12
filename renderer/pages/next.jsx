@@ -10,6 +10,7 @@ import ToolBar from "../components/ToolBar";
 import RemoteWindow from "../components/RemoteWindow";
 import NewWork from "../components/MainComponent/NewWorkComponent/NewWork";
 import ElaborationTravaux from "../components/MainComponent/ElaborationTravaux";
+import Planning from "../redux/containers/PlanningCtn";
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -79,6 +80,7 @@ const Next = ({ actions, routeMenu }) => {
             <div className={classes.contenue}>
               {routeMenu === ROUTE_MENU.NEWDOC && <NewWork />}
               {routeMenu === ROUTE_MENU.ELABORATION && <ElaborationTravaux />}
+              {routeMenu === ROUTE_MENU.PLANING && <Planning />}
             </div>
           </div>
         </Container>
