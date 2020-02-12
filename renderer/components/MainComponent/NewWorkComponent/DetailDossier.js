@@ -18,6 +18,9 @@ import { KeyboardDatePicker } from "@material-ui/pickers";
 import * as DB from "../../../models";
 import moment, { DATE_FORMAT } from "../../../module/moment";
 
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+
 const useStyles = makeStyles(theme => ({
   form: {
     display: "flex",
@@ -31,8 +34,18 @@ const useStyles = makeStyles(theme => ({
   },
   formControlLabel: {
     marginTop: theme.spacing(1)
+  },
+  root: {
+    width: "100%",
+    "& > * + *": {
+      marginTop: theme.spacing(2)
+    }
   }
 }));
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const styles = theme => ({
   root: {
@@ -90,6 +103,7 @@ const DetailDossier = props => {
   const classes = useStyles();
   const [fullWidth, setFullWidth] = React.useState(true);
   const [maxWidth, setMaxWidth] = React.useState("md");
+  const [open, setOpen] = React.useState(false);
 
   let path = DB.homeDir("ECM");
   path += "EMC.sqlite";
@@ -107,6 +121,7 @@ const DetailDossier = props => {
       TypeTrav: travau.TypeTrav,
       Prix: travau.Prix,
       NumReq: travau.NumReq,
+      DateReq: moment(travau.DateReq, DATE_FORMAT),
       NumTitre: travau.NumTitre,
       NomTer: travau.NomTer,
       LocalisationTrav: travau.LocalisationTrav,
@@ -135,6 +150,14 @@ const DetailDossier = props => {
   const handleChangeDate = (name, date) => {
     const f = state.formInput;
     setState({ ...state, formInput: { ...f, [name]: date } });
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
   };
 
   const titre = () => {
@@ -198,6 +221,21 @@ const DetailDossier = props => {
             defaultValue={state.formInput.Fokontany}
             variant="outlined"
             onChange={handleChange("Fokontany")}
+          />
+        </Grid>
+        <Grid item xs={6} sm={6} md={4} lg={4}>
+          <KeyboardDatePicker
+            disableToolbar
+            variant="inline"
+            format="LL"
+            margin="normal"
+            id="dateReq: "
+            label="Date de requisition: "
+            value={state.formInput.DateReq}
+            onChange={date => handleChangeDate("DateReq", date)}
+            KeyboardButtonProps={{
+              "aria-label": "change date"
+            }}
           />
         </Grid>
       </Grid>
@@ -282,10 +320,13 @@ const DetailDossier = props => {
   const handleClick = e => {
     e.preventDefault();
 
+    setOpen(true);
+
     DB.updateTravaux(
       db,
       [
         state.formInput.NumReq,
+        state.formInput.DateReq.format(DATE_FORMAT),
         state.formInput.NumTitre,
         state.formInput.NomTer,
         state.formInput.LocalisationTrav,
@@ -451,6 +492,13 @@ const DetailDossier = props => {
             Fermer
           </Button>
         </DialogActions>
+        <div className={classes.root}>
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="success">
+              Dossier travaux mise à jour
+            </Alert>
+          </Snackbar>
+        </div>
       </Dialog>
     </div>
   );

@@ -10,14 +10,35 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Divider from "@material-ui/core/Divider";
 import { KeyboardDatePicker } from "@material-ui/pickers";
 
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+import { makeStyles } from "@material-ui/core/styles";
+
 import * as DB from "../../../models";
 import moment, { DATE_FORMAT } from "../../../module/moment";
 import ComboBox from "../ComboBox";
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    width: "100%",
+    "& > * + *": {
+      marginTop: theme.spacing(2)
+    }
+  }
+}));
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 export default function FormNewDoc(props) {
+  const classes = useStyles();
+
   let path = DB.homeDir("ECM");
   path += "EMC.sqlite";
   const db = DB.connect(path);
+
+  const [openTrav, setOpenTrav] = React.useState(false);
 
   const [state, setState] = React.useState({
     letter: false,
@@ -33,6 +54,7 @@ export default function FormNewDoc(props) {
       TypeTrav: "Délimitation",
       Prix: "",
       NumReq: "",
+      DateReq: moment(),
       NumTitre: "",
       NomTer: "",
       LocalisationTrav: "",
@@ -96,6 +118,7 @@ export default function FormNewDoc(props) {
         IdCli,
         "",
         state.formInput.NumReq,
+        state.formInput.DateReq.format(DATE_FORMAT),
         state.formInput.NumTitre,
         state.formInput.NomTer,
         state.formInput.LocalisationTrav,
@@ -134,8 +157,10 @@ export default function FormNewDoc(props) {
     e.preventDefault();
     verifieNom();
     if (state.match) {
+      setOpenTrav(true);
       addDB(state.currentIdCli);
     } else {
+      setOpenTrav(true);
       DB.addPersone(db, state.formInput.Nom, IdPers => {
         DB.addClient(
           db,
@@ -159,6 +184,14 @@ export default function FormNewDoc(props) {
         );
       });
     }
+  };
+
+  const handleCloseTrav = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenTrav(false);
   };
 
   const withLetter = () => {
@@ -414,6 +447,17 @@ export default function FormNewDoc(props) {
           </Grid>
         </Grid>
       </form>
+      <div className={classes.root}>
+        <Snackbar
+          open={openTrav}
+          autoHideDuration={6000}
+          onClose={handleCloseTrav}
+        >
+          <Alert onClose={handleCloseTrav} severity="success">
+            Dossier travaux ajouté
+          </Alert>
+        </Snackbar>
+      </div>
     </React.Fragment>
   );
 }
