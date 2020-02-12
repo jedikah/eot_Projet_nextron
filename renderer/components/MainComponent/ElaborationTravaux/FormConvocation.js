@@ -4,13 +4,36 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { KeyboardTimePicker, KeyboardDatePicker } from "@material-ui/pickers";
 
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+import { makeStyles } from "@material-ui/core/styles";
+
 import moment, { DATE_FORMAT } from "../../../module/moment";
 import * as DB from "../../../models";
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    width: "100%",
+    "& > * + *": {
+      marginTop: theme.spacing(2)
+    }
+  }
+}));
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 const FormConvocation = ({ IdTrav, client, actions }) => {
+  const classes = useStyles();
+
   let path = DB.homeDir("ECM");
   path += "EMC.sqlite";
   const db = DB.connect(path);
+
+  const [openAlert, setOpenAlert] = React.useState(false);
+  const [openSuccess, setOpenSuccess] = React.useState(false);
+
   const [state, setState] = React.useState({
     formConv: {
       NumRegistre: "",
@@ -33,6 +56,7 @@ const FormConvocation = ({ IdTrav, client, actions }) => {
     e.preventDefault();
 
     if (IdTrav) {
+      setOpenSuccess(true);
       DB.addConvoction(
         db,
         [
@@ -49,12 +73,28 @@ const FormConvocation = ({ IdTrav, client, actions }) => {
         }
       );
     } else {
-      console.log("Choississez un travau");
+      setOpenAlert(true);
     }
   };
 
   const handleChangeDate = (names, date) => {
     setState({ ...state, formConv: { ...state.formConv, [names]: date } });
+  };
+
+  const handleCloseAlert = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenAlert(false);
+  };
+
+  const handleCloseConvSuccess = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenSuccess(false);
   };
 
   return (
@@ -135,6 +175,28 @@ const FormConvocation = ({ IdTrav, client, actions }) => {
           </Grid>
         </Grid>
       </form>
+      <div className={classes.root}>
+        <Snackbar
+          open={openAlert}
+          autoHideDuration={6000}
+          onClose={handleCloseAlert}
+        >
+          <Alert onClose={handleCloseAlert} severity="error">
+            Choississez un dossier travau
+          </Alert>
+        </Snackbar>
+      </div>
+      <div className={classes.root}>
+        <Snackbar
+          open={openSuccess}
+          autoHideDuration={6000}
+          onClose={handleCloseConvSuccess}
+        >
+          <Alert onClose={handleCloseConvSuccess} severity="success">
+            Convocation ajouté
+          </Alert>
+        </Snackbar>
+      </div>
     </React.Fragment>
   );
 };
