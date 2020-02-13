@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 
-import Planning from "../../components/MainComponent/Planning";
+import Planning from "../../components/MainComponent/Planning/Planning";
 
 const mapStateToProps = state => ({
   travaux: state.travau.travaux,

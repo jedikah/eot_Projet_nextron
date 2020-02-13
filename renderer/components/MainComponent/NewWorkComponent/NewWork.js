@@ -22,10 +22,18 @@ const useStyles = makeStyles(theme =>
 
 const formulaire = () => {
   return (
-    <div style={{ width: "100%", height: "100%" }}>
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        position: "relative",
+        zIndex: 6,
+        boxShadow: "0px 0px 10px #888888"
+      }}
+    >
       <div
         style={{
-          width: "99.3%",
+          width: "100%",
           background: "grey",
           color: "white",
           padding: 2,
@@ -41,8 +49,7 @@ const formulaire = () => {
           width: "99%",
           height: "95%",
           padding: 15,
-          margin: 5,
-          border: "1px groove grey"
+          margin: 5
         }}
       >
         <FormNewDoc />
@@ -53,10 +60,19 @@ const formulaire = () => {
 
 const afficher = () => {
   return (
-    <div style={{ width: "100%", height: "100%" }}>
+    <div
+      style={{
+        width: "100%",
+        minWidth: 350,
+        height: "100%",
+        position: "relative",
+        zIndex: 7,
+        boxShadow: "0px 0px 10px #888888"
+      }}
+    >
       <div
         style={{
-          width: "99.3%",
+          width: "100%",
           background: "grey",
           color: "white",
           padding: 2,
@@ -71,10 +87,10 @@ const afficher = () => {
         style={{
           width: "96.5%",
           height: "95%",
+          minHeight: 400,
           padding: 15,
-          margin: 5,
-          border: "1px groove grey",
-          overflow: "auto"
+          marginTop: 5,
+          overflowY: "scroll"
         }}
       >
         <AfficherDossier />
@@ -89,7 +105,7 @@ const NewWork = props => {
     order: ["0", "1"],
     panes: {
       "0": { width: "30%" },
-      "1": { width: "70%" }
+      "1": { width: "69.8%" }
     }
   });
 
@@ -104,20 +120,20 @@ const NewWork = props => {
     <Pane
       key={key}
       size={{ width: state.panes[key].width, height: "100%" }}
-      style={{ border: "1px solid blue", miWidth: 300 }}
+      style={{ boxShadow: "0px 0px 30px #888888", miWidth: 300 }}
     >
       {val}
     </Pane>
   ));
 
   return (
-    <div style={{ border: "1px solid red", width: "100%" }}>
+    <div style={{ width: "100%" }}>
       <SortablePane
-        disableEffect={true}
+        resizable={false}
         isSortable={false}
-        style={{ border: "1px solid green" }}
         direction="horizontal"
-        margin={5}
+        style={{ position: "relative", zIndex: 1 }}
+        margin={10}
         order={state.order}
         onOrderChange={order => orderChange(order)}
         onResizeStop={(e, key, dir, ref, d) => {

@@ -10,11 +10,12 @@ import WorkOutlineIcon from "@material-ui/icons/WorkOutline";
 import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
 
 import { ROUTE_MENU } from "../redux/reducers/menu";
+import { yellow } from "@material-ui/core/colors";
 
 const useStyles = makeStyles({
   ListItemIcon: {
     display: "block",
-    zIndex: 1,
+    zIndex: 9,
     background: "white",
     paddingTop: 20,
     paddingBottom: 20,
@@ -27,7 +28,7 @@ const useStyles = makeStyles({
   },
   ListItemIcon_menu: {
     display: "block",
-    zIndex: 1,
+    zIndex: 9,
     background: "white",
     paddingTop: 16,
     paddingBottom: 16,
@@ -68,7 +69,10 @@ const useStyles = makeStyles({
   },
   root: {
     borderRight: "1px solid Grey",
-    height: "100%"
+    height: "100%",
+    position: "relative",
+    background: "white",
+    zIndex: 10
   }
 });
 
@@ -106,7 +110,7 @@ const SideNavPage = ({ actions }) => {
           <ListItemText
             primary={"Menu"}
             className={state.hoverMenu ? classes.text1 : classes.text2}
-            style={{ zIndex: 0 }}
+            style={{ zIndex: 8 }}
           />
         </ListItem>
       </List>
@@ -123,7 +127,7 @@ const SideNavPage = ({ actions }) => {
           <ListItemText
             primary={"Nouveau dossier de travaux"}
             className={state.hoverMenu ? classes.text1 : classes.text2}
-            style={{ zIndex: 0 }}
+            style={{ zIndex: 8 }}
           />
         </ListItem>
       </List>
@@ -140,7 +144,7 @@ const SideNavPage = ({ actions }) => {
           <ListItemText
             primary={"Elaboration de Travaux"}
             className={state.hoverMenu ? classes.text1 : classes.text2}
-            style={{ zIndex: 0 }}
+            style={{ zIndex: 8 }}
           />
         </ListItem>
       </List>
@@ -157,7 +161,7 @@ const SideNavPage = ({ actions }) => {
           <ListItemText
             primary={"Planning"}
             className={state.hoverMenu ? classes.text1 : classes.text2}
-            style={{ zIndex: 0 }}
+            style={{ zIndex: 8 }}
           />
         </ListItem>
       </List>

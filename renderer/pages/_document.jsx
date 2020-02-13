@@ -7,7 +7,6 @@ import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 class MyDocument extends Document {
   componentDidMount() {
     initializeFonts();
-    console.log("this.myElem.current.offsetWidth");
   }
 
   render() {

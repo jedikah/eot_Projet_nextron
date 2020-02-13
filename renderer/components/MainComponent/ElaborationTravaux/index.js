@@ -7,10 +7,16 @@ import FormPv from "./FormPv";
 
 const formulairePV = () => {
   return (
-    <div style={{ width: "100%", height: "100%" }}>
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        boxShadow: "0px 0px 10px #888888"
+      }}
+    >
       <div
         style={{
-          width: "99.3%",
+          width: "100%",
           background: "grey",
           color: "white",
           padding: 2,
@@ -23,11 +29,10 @@ const formulairePV = () => {
       </div>
       <div
         style={{
-          width: "99%",
+          width: "100%",
           height: "95%",
           padding: 15,
-          margin: 5,
-          border: "1px groove grey"
+          marginTop: 5
         }}
       >
         <FormPv />
@@ -38,13 +43,19 @@ const formulairePV = () => {
 
 const formulaireConvocation = () => {
   return (
-    <div style={{ width: "100%", height: "100%" }}>
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        boxShadow: "0px 0px 10px #888888"
+      }}
+    >
       <div
         style={{
           width: "99.3%",
           background: "grey",
           color: "white",
-          padding: 2,
+          padding: 5,
           margin: 0,
           textAlign: "center",
           height: "3.5%"
@@ -54,11 +65,10 @@ const formulaireConvocation = () => {
       </div>
       <div
         style={{
-          width: "99%",
+          width: "100%",
           height: "95%",
           padding: 15,
-          margin: 5,
-          border: "1px groove grey"
+          marginTop: 5
         }}
       >
         <FormConvocation />
@@ -69,10 +79,16 @@ const formulaireConvocation = () => {
 
 const afficher = () => {
   return (
-    <div style={{ width: "100%", height: "100%" }}>
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        boxShadow: "0px 0px 10px #888888"
+      }}
+    >
       <div
         style={{
-          width: "99.3%",
+          width: "100%",
           background: "grey",
           color: "white",
           padding: 2,
@@ -85,11 +101,10 @@ const afficher = () => {
       </div>
       <div
         style={{
-          width: "96.5%",
+          width: "100%",
           height: "95%",
           padding: 15,
-          margin: 5,
-          border: "1px groove grey",
+          marginTop: 5,
           overflow: "auto"
         }}
       >
@@ -118,21 +133,16 @@ const ElaborationTravaux = () => {
   };
   const panes = [afficher(), formulaireConvocation(), formulairePV()].map(
     (val, key) => (
-      <Pane
-        key={key}
-        size={{ width: state.panes[key].width, height: "100%" }}
-        style={{ border: "1px solid blue" }}
-      >
+      <Pane key={key} size={{ width: state.panes[key].width, height: "100%" }}>
         {val}
       </Pane>
     )
   );
 
   return (
-    <div style={{ border: "1px solid red", width: "100%" }}>
+    <div style={{ width: "100%" }}>
       <SortablePane
         isSortable={false}
-        style={{ border: "1px solid green" }}
         direction="horizontal"
         margin={10}
         order={state.order}

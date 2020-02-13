@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -12,6 +12,7 @@ import Collapse from "@material-ui/core/Collapse";
 import DetailsIcon from "@material-ui/icons/Details";
 import FolderIcon from "@material-ui/icons/Folder";
 import ContactMailIcon from "@material-ui/icons/ContactMail";
+import { Scale } from "react-scaling";
 
 import AfficherDossierCtn from "../../../redux/containers/AfficherDossierCtn";
 import DetailDossier from "../../../redux/containers/DetailDossierCtn";
@@ -41,6 +42,13 @@ const AffiCherDossier = ({
 }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [state, setState] = React.useState({ width: 0 });
+
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      setState({ ...state, width: "scale(" + window.innerWidth / 1922 + ")" });
+    });
+  }, []);
 
   const handleClose = () => setOpen(false);
 

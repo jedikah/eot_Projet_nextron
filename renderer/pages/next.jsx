@@ -1,5 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, createRef } from "react";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
+import { Link } from "../components";
+import { Scale } from "react-scaling";
 
 import * as DB from "../models";
 import { ROUTE_MENU } from "../redux/reducers/menu";
@@ -10,7 +12,8 @@ import ToolBar from "../components/ToolBar";
 import RemoteWindow from "../components/RemoteWindow";
 import NewWork from "../components/MainComponent/NewWorkComponent/NewWork";
 import ElaborationTravaux from "../components/MainComponent/ElaborationTravaux";
-import Planning from "../redux/containers/PlanningCtn";
+import PlanningPan from "../components/MainComponent/Planning";
+import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -22,7 +25,6 @@ const useStyles = makeStyles(theme =>
       right: 0
     },
     main: {
-      border: "1px solid green",
       flexDirection: "row",
       justifyContent: "center",
       alignItems: "flex-start"
@@ -36,14 +38,28 @@ const useStyles = makeStyles(theme =>
     contenue: {
       width: "100%",
       height: "100%",
-      display: "flex",
-      border: "2px solid yellow"
+      display: "flex"
     }
   })
 );
 
 const Next = ({ actions, routeMenu }) => {
   const classes = useStyles({});
+  const [state, setState] = useState({
+    width: 800
+  });
+  useEffect(() => {
+    setState({
+      ...state,
+      width: window.innerWidth
+    });
+    window.addEventListener("resize", () => {
+      setState({
+        ...state,
+        width: window.innerWidth
+      });
+    });
+  }, []);
   useEffect(() => {
     let path = DB.homeDir("ECM");
     path += "EMC.sqlite";
@@ -59,6 +75,7 @@ const Next = ({ actions, routeMenu }) => {
     );
     DB.selectPV(db, rows => actions.initPv({ pvs: rows }));
   }, []);
+
   return (
     <div className={classes.root}>
       <Container
@@ -75,12 +92,14 @@ const Next = ({ actions, routeMenu }) => {
           <SideNavPage />
           <div className={classes.innerMain}>
             <div>
-              <ToolBar />
+              <ToolBar>
+                <Link href="/home">Se déconnecter</Link>
+              </ToolBar>
             </div>
             <div className={classes.contenue}>
               {routeMenu === ROUTE_MENU.NEWDOC && <NewWork />}
               {routeMenu === ROUTE_MENU.ELABORATION && <ElaborationTravaux />}
-              {routeMenu === ROUTE_MENU.PLANING && <Planning />}
+              {routeMenu === ROUTE_MENU.PLANING && <PlanningPan />}
             </div>
           </div>
         </Container>

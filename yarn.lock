@@ -7807,6 +7807,13 @@ react-rnd@^10.1.5:
     react-draggable "4.2.0"
     tslib "1.10.0"
 
+react-scaling@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/react-scaling/-/react-scaling-1.0.8.tgz#8f0b14b62002cb2981fa0d003b62fc502db7f82c"
+  integrity sha512-nr4OyZ05jYj8G8j8S+acN+axxHYN9vcIElMl2w/3hd+b8EtacOdFWf5I60dlQyC8gA3FxeMKCJbpzxr4zDMM2A==
+  dependencies:
+    react "^16.8.2"
+
 react-sidenav@^4.0.6:
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/react-sidenav/-/react-sidenav-4.0.6.tgz#4ecb2d815b81176be2ea41d1c30039bf915ebf86"
@@ -7874,7 +7881,7 @@ react-window@^1.8.5:
     "@babel/runtime" "^7.0.0"
     memoize-one ">=3.1.1 <6"
 
-react@^16.12.0:
+react@^16.12.0, react@^16.8.2:
   version "16.12.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.12.0.tgz#0c0a9c6a142429e3614834d5a778e18aa78a0b83"
   integrity sha512-fglqy3k5E+81pA8s+7K0/T3DBCF0ZDOher1elBFzF7O6arXJgzyu/FW+COxFvAWXJoJN9KIZbT2LXlukwphYTA==
