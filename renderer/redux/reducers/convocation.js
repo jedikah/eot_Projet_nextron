@@ -24,6 +24,14 @@ const convocation = (state = initstate, action) => {
       newState.convocations = [...convocations];
       return newState;
 
+    case types.UPDATE_CONVOCATION:
+      const indexConvocation = convocations.findIndex(item => {
+        return item.NumRegistre === payload.lastNumRegistre;
+      });
+      convocations[indexConvocation] = payload.updateConvocation;
+      newState.convocations = [...convocations];
+      return newState;
+
     default:
       return state;
   }

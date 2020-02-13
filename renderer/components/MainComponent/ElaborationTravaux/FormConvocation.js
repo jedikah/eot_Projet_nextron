@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -24,7 +24,7 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const FormConvocation = ({ IdTrav, client, actions }) => {
+const FormConvocation = ({ IdTrav, selectedConvocation, client, actions }) => {
   const classes = useStyles();
 
   let path = DB.homeDir("ECM");
@@ -52,6 +52,38 @@ const FormConvocation = ({ IdTrav, client, actions }) => {
     setState({ ...state, formConv: { ...formConv, [names]: e.target.value } });
   };
 
+  useEffect(() => {
+    if (selectedConvocation)
+      setState({
+        ...state,
+        formConv: {
+          ...state.formConv,
+          NumRegistre: selectedConvocation.NumRegistre,
+          IdTrav: selectedConvocation.IdTrav,
+          NumPv: selectedConvocation.NumPv,
+          NomPersConv: selectedConvocation.NomPersConv,
+          DateConv: moment(selectedConvocation.DateConv, DATE_FORMAT),
+          VilleConv: selectedConvocation.VilleConv,
+          HeureConv: moment(selectedConvocation.HeureConv, "LT"),
+          NumReq: selectedConvocation.NumReq
+        }
+      });
+    else
+      setState({
+        ...state,
+        formConv: {
+          NumRegistre: "",
+          IdTrav: IdTrav,
+          NumPv: "",
+          NomPersConv: "",
+          DateConv: moment(),
+          VilleConv: "",
+          HeureConv: moment(),
+          NumReq: ""
+        }
+      });
+  }, [selectedConvocation]);
+
   const handleClick = e => {
     e.preventDefault();
 
@@ -70,6 +102,35 @@ const FormConvocation = ({ IdTrav, client, actions }) => {
         ],
         newConvocation => {
           actions.addConvocations({ newConvocation });
+        }
+      );
+    } else {
+      setOpenAlert(true);
+    }
+  };
+
+  const handleClickUpDate = e => {
+    e.preventDefault();
+    console.log("okok");
+    if (selectedConvocation) {
+      setOpenSuccess(true);
+      DB.upDateConvocation(
+        db,
+        [
+          state.formConv.NumRegistre,
+          selectedConvocation.IdTrav,
+          selectedConvocation.NumPv,
+          state.formConv.NomPersConv,
+          state.formConv.DateConv.format(DATE_FORMAT),
+          state.formConv.VilleConv,
+          state.formConv.HeureConv.format("LT"),
+          selectedConvocation.IdTrav,
+          selectedConvocation.NumRegistre
+        ],
+        (updateConvocation, lastNumRegistre) => {
+          actions.updateConvocation({ updateConvocation, lastNumRegistre });
+          const selected = state.formConv;
+          actions.setSelectedConvocations({ selectedConvocation: selected });
         }
       );
     } else {
@@ -99,7 +160,7 @@ const FormConvocation = ({ IdTrav, client, actions }) => {
 
   return (
     <React.Fragment>
-      <form onSubmit={handleClick}>
+      <form>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <TextField
@@ -109,6 +170,7 @@ const FormConvocation = ({ IdTrav, client, actions }) => {
               label="Numero de registre: "
               fullWidth
               autoComplete="numRegistre"
+              value={state.formConv.NumRegistre}
               onChange={handleChange("NumRegistre")}
               variant="outlined"
             />
@@ -121,6 +183,7 @@ const FormConvocation = ({ IdTrav, client, actions }) => {
               label="Nom de la personne à convoquer"
               fullWidth
               autoComplete="nomPersConv"
+              value={state.formConv.NomPersConv}
               onChange={handleChange("NomPersConv")}
               variant="outlined"
             />
@@ -148,6 +211,7 @@ const FormConvocation = ({ IdTrav, client, actions }) => {
               label="Convoqué (e) à: (ville)"
               fullWidth
               autoComplete="villeConv"
+              value={state.formConv.VilleConv}
               variant="outlined"
               onChange={handleChange("VilleConv")}
             />
@@ -169,9 +233,28 @@ const FormConvocation = ({ IdTrav, client, actions }) => {
         </Grid>
         <Grid container spacing={3}>
           <Grid item xs={4}>
-            <Button type="submit" fullWidth variant="contained" color="primary">
-              Enregistrer
-            </Button>
+            {!selectedConvocation && (
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                onClick={handleClick}
+              >
+                Ajouter une Convocation
+              </Button>
+            )}
+            {selectedConvocation && (
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                onClick={handleClickUpDate}
+              >
+                Modifier la convocation
+              </Button>
+            )}
           </Grid>
         </Grid>
       </form>

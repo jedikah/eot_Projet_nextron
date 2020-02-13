@@ -11,7 +11,8 @@ const mapStateToProps = state => {
     : null;
   return {
     IdTrav,
-    client: getTravauClient(state)
+    client: getTravauClient(state),
+    selectedConvocation: state.convocation.selectedConvocation
   };
 };
 
