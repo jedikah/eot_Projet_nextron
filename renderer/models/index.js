@@ -5,6 +5,8 @@ export * from "./travau";
 export * from "./personne";
 export * from "./convocation";
 export * from "./PV";
+export * from "./facture";
+export * from "./setting";
 
 const fs = require("fs");
 
@@ -104,7 +106,7 @@ const convocation = db => {
 const facture = db => {
   let sql = "CREATE TABLE facture (";
   sql += "IdFact   INTEGER   NOT NULL,";
-  sql += "IdClient INTEGER   NOT NULL,";
+  sql += "IdCli INTEGER   NOT NULL,";
   sql += "DateFact TEXT (10) NOT NULL,";
   sql += "PRIMARY KEY (";
   sql += "IdFact ASC";
@@ -185,6 +187,10 @@ const setting = db => {
   sql += "NumSetting ASC";
   sql += "));";
   db.run(sql);
+
+  sql = "INSERT INTO setting (";
+  sql += "NULL, 1, ?, ?)";
+  db.run(sql, [FirstRun, 1]);
 };
 
 const travau = db => {

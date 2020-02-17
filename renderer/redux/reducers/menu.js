@@ -3,7 +3,9 @@ import * as types from "../constants/menuActionTypes";
 export const ROUTE_MENU = {
   NEWDOC: "NEWDOC",
   ELABORATION: "ELABORATION",
-  PLANING: "PLANING"
+  PLANING: "PLANING",
+  FACTURE: "FACTURE",
+  SETTING: "SETTING"
 };
 
 const initialState = {

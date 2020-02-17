@@ -1,14 +1,7 @@
 import * as types from "../constants/userActionTypes";
 
 const initState = {
-  users: [
-    {
-      id: 1,
-      idpers: 1,
-      name: "admin",
-      passWd: "admin"
-    }
-  ]
+  users: []
 };
 
 const user = (state = initState, action) => {

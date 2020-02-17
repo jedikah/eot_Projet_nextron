@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import ParticleField from "react-particles-webgl";
+import { Scale } from "react-scaling";
 
 import HomeCtn from "../redux/containers/HomeCtn";
 import Container from "../components/layouts/Container";
@@ -10,6 +11,7 @@ import animConfig from "../components/animConfig";
 import * as DB from "../models";
 
 const config = animConfig;
+//const a = window;
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -25,7 +27,7 @@ const useStyles = makeStyles(theme =>
   })
 );
 
-const Home = ({ actions }) => {
+const Home = ({ actions, users }) => {
   const classes = useStyles({});
   useEffect(() => {
     let path = DB.homeDir("ECM");
@@ -33,13 +35,13 @@ const Home = ({ actions }) => {
     const db = DB.connect(path);
     DB.selectUsers(db, rows => actions.initUser({ users: rows }));
   }, []);
-
+  console.log(users[0]);
   return (
     <div className={classes.root}>
       <RemoteWindow bg="#272727">AUTHENTIFICATION</RemoteWindow>
       <Container justify="center">
         <ParticleField config={config} />
-        <SignIn></SignIn>
+        {users[0] && <SignIn></SignIn>}
       </Container>
     </div>
   );

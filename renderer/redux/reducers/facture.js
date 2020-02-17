@@ -1,20 +1,8 @@
 import * as types from "../constants/factureActionTypes";
 
-const SIMULATION = {
-  factures: [
-    {
-      idFact: "00001",
-      dateFact: "jj-mm-aaaa"
-    },
-    {
-      idFact: "00002",
-      dateFact: "jj-mm-aaaa"
-    }
-  ]
-};
-
 const initState = {
-  factures: [...SIMULATION.factures]
+  factures: [],
+  selectedFacture: null
 };
 
 const facture = (state = initState, action) => {
@@ -26,6 +14,14 @@ const facture = (state = initState, action) => {
     case types.ADD_FACTURE:
       factures.push(payload.newFacture);
       newState.factures = [...factures];
+      return newState;
+
+    case types.INIT_FACTURE:
+      newState.factures = payload.factures;
+      return newState;
+
+    case types.SET_SELECTED_FACTURE:
+      newState.selectedFacture = payload.selectedFacture;
       return newState;
 
     default:

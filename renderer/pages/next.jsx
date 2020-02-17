@@ -1,6 +1,13 @@
 import React, { useEffect, useState, createRef } from "react";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
+import { makeStyles, createStyles, withStyles } from "@material-ui/core/styles";
 import { Link } from "../components";
+import { Button } from "@material-ui/core";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Typography from "@material-ui/core/Typography";
+import orange from "@material-ui/core/colors/orange";
 import { Scale } from "react-scaling";
 
 import * as DB from "../models";
@@ -13,7 +20,9 @@ import RemoteWindow from "../components/RemoteWindow";
 import NewWork from "../components/MainComponent/NewWorkComponent/NewWork";
 import ElaborationTravaux from "../components/MainComponent/ElaborationTravaux";
 import PlanningPan from "../components/MainComponent/Planning";
-import { Button } from "@material-ui/core";
+import Facture from "../components/MainComponent/Facture";
+import SettingCtn from "../redux/containers/SettingCtn";
+import Setting from "../components/MainComponent/setting";
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -42,12 +51,54 @@ const useStyles = makeStyles(theme =>
     }
   })
 );
+const styles = theme => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+    color: orange[500],
+    height: "35px",
+    padding: 0,
+    marginLeft: "10px"
+  },
+  closeButton: {
+    padding: 0,
+    position: "absolute",
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: orange[500]
+  }
+});
+const DialogTitles = withStyles(styles)(props => {
+  const { children, classes, onClose, ...other } = props;
+  return (
+    <DialogTitle disableTypography className={classes.root} {...other}>
+      <Typography variant="h6">{children}</Typography>
+      {onClose ? (
+        <IconButton
+          aria-label="close"
+          className={classes.closeButton}
+          onClick={onClose}
+        >
+          <CloseIcon />
+        </IconButton>
+      ) : null}
+    </DialogTitle>
+  );
+});
 
-const Next = ({ actions, routeMenu }) => {
+const Next = ({ actions, routeMenu, users, settings }) => {
   const classes = useStyles({});
+
   const [state, setState] = useState({
     width: 800
   });
+  const [fullWidth, setFullWidth] = React.useState(true);
+  const [maxWidth, setMaxWidth] = React.useState("md");
+  const [open, setOpen] = React.useState(true);
+
+  let path = DB.homeDir("ECM");
+  path += "EMC.sqlite";
+  const db = DB.connect(path);
   useEffect(() => {
     setState({
       ...state,
@@ -61,9 +112,14 @@ const Next = ({ actions, routeMenu }) => {
     });
   }, []);
   useEffect(() => {
-    let path = DB.homeDir("ECM");
-    path += "EMC.sqlite";
-    const db = DB.connect(path);
+    if (users[0]) {
+      console.log(users[0]);
+      DB.selectSettings(db, users[0].IdUser, rows =>
+        actions.initSetting({ settings: rows })
+      );
+    }
+  }, [users[0]]);
+  useEffect(() => {
     DB.selectUsers(db, rows => actions.initUser({ users: rows }));
     DB.selectClients(db, rows => actions.initClient({ clients: rows }));
     DB.selectTravaux(db, rows => actions.initTravau({ travaux: rows }));
@@ -74,6 +130,7 @@ const Next = ({ actions, routeMenu }) => {
       actions.initConvocation({ convocations: rows })
     );
     DB.selectPV(db, rows => actions.initPv({ pvs: rows }));
+    DB.selectFacture(db, rows => actions.initFacture({ factures: rows }));
   }, []);
 
   return (
@@ -93,13 +150,42 @@ const Next = ({ actions, routeMenu }) => {
           <div className={classes.innerMain}>
             <div>
               <ToolBar>
-                <Link href="/home">Se déconnecter</Link>
+                <Button>PARAMETTRE</Button>
+                <Button>
+                  <Link href="/home">Se déconnecter</Link>
+                </Button>
               </ToolBar>
             </div>
             <div className={classes.contenue}>
               {routeMenu === ROUTE_MENU.NEWDOC && <NewWork />}
               {routeMenu === ROUTE_MENU.ELABORATION && <ElaborationTravaux />}
               {routeMenu === ROUTE_MENU.PLANING && <PlanningPan />}
+              {routeMenu == ROUTE_MENU.FACTURE && <Facture />}
+              {routeMenu == ROUTE_MENU.SETTING && <Setting />}
+              {settings && (
+                <Dialog
+                  fullWidth={fullWidth}
+                  maxWidth={maxWidth}
+                  aria-labelledby="customized-dialog-title"
+                  open={open}
+                >
+                  <DialogTitles id="customized-dialog-title">
+                    PARAMETTRE
+                  </DialogTitles>
+                  <DialogContent dividers>
+                    <SettingCtn />
+                  </DialogContent>
+                  <DialogActions>
+                    <Button
+                      autoFocus
+                      onClick={() => setOpen(false)}
+                      style={{ color: orange[500] }}
+                    >
+                      Fermer
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              )}
             </div>
           </div>
         </Container>

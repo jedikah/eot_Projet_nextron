@@ -46,7 +46,7 @@ export default function FormNewDoc(props) {
     currentIdCli: "",
     formInput: {
       //table client
-      Nom: "joe",
+      Nom: "",
       Contact: "",
       Domicile: "",
       //table travaux
@@ -77,9 +77,9 @@ export default function FormNewDoc(props) {
   const handleChange = (names, val) => e => {
     let name = names;
     if (names === "letter") setState({ ...state, [names]: e.target.checked });
-    else if ((names = "changeCombobox" && val)) {
+    else if (names === "changeCombobox") {
       let nom = val;
-      let currentIdCli = filterClientIdByName(val);
+      let currentIdCli = filterClientIdByName(nom);
       let f = state.formInput;
       setState({
         ...state,
@@ -355,6 +355,7 @@ export default function FormNewDoc(props) {
         <Grid container spacing={3}>
           <Grid item xs={6} sm={6} md={4} lg={4}>
             <ComboBox
+              val={state.formInput.Nom}
               list={props.clients}
               onInputChange={(e, v) => handleChange("changeCombobox", v)(e)}
             />

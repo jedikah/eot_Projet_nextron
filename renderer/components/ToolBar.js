@@ -17,7 +17,11 @@ export default function ToolBar(props) {
           style={{
             marginLeft: "20px",
             width: "100%",
-            height: "50px"
+            height: "50px",
+            textAlign: "right",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "flex-end"
           }}
         >
           {props.children}

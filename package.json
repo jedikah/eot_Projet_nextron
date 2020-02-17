@@ -42,6 +42,7 @@
     "next-redux-wrapper": "^4.0.1",
     "node-pre-gyp": "^0.14.0",
     "os-homedir": "^2.0.0",
+    "react-auto-scale": "^1.0.4",
     "react-axiom": "^0.5.2",
     "react-bootstrap": "^1.0.0-beta.16",
     "react-bootstrap-sidebar": "^0.0.1",

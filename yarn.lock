@@ -3558,6 +3558,11 @@ electron@^7.1.9:
     "@types/node" "^12.0.12"
     extract-zip "^1.0.3"
 
+element-resize-event@^2.0.5:
+  version "2.0.9"
+  resolved "https://registry.yarnpkg.com/element-resize-event/-/element-resize-event-2.0.9.tgz#2f5e1581a296eb5275210c141bc56342e218f876"
+  integrity sha1-L14VgaKW61J1IQwUG8VjQuIY+HY=
+
 elliptic@^6.0.0:
   version "6.5.2"
   resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.5.2.tgz#05c5678d7173c049d8ca433552224a495d0e3762"
@@ -7523,6 +7528,14 @@ re-resizable@6.1.1:
   integrity sha512-ngzX5xbXi9LlIghJUYZaBDkJUIMLYqO3tQ2cJZoNprCRGhfHnbyufKm51MZRIOBlLigLzPPFKBxQE8ZLezKGfA==
   dependencies:
     fast-memoize "^2.5.1"
+
+react-auto-scale@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/react-auto-scale/-/react-auto-scale-1.0.4.tgz#fcb5936c7fa38486b2e2812d1ebe739652b5216f"
+  integrity sha1-/LWTbH+jhIay4oEtHr5zllK1IW8=
+  dependencies:
+    element-resize-event "^2.0.5"
+    prop-types "^15.6.0"
 
 react-axiom@^0.5.2:
   version "0.5.2"

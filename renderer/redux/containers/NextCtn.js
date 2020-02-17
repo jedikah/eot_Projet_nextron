@@ -7,6 +7,8 @@ import * as travauActions from "../actions/travauActions";
 import * as lettreChargeActions from "../actions/lettreChargeActions";
 import * as convocationActions from "../actions/convocationActions";
 import * as pvActions from "../actions/pvActions";
+import * as factureActions from "../actions/factureActions";
+import * as settingActions from "../actions/settingActions";
 
 const actions = {
   ...userActions,
@@ -14,11 +16,15 @@ const actions = {
   ...travauActions,
   ...lettreChargeActions,
   ...convocationActions,
-  ...pvActions
+  ...pvActions,
+  ...factureActions,
+  ...settingActions
 };
 
 const mapStateToProps = state => ({
-  routeMenu: state.menu.routeMenu
+  routeMenu: state.menu.routeMenu,
+  users: state.user.users,
+  settings: state.setting.settings
 });
 
 const mapDispatchToProps = dispatch => ({

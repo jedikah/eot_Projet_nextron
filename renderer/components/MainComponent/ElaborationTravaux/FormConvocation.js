@@ -111,7 +111,6 @@ const FormConvocation = ({ IdTrav, selectedConvocation, client, actions }) => {
 
   const handleClickUpDate = e => {
     e.preventDefault();
-    console.log("okok");
     if (selectedConvocation) {
       setOpenSuccess(true);
       DB.upDateConvocation(

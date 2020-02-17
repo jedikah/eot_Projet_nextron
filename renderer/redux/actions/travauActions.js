@@ -19,3 +19,8 @@ export const updateTravau = payload => ({
   type: types.UPDATE_TRAVAU,
   payload
 });
+
+export const updateTravauFact = payload => ({
+  type: types.UPDATE_TRAVAU_FACT,
+  payload
+});

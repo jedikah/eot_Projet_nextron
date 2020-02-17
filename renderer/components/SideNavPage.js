@@ -8,6 +8,8 @@ import AddToQueueIcon from "@material-ui/icons/AddToQueue";
 import TodayIcon from "@material-ui/icons/Today";
 import WorkOutlineIcon from "@material-ui/icons/WorkOutline";
 import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
+import ReceiptIcon from "@material-ui/icons/Receipt";
+import SettingsIcon from "@material-ui/icons/Settings";
 
 import { ROUTE_MENU } from "../redux/reducers/menu";
 import { yellow } from "@material-ui/core/colors";
@@ -160,6 +162,40 @@ const SideNavPage = ({ actions }) => {
           </ListItemIcon>
           <ListItemText
             primary={"Planning"}
+            className={state.hoverMenu ? classes.text1 : classes.text2}
+            style={{ zIndex: 8 }}
+          />
+        </ListItem>
+      </List>
+      <Divider />
+      <List className={classes.list1}>
+        <ListItem
+          button
+          style={{ padding: 0 }}
+          onClick={handleChangeMenu(ROUTE_MENU.FACTURE)}
+        >
+          <ListItemIcon className={classes.ListItemIcon}>
+            <ReceiptIcon />
+          </ListItemIcon>
+          <ListItemText
+            primary={"Facture"}
+            className={state.hoverMenu ? classes.text1 : classes.text2}
+            style={{ zIndex: 8 }}
+          />
+        </ListItem>
+      </List>
+      <Divider />
+      <List className={classes.list1}>
+        <ListItem
+          button
+          style={{ padding: 0 }}
+          onClick={handleChangeMenu(ROUTE_MENU.SETTING)}
+        >
+          <ListItemIcon className={classes.ListItemIcon}>
+            <SettingsIcon />
+          </ListItemIcon>
+          <ListItemText
+            primary={"Paramettre"}
             className={state.hoverMenu ? classes.text1 : classes.text2}
             style={{ zIndex: 8 }}
           />

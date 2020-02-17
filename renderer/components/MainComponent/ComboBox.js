@@ -17,6 +17,7 @@ export default function ComboBox(props) {
         <TextField
           {...params}
           required
+          value={props.val}
           label="Nom client"
           variant="outlined"
           fullWidth
