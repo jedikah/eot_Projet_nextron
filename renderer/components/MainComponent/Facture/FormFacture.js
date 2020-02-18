@@ -19,7 +19,8 @@ const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
       DateFact: moment(),
       currentIdCli: null,
       travaux: [],
-      NomCli: ""
+      NomCli: "",
+      oldTravaux: []
     }
   });
 
@@ -36,7 +37,10 @@ const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
           ),
           NomCli: clients.filter(
             item => item.IdCli === selectedFacture.IdCli
-          )[0].Nom
+          )[0].Nom,
+          oldTravaux: travaux.filter(
+            item => item.IdFact === selectedFacture.IdFact
+          )
         }
       });
     } else {
@@ -88,6 +92,7 @@ const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
       });
     }
   };
+
   const handleSave = e => {
     e.preventDefault();
     let f = state.formInput;
@@ -119,8 +124,74 @@ const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
     }
   };
 
+  const findDeletedTravau = (first, second) => {
+    let array1, array2;
+    if (first.length <= second.length) {
+      array1 = second;
+      array2 = first;
+    } else {
+      array1 = first;
+      array2 = second;
+    }
+    const save = array1;
+    for (let i = 0; i < array2.length; i++) {
+      array1 = array1.filter(item => item !== array2[i]);
+    }
+
+    for (let i = 0; i < save.length; i++) {
+      array2 = array2.filter(item => item !== save[i]);
+    }
+    array2.forEach(item => array1.push(item));
+    return array1;
+  };
+  const match = () => {
+    let newTrav = [],
+      oldTrav = [];
+    state.formInput.oldTravaux.forEach(item => oldTrav.push(item.IdTrav));
+    state.formInput.travaux.forEach(item => newTrav.push(item.IdTrav));
+    return findDeletedTravau(newTrav, oldTrav);
+  };
+
   const handleEdit = e => {
-    e.preventDefault;
+    e.preventDefault();
+    let newTrav = [],
+      oldTrav = [],
+      val = [];
+    state.formInput.oldTravaux.forEach(item => oldTrav.push(item.IdTrav));
+    state.formInput.travaux.forEach(item => newTrav.push(item.IdTrav));
+    val = findDeletedTravau(newTrav, oldTrav);
+    console.log({ val });
+    val.forEach(IdTrav => {
+      DB.checkFacture(db, IdTrav, id => {
+        if (id === "") {
+          DB.updateFactureTrav(db, [selectedFacture.IdFact, IdTrav]);
+          actions.updateTravauFact({
+            IdFact: selectedFacture.IdFact,
+            IdTrav: IdTrav
+          });
+        } else {
+          DB.updateFactureTrav(db, ["", IdTrav]);
+          actions.updateTravauFact({ IdFact: "", IdTrav: IdTrav });
+        }
+        setState({
+          ...state,
+          formInput: {
+            ...state.formInput,
+            DateFact: moment(selectedFacture.DateFact, DATE_FORMAT),
+            currentIdCli: selectedFacture.IdCli,
+            travaux: travaux.filter(
+              item => item.IdFact === selectedFacture.IdFact
+            ),
+            NomCli: clients.filter(
+              item => item.IdCli === selectedFacture.IdCli
+            )[0].Nom,
+            oldTravaux: travaux.filter(
+              item => item.IdFact === selectedFacture.IdFact
+            )
+          }
+        });
+      });
+    });
   };
 
   const filterClientIdByName = name => {
@@ -209,6 +280,7 @@ const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
             )}
             {selectedFacture && (
               <Button
+                disabled={!match()[0]}
                 type="submit"
                 onClick={handleEdit}
                 fullWidth

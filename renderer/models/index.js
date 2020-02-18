@@ -10,13 +10,6 @@ export * from "./setting";
 
 const fs = require("fs");
 
-export const testPath = path => {
-  fs.exists(path, exists => {
-    console.log("file exists ? " + exists);
-    //if(exist) fs.mkdir()
-  });
-};
-
 export const homeDir = dir => {
   const osHomedir = require("os-homedir");
   let homeDir = "";
@@ -177,7 +170,7 @@ const PV = db => {
 const setting = db => {
   let sql = "CREATE TABLE setting (";
   sql += "NumSetting  INTEGER   NOT NULL,";
-  sql += "IdUser      TEXT (15) NOT NULL,";
+  sql += "IdUser      INTEGER NOT NULL,";
   sql += "NameSetting TEXT (15) NOT NULL,";
   sql += "Value       TEXT,";
   sql += "PRIMARY KEY (";
@@ -190,7 +183,10 @@ const setting = db => {
 
   sql = "INSERT INTO setting (";
   sql += "NULL, 1, ?, ?)";
-  db.run(sql, [FirstRun, 1]);
+  db.run(sql, ["FirstRun", 1]);
+  sql = "INSERT INTO setting (";
+  sql += "NULL, 1, 'Path', 'D:/FONCIER_E.O.T/')";
+  db.run(sql);
 };
 
 const travau = db => {

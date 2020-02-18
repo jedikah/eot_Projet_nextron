@@ -1,1 +1,2 @@
-export const INIT_USER = "init_user";
+export const INIT_USER = "INIT_USER";
+export const UPDATE_USER = "UPDATE_USER";

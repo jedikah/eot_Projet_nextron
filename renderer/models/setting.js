@@ -11,3 +11,10 @@ export const selectSettings = (db, params, cb) => {
     cb(rows);
   });
 };
+
+export const updateSetting = (db, params) => {
+  let sql = "UPDATE setting SET ";
+  sql += "Value = ? ";
+  sql += "WHERE IdUser = ? AND NameSetting = ?";
+  db.run(sql, params);
+};

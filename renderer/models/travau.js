@@ -71,3 +71,18 @@ export const updateTravaux = (db, params, cb) => {
     cb(updateTrav);
   });
 };
+
+export const checkFacture = (db, params, cb) => {
+  let sql =
+    "SELECT travau.IdTrav AS IdTrav, travau.IdFact AS IdFact FROM travau WHERE IdTrav = ?";
+  db.all(sql, params, (err, rows) => {
+    cb(rows[0].IdFact);
+  });
+};
+
+export const updateFactureTrav = (db, params) => {
+  let sql = "UPDATE travau SET ";
+  sql += "IdFact = ? WHERE IdTrav = ?";
+
+  db.run(sql, params);
+};

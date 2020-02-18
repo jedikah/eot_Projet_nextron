@@ -7,16 +7,58 @@ import ListItemText from "@material-ui/core/ListItemText";
 
 import * as DB from "../../../models";
 
-const Setting = () => {
+const Setting = ({ users, settings, actions }) => {
+  let path = DB.homeDir("ECM");
+  path += "EMC.sqlite";
+  const db = DB.connect(path);
+  const currentSettings = () => {
+    return settings.filter(item => item.IdUser === users[0].IdUser);
+  };
+
+  const this_setting = nameSetting => {
+    return currentSettings().filter(
+      item => item.NameSetting === nameSetting
+    )[0];
+  };
+
   const [state, setState] = React.useState({
     formInput: {
-      User: "",
-      PassWord: ""
+      Nom: users[0].Nom,
+      PassWord: users[0].PassWord,
+      Path: this_setting("Path").Value
     }
   });
-  const handleChange = val => {};
 
-  const handleEdit = () => {};
+  const handleChange = name => e => {
+    setState({
+      ...state,
+      formInput: {
+        ...state.formInput,
+        [name]: e.target.value
+      }
+    });
+  };
+
+  const handleEdit = e => {
+    e.preventDefault();
+    DB.updateUser(db, [
+      state.formInput.PassWord,
+      users[0].IdUser,
+      state.formInput.Nom,
+      users[0].IdPersonne
+    ]);
+    DB.updateSetting(db, [state.formInput.Path, users[0].IdUser, "Path"]);
+    actions.updateUser({
+      IdUser: users[0].IdUser,
+      PassWord: state.formInput.PassWord,
+      Nom: state.formInput.Nom
+    });
+    actions.updateSetting({
+      Value: state.formInput.Path,
+      IdUser: users[0].IdUser,
+      NameSetting: "Path"
+    });
+  };
 
   return (
     <div
@@ -44,9 +86,9 @@ const Setting = () => {
               name="Nom"
               label="Nom"
               fullWidth
-              value={state.formInput.User}
+              value={state.formInput.Nom}
               autoComplete="Nom"
-              onChange={handleChange("User")}
+              onChange={handleChange("Nom")}
               variant="filled"
             />
           </Grid>
@@ -65,6 +107,18 @@ const Setting = () => {
           <Typography align={"center"} color="primary" variant="subtitle1">
             Dossier
           </Typography>
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <TextField
+              id="path"
+              name="path"
+              label="Emplacement des dossier de travaux"
+              fullWidth
+              value={state.formInput.Path}
+              autoComplete="path"
+              onChange={handleChange("Path")}
+              variant="filled"
+            />
+          </Grid>
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <Button
               type="submit"

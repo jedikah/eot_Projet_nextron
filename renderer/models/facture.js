@@ -25,3 +25,12 @@ export const selectFacture = (db, cb) => {
     cb(rows);
   });
 };
+
+export const updateFacture = (db, params) => {
+  let sql = "UPDATE facture SET ";
+  sql += "DateFact = ? WHERE IdFact = ?";
+  db.run(sql, [params[0], params[1]]);
+
+  sql = "UPDATE travau SET ";
+  sql += "IdFact = ? WHERE IdTrav = ?";
+};

@@ -113,7 +113,6 @@ const Next = ({ actions, routeMenu, users, settings }) => {
   }, []);
   useEffect(() => {
     if (users[0]) {
-      console.log(users[0]);
       DB.selectSettings(db, users[0].IdUser, rows =>
         actions.initSetting({ settings: rows })
       );
@@ -133,6 +132,16 @@ const Next = ({ actions, routeMenu, users, settings }) => {
     DB.selectFacture(db, rows => actions.initFacture({ factures: rows }));
   }, []);
 
+  const handleClose = e => {
+    e.preventDefault();
+    DB.updateSetting(db, [0, users[0].IdUser, "FirstRun"]);
+    actions.updateSetting({
+      Value: 0,
+      IdUser: users[0].IdUser,
+      NameSetting: "FirstRun"
+    });
+    setOpen(false);
+  };
   return (
     <div className={classes.root}>
       <Container
@@ -162,30 +171,37 @@ const Next = ({ actions, routeMenu, users, settings }) => {
               {routeMenu === ROUTE_MENU.PLANING && <PlanningPan />}
               {routeMenu == ROUTE_MENU.FACTURE && <Facture />}
               {routeMenu == ROUTE_MENU.SETTING && <Setting />}
-              {settings && (
-                <Dialog
-                  fullWidth={fullWidth}
-                  maxWidth={maxWidth}
-                  aria-labelledby="customized-dialog-title"
-                  open={open}
-                >
-                  <DialogTitles id="customized-dialog-title">
-                    PARAMETTRE
-                  </DialogTitles>
-                  <DialogContent dividers>
-                    <SettingCtn />
-                  </DialogContent>
-                  <DialogActions>
-                    <Button
-                      autoFocus
-                      onClick={() => setOpen(false)}
-                      style={{ color: orange[500] }}
-                    >
-                      Fermer
-                    </Button>
-                  </DialogActions>
-                </Dialog>
-              )}
+              {users[0] &&
+                settings[0] &&
+                settings.filter(
+                  item =>
+                    item.IdUser === users[0].IdUser &&
+                    item.NameSetting === "FirstRun"
+                )[0].Value === "1" && (
+                  <Dialog
+                    fullWidth={fullWidth}
+                    maxWidth={maxWidth}
+                    aria-labelledby="customized-dialog-title"
+                    open={open}
+                  >
+                    <DialogTitles id="customized-dialog-title">
+                      PARAMETTRE
+                    </DialogTitles>
+                    <DialogContent dividers>
+                      <SettingCtn />
+                    </DialogContent>
+                    <DialogActions>
+                      <Button
+                        autoFocus
+                        onClick={handleClose}
+                        style={{ color: orange[500] }}
+                      >
+                        Fermer
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                )}
+              }
             </div>
           </div>
         </Container>

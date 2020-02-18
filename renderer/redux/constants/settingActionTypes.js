@@ -1,1 +1,2 @@
 export const INIT_SETTING = "INIT_SETTING";
+export const UPDATE_SETTING = "UPDATE_SETTING";
