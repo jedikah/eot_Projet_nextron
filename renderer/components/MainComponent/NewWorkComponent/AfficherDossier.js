@@ -102,12 +102,13 @@ const AffiCherDossier = ({
     },
     currentIdCli: "",
     match: false,
-    travaux: []
+    travaux: travaux
   });
+  const [width, setWidth] = React.useState(0);
 
   useEffect(() => {
     window.addEventListener("resize", () => {
-      setState({ ...state, width: "scale(" + window.innerWidth / 1922 + ")" });
+      setWidth(window.innerWidth / 1922);
     });
   }, []);
 
@@ -171,17 +172,13 @@ const AffiCherDossier = ({
   useEffect(() => {
     if (travaux[0]) setState({ ...state, travaux: travaux });
   }, [travaux[0]]);
-  useEffect(() => {
-    if (travauxBySearchName[0])
-      setState({ ...state, travaux: travauxBySearchName });
-  }, [travauxBySearchName[0]]);
-  console.log(state.currentIdCli);
 
   const handleSearch = () => {
     if (state.currentIdCli !== "") {
-      DB.selectTravauBySearchName(db, state.currentIdCli, travaux =>
-        actions.setSelectTravauBySearchName({ travaux })
-      );
+      DB.selectTravauBySearchName(db, state.currentIdCli, travaux => {
+        actions.setSelectTravauBySearchName({ travaux });
+        setState({ ...state, travaux: travaux });
+      });
     }
   };
 
@@ -191,14 +188,10 @@ const AffiCherDossier = ({
       style={{ display: "flex", flexDirection: "column" }}
     >
       <Grid item xs={10} className={classes.search}>
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<SearchIcon />}
-          onClick={handleSearch}
-        ></Button>
+        <Button variant="contained" color="primary" onClick={handleSearch}>
+          <SearchIcon />
+        </Button>
         <ComboBox
-          readonly={true}
           style={{ width: "80%" }}
           val={state.formInput.Nom}
           list={clients}

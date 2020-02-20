@@ -53,7 +53,6 @@ export default function ComboBox(props) {
         renderInput={params => (
           <TextField
             {...params}
-            readonly={props.readonly || false}
             required
             value={props.val}
             label="Nom client"
