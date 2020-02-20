@@ -33,6 +33,7 @@ const FormConvocation = ({ IdTrav, selectedConvocation, client, actions }) => {
 
   const [openAlert, setOpenAlert] = React.useState(false);
   const [openSuccess, setOpenSuccess] = React.useState(false);
+  const [openUpdateSuccess, setOpenUpdateSuccess] = React.useState(false);
 
   const [state, setState] = React.useState({
     formConv: {
@@ -89,7 +90,7 @@ const FormConvocation = ({ IdTrav, selectedConvocation, client, actions }) => {
 
     if (IdTrav) {
       setOpenSuccess(true);
-      DB.addConvoction(
+      DB.addConvocation(
         db,
         [
           state.formConv.NumRegistre,
@@ -112,7 +113,7 @@ const FormConvocation = ({ IdTrav, selectedConvocation, client, actions }) => {
   const handleClickUpDate = e => {
     e.preventDefault();
     if (selectedConvocation) {
-      setOpenSuccess(true);
+      setOpenUpdateSuccess(true);
       DB.upDateConvocation(
         db,
         [
@@ -155,6 +156,14 @@ const FormConvocation = ({ IdTrav, selectedConvocation, client, actions }) => {
     }
 
     setOpenSuccess(false);
+  };
+
+  const handleCloseUpdateSuccess = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenUpdateSuccess(false);
   };
 
   return (
@@ -276,6 +285,17 @@ const FormConvocation = ({ IdTrav, selectedConvocation, client, actions }) => {
         >
           <Alert onClose={handleCloseConvSuccess} severity="success">
             Convocation ajouté
+          </Alert>
+        </Snackbar>
+      </div>
+      <div className={classes.root}>
+        <Snackbar
+          open={openUpdateSuccess}
+          autoHideDuration={6000}
+          onClose={handleCloseUpdateSuccess}
+        >
+          <Alert onClose={handleCloseUpdateSuccess} severity="success">
+            Convocation modifié
           </Alert>
         </Snackbar>
       </div>
