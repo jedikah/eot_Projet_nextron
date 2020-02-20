@@ -4,6 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import { KeyboardDatePicker } from "@material-ui/pickers";
 import Divider from "@material-ui/core/Divider";
 import { Button } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
 
 import ComboBox from "../ComboBox";
 import ComboMulti from "../ComboMulti";
@@ -15,6 +16,7 @@ const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
   path += "EMC.sqlite";
   const db = DB.connect(path);
   const [state, setState] = React.useState({
+    zoom: 1280 * 100,
     formInput: {
       DateFact: moment(),
       currentIdCli: null,
@@ -23,6 +25,33 @@ const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
       oldTravaux: []
     }
   });
+
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      let width;
+      if (window.innerWidth >= 1280) width = window.innerWidth * 100;
+      else width = 1280 * 100;
+      setState({
+        ...state,
+        zoom: width
+      });
+    });
+  }, []);
+  const GlobalCss = withStyles({
+    // @global is handled by jss-plugin-global.
+    "@global": {
+      // You should target [class*="MuiButton-root"] instead if you nest themes.
+      ".MuiPopover-root": {
+        zoom: state.zoom / 1922 + "% !important"
+      }
+    }
+  })(() => null);
+  const handlePicker = () => {
+    let width;
+    if (window.innerWidth >= 1280) width = window.innerWidth * 100;
+    else width = 1280 * 100;
+    setState({ ...state, zoom: width });
+  };
 
   useEffect(() => {
     if (selectedFacture) {
@@ -210,14 +239,16 @@ const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
         borderRadius: 20,
         padding: 25,
         paddingLeft: 25,
-        paddingRight: 40
+        paddingRight: 40,
+        justifyContent: "center"
       }}
     >
+      <GlobalCss />
       <form>
         <Grid container spacing={3}>
           <Divider />
           {!selectedFacture && (
-            <Grid item xs={12} sm={12} md={12} lg={12}>
+            <Grid item xs={6}>
               <ComboBox
                 val={state.formInput.NomCli}
                 list={clients}
@@ -227,7 +258,7 @@ const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
             </Grid>
           )}
           {selectedFacture && (
-            <Grid item xs={12} sm={12} md={12} lg={12}>
+            <Grid item xs={6}>
               <TextField
                 disabled={state.match}
                 id="Nom"
@@ -242,7 +273,7 @@ const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
             </Grid>
           )}
 
-          <Grid item xs={12} sm={12} md={12} lg={12}>
+          <Grid item xs={6}>
             <ComboMulti
               values={state.formInput.travaux}
               disabled={state.formInput.currentIdCli === null && true}
@@ -261,6 +292,7 @@ const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
               label="Date de facturation: "
               value={state.formInput.DateTrav}
               onChange={date => handleChange("DateFact", date)}
+              onOpen={handlePicker}
               KeyboardButtonProps={{
                 "aria-label": "change date"
               }}

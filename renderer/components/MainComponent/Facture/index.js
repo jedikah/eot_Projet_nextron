@@ -72,8 +72,7 @@ const listeFacture = () => {
           height: "95%",
           padding: 5,
           marginTop: 5,
-          alignItems: "center",
-          border: "1px solid red"
+          alignItems: "center"
         }}
       >
         <ListFacture />

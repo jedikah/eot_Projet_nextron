@@ -1,5 +1,11 @@
 import React, { useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  fade,
+  makeStyles,
+  Theme,
+  createStyles
+} from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -12,10 +18,12 @@ import Collapse from "@material-ui/core/Collapse";
 import DetailsIcon from "@material-ui/icons/Details";
 import FolderIcon from "@material-ui/icons/Folder";
 import ContactMailIcon from "@material-ui/icons/ContactMail";
-import { Scale } from "react-scaling";
+import SearchIcon from "@material-ui/icons/Search";
 
 import AfficherDossierCtn from "../../../redux/containers/AfficherDossierCtn";
 import DetailDossier from "../../../redux/containers/DetailDossierCtn";
+import ComboBox from "../ComboBox";
+import * as DB from "../../../models";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -29,7 +37,47 @@ const useStyles = makeStyles(theme => ({
   },
   nested: {
     paddingLeft: theme.spacing(6)
-  }
+  },
+  inputRoot: {
+    color: "inherit"
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 7),
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: 200
+    }
+  },
+  searchIcon: {
+    pointerEvents: "none",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    background: "coral",
+    "&:hover": {
+      background: "coral",
+      color: "white"
+    }
+  },
+  search: {
+    "& div.MuiAutocomplete-popper": { background: "red" },
+    display: "flex",
+    flexDirection: "row",
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    "&:hover": {
+      backgroundColor: fade(theme.palette.common.white, 0.25)
+    },
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    [theme.breakpoints.up("sm")]: {
+      marginLeft: theme.spacing(3),
+      width: "auto"
+    }
+  },
+  popper: { background: "red" }
 }));
 
 const AffiCherDossier = ({
@@ -38,11 +86,24 @@ const AffiCherDossier = ({
   clients,
   selectedTravau,
   selectedConvocation,
-  convocations
+  convocations,
+  travauxBySearchName
 }) => {
+  let path = DB.homeDir("ECM");
+  path += "EMC.sqlite";
+  const db = DB.connect(path);
+
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [state, setState] = React.useState({ width: 0 });
+  const [state, setState] = React.useState({
+    width: 0,
+    formInput: {
+      Nom: ""
+    },
+    currentIdCli: "",
+    match: false,
+    travaux: []
+  });
 
   useEffect(() => {
     window.addEventListener("resize", () => {
@@ -77,15 +138,77 @@ const AffiCherDossier = ({
     } else actions.setSelectedConvocations({ selectedConvocation: null });
   };
 
+  const filterClientIdByName = name => {
+    let filtredList = clients.filter(client => client.Nom === name);
+    if (filtredList.length === 1) return filtredList[0].IdCli;
+    else return "";
+  };
+
+  const matchClient = Nom => {
+    let match = false;
+    clients.forEach(element => {
+      if (element.Nom === Nom) match = true;
+    });
+    return match;
+  };
+
   const handleClickOpen = travau => e => {
     actions.setSelectedTravau({ selectedTravau: travau });
     setOpen(true);
   };
+  const handleChange = (names, val) => e => {
+    let nom = val;
+    let currentIdCli = filterClientIdByName(nom);
+    let f = state.formInput;
+    setState({
+      ...state,
+      formInput: { ...f, Nom: nom },
+      currentIdCli: currentIdCli,
+      match: matchClient(nom)
+    });
+  };
+
+  useEffect(() => {
+    if (travaux[0]) setState({ ...state, travaux: travaux });
+  }, [travaux[0]]);
+  useEffect(() => {
+    if (travauxBySearchName[0])
+      setState({ ...state, travaux: travauxBySearchName });
+  }, [travauxBySearchName[0]]);
+  console.log(state.currentIdCli);
+
+  const handleSearch = () => {
+    if (state.currentIdCli !== "") {
+      DB.selectTravauBySearchName(db, state.currentIdCli, travaux =>
+        actions.setSelectTravauBySearchName({ travaux })
+      );
+    }
+  };
 
   return (
-    <div className={classes.root}>
-      <List className={classes.root}>
-        {travaux.map((travau, i) => {
+    <div
+      className={classes.root}
+      style={{ display: "flex", flexDirection: "column" }}
+    >
+      <Grid item xs={10} className={classes.search}>
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<SearchIcon />}
+          onClick={handleSearch}
+        ></Button>
+        <ComboBox
+          readonly={true}
+          style={{ width: "80%" }}
+          val={state.formInput.Nom}
+          list={clients}
+          onInputChange={(e, v) => handleChange("changeCombobox", v)(e)}
+        />
+      </Grid>
+
+      <Divider />
+      <List className={classes.root} style={{ width: "100%" }}>
+        {state.travaux.map((travau, i) => {
           if (selectedTravau === null) selectedTravau = { IdTrav: null };
           const client = filterClients(travau.IdCli);
           const convocations = filterConvocations(travau.IdTrav);

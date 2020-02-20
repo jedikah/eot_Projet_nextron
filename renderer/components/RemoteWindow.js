@@ -12,10 +12,12 @@ const RemoteWindow = props => {
         padding: 0,
         margin: 0,
         display: "flex",
-        width: "100vw",
+        width: "100%",
         height: "25px",
         flexDirection: "column",
-        background: props.bg
+        background: props.bg,
+        position: "relative",
+        zIndex: 9999999
       },
       header: {
         display: "flex",

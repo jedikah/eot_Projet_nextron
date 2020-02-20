@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import ParticleField from "react-particles-webgl";
-import { Scale } from "react-scaling";
 
 import HomeCtn from "../redux/containers/HomeCtn";
 import Container from "../components/layouts/Container";

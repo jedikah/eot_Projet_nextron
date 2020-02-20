@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -12,7 +12,7 @@ import { KeyboardDatePicker } from "@material-ui/pickers";
 
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 
 import * as DB from "../../../models";
 import moment, { DATE_FORMAT } from "../../../module/moment";
@@ -41,6 +41,9 @@ export default function FormNewDoc(props) {
   const [openTrav, setOpenTrav] = React.useState(false);
 
   const [state, setState] = React.useState({
+    zoom: 0,
+    width: 0,
+    height: 0,
     letter: false,
     match: false,
     currentIdCli: "",
@@ -68,7 +71,32 @@ export default function FormNewDoc(props) {
       VilleL: ""
     }
   });
-
+  useEffect(() => {
+    let width = 0;
+    if (window.innerWidth >= 1280) width = window.innerWidth * 100;
+    else width = 1280 * 100;
+    setState({
+      ...state,
+      zoom: width
+    });
+    window.addEventListener("resize", () => {
+      if (window.innerWidth >= 1280) width = window.innerWidth * 100;
+      else width = 1280 * 100;
+      setState({
+        ...state,
+        zoom: width
+      });
+    });
+  }, []);
+  const GlobalCss = withStyles({
+    // @global is handled by jss-plugin-global.
+    "@global": {
+      // You should target [class*="MuiButton-root"] instead if you nest themes.
+      ".MuiPopover-root": {
+        zoom: state.zoom / 1922 + "%"
+      }
+    }
+  })(() => null);
   const handleChangeDate = (name, date) => {
     const f = state.formInput;
     setState({ ...state, formInput: { ...f, [name]: date } });
@@ -351,10 +379,12 @@ export default function FormNewDoc(props) {
   };
   return (
     <React.Fragment>
+      <GlobalCss />
       <form onSubmit={handleClick}>
         <Grid container spacing={3}>
           <Grid item xs={6} sm={6} md={4} lg={4}>
             <ComboBox
+              readonly={false}
               val={state.formInput.Nom}
               list={props.clients}
               onInputChange={(e, v) => handleChange("changeCombobox", v)(e)}
@@ -390,7 +420,6 @@ export default function FormNewDoc(props) {
               Type de Travaux
             </InputLabel>
             <Select
-              displayEmpty
               labelId="demo-simple-select-helper-label"
               id="demo-simple-select-helper"
               defaultValue={"Délimitation"}

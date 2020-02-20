@@ -20,7 +20,7 @@ class MyDocument extends Document {
           />
           <meta name="theme-color" content={theme.palette.primary.main} />
         </Head>
-        <body style={{ overflow: "hidden" }}>
+        <body style={{ overflow: "hidden", zoom: "" }}>
           <Main />
           <NextScript />
         </body>

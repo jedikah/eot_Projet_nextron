@@ -24,3 +24,8 @@ export const updateTravauFact = payload => ({
   type: types.UPDATE_TRAVAU_FACT,
   payload
 });
+
+export const setSelectTravauBySearchName = payload => ({
+  type: types.SET_SELECT_TRAVAU_BY_SEARCH_NAME,
+  payload
+});

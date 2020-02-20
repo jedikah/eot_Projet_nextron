@@ -2,7 +2,8 @@ import * as types from "../constants/travauActionTypes";
 
 const initState = {
   travaux: [],
-  selectedTravau: null
+  selectedTravau: null,
+  travauxBySearchName: []
 };
 
 const travau = (state = initState, action) => {
@@ -39,6 +40,10 @@ const travau = (state = initState, action) => {
 
       travaux[index_Trav].IdFact = payload.IdFact;
       newState.travaux = [...travaux];
+      return newState;
+
+    case types.SET_SELECT_TRAVAU_BY_SEARCH_NAME:
+      newState.travauxBySearchName = payload.travaux;
       return newState;
 
     default:

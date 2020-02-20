@@ -58,7 +58,9 @@ const styles = theme => ({
     color: orange[500],
     height: "35px",
     padding: 0,
-    marginLeft: "10px"
+    marginLeft: "10px",
+    border: "3px solid red",
+    transform: "scale(0.5)"
   },
   closeButton: {
     padding: 0,
@@ -90,7 +92,7 @@ const Next = ({ actions, routeMenu, users, settings }) => {
   const classes = useStyles({});
 
   const [state, setState] = useState({
-    width: 800
+    zoom: 0
   });
   const [fullWidth, setFullWidth] = React.useState(true);
   const [maxWidth, setMaxWidth] = React.useState("md");
@@ -100,14 +102,19 @@ const Next = ({ actions, routeMenu, users, settings }) => {
   path += "EMC.sqlite";
   const db = DB.connect(path);
   useEffect(() => {
+    let width = 0;
+    if (window.innerWidth >= 1280) width = window.innerWidth * 100;
+    else width = 1280 * 100;
     setState({
       ...state,
-      width: window.innerWidth
+      zoom: width
     });
     window.addEventListener("resize", () => {
+      if (window.innerWidth >= 1280) width = window.innerWidth * 100;
+      else width = 1280 * 100;
       setState({
         ...state,
-        width: window.innerWidth
+        zoom: width
       });
     });
   }, []);
@@ -143,7 +150,10 @@ const Next = ({ actions, routeMenu, users, settings }) => {
     setOpen(false);
   };
   return (
-    <div className={classes.root}>
+    <div
+      className={classes.root}
+      style={{ zoom: "" + state.zoom / 1922 + "%" }}
+    >
       <Container
         justify="left"
         style={{

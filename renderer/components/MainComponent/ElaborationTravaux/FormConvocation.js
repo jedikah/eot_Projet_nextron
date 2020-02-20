@@ -3,6 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { KeyboardTimePicker, KeyboardDatePicker } from "@material-ui/pickers";
+import { withStyles } from "@material-ui/core/styles";
 
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
@@ -35,6 +36,7 @@ const FormConvocation = ({ IdTrav, selectedConvocation, client, actions }) => {
   const [openSuccess, setOpenSuccess] = React.useState(false);
 
   const [state, setState] = React.useState({
+    zoom: 1280 * 100,
     formConv: {
       NumRegistre: "",
       IdTrav: IdTrav,
@@ -46,6 +48,33 @@ const FormConvocation = ({ IdTrav, selectedConvocation, client, actions }) => {
       NumReq: ""
     }
   });
+
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      let width;
+      if (window.innerWidth >= 1280) width = window.innerWidth * 100;
+      else width = 1280 * 100;
+      setState({
+        ...state,
+        zoom: width
+      });
+    });
+  }, []);
+  const GlobalCss = withStyles({
+    // @global is handled by jss-plugin-global.
+    "@global": {
+      // You should target [class*="MuiButton-root"] instead if you nest themes.
+      ".MuiPopover-root, .MuiDialog-root": {
+        zoom: state.zoom / 1922 + "% !important"
+      }
+    }
+  })(() => null);
+  const handlePicker = () => {
+    let width;
+    if (window.innerWidth >= 1280) width = window.innerWidth * 100;
+    else width = 1280 * 100;
+    setState({ ...state, zoom: width });
+  };
 
   const handleChange = names => e => {
     const formConv = state.formConv;
@@ -159,6 +188,7 @@ const FormConvocation = ({ IdTrav, selectedConvocation, client, actions }) => {
 
   return (
     <React.Fragment>
+      <GlobalCss />
       <form>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={12} lg={12}>
@@ -197,6 +227,7 @@ const FormConvocation = ({ IdTrav, selectedConvocation, client, actions }) => {
               label="Convoqué (e) à la date: "
               value={state.formConv.DateConv}
               onChange={date => handleChangeDate("DateConv", date)}
+              onOpen={handlePicker}
               KeyboardButtonProps={{
                 "aria-label": "change date"
               }}
@@ -225,6 +256,7 @@ const FormConvocation = ({ IdTrav, selectedConvocation, client, actions }) => {
             label="Convoqué à l'heure suivante:"
             value={state.formConv.HeureConv}
             onChange={date => handleChangeDate("HeureConv", date)}
+            onOpen={handlePicker}
             KeyboardButtonProps={{
               "aria-label": "change time"
             }}

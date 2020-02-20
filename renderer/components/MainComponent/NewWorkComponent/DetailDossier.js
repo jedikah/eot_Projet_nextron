@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { withStyles } from "@material-ui/core/styles";
@@ -16,8 +16,8 @@ import TextField from "@material-ui/core/TextField";
 import Divider from "@material-ui/core/Divider";
 import { KeyboardDatePicker } from "@material-ui/pickers";
 import * as DB from "../../../models";
-import moment, { DATE_FORMAT } from "../../../module/moment";
 
+import moment, { DATE_FORMAT } from "../../../module/moment";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 
@@ -110,6 +110,7 @@ const DetailDossier = props => {
   const db = DB.connect(path);
 
   let [state, setState] = React.useState({
+    zoom: 1280 * 100,
     letter: false,
     formInput: {
       //table client
@@ -134,7 +135,35 @@ const DetailDossier = props => {
       DateRTX: moment(datertx, DATE_FORMAT)
     }
   });
-
+  useEffect(() => {
+    let width;
+    if (window.innerWidth >= 1280) width = window.innerWidth * 100;
+    else width = 1280 * 100;
+    setState({ ...state, zoom: width });
+    window.addEventListener("resize", () => {
+      if (window.innerWidth >= 1280) width = window.innerWidth * 100;
+      else width = 1280 * 100;
+      setState({
+        ...state,
+        zoom: width
+      });
+    });
+  }, []);
+  const GlobalCss = withStyles({
+    // @global is handled by jss-plugin-global.
+    "@global": {
+      // You should target [class*="MuiButton-root"] instead if you nest themes.
+      ".MuiPopover-root, .MuiDialog-root": {
+        zoom: state.zoom / 1922 + "% !important"
+      }
+    }
+  })(() => null);
+  const handlePicker = () => {
+    let width;
+    if (window.innerWidth >= 1280) width = window.innerWidth * 100;
+    else width = 1280 * 100;
+    setState({ ...state, zoom: width });
+  };
   const handleChange = (names, val) => e => {
     let f = state.formInput;
     let value;
@@ -233,6 +262,7 @@ const DetailDossier = props => {
             label="Date de requisition: "
             value={state.formInput.DateReq}
             onChange={date => handleChangeDate("DateReq", date)}
+            onOpen={handlePicker}
             KeyboardButtonProps={{
               "aria-label": "change date"
             }}
@@ -281,6 +311,7 @@ const DetailDossier = props => {
             label="Lettre de charge fait le : (Date)"
             value={state.formInput.DateL}
             onChange={date => handleChangeDate("DateL", date)}
+            onOpen={handlePicker}
             KeyboardButtonProps={{
               "aria-label": "change date"
             }}
@@ -308,6 +339,7 @@ const DetailDossier = props => {
             label="Date RTX"
             value={state.formInput.DateRTX}
             onChange={date => handleChangeDate("DateRTX", date)}
+            onOpen={handlePicker}
             KeyboardButtonProps={{
               "aria-label": "change date"
             }}
@@ -377,6 +409,7 @@ const DetailDossier = props => {
 
   return (
     <div>
+      <GlobalCss />
       <Dialog
         fullWidth={fullWidth}
         maxWidth={maxWidth}
@@ -443,6 +476,7 @@ const DetailDossier = props => {
                     label="Date des travaux: "
                     value={state.formInput.DateTrav}
                     onChange={date => handleChangeDate("DateTrav", date)}
+                    onOpen={handlePicker}
                     KeyboardButtonProps={{
                       "aria-label": "change date"
                     }}
