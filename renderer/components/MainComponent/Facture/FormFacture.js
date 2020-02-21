@@ -16,7 +16,6 @@ const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
   path += "EMC.sqlite";
   const db = DB.connect(path);
   const [state, setState] = React.useState({
-    zoom: 1280 * 100,
     formInput: {
       DateFact: moment(),
       currentIdCli: null,
@@ -26,26 +25,16 @@ const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
     }
   });
 
-  useEffect(() => {
-    window.addEventListener("resize", () => {
-      let width;
-      if (window.innerWidth >= 1280) width = window.innerWidth * 100;
-      else width = 1280 * 100;
-      setState({
-        ...state,
-        zoom: width
-      });
-    });
-  }, []);
   const GlobalCss = withStyles({
     // @global is handled by jss-plugin-global.
     "@global": {
       // You should target [class*="MuiButton-root"] instead if you nest themes.
       ".MuiPopover-root": {
-        zoom: state.zoom / 1922 + "% !important"
+        zoom: (window.innerWidth * 100) / 1922 + "% !important"
       }
     }
   })(() => null);
+
   const handlePicker = () => {
     let width;
     if (window.innerWidth >= 1280) width = window.innerWidth * 100;
@@ -189,7 +178,7 @@ const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
     state.formInput.oldTravaux.forEach(item => oldTrav.push(item.IdTrav));
     state.formInput.travaux.forEach(item => newTrav.push(item.IdTrav));
     val = findDeletedTravau(newTrav, oldTrav);
-    console.log({ val });
+
     val.forEach(IdTrav => {
       DB.checkFacture(db, IdTrav, id => {
         if (id === "") {

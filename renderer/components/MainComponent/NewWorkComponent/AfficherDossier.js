@@ -1,10 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  fade,
-  makeStyles,
-  Theme,
-  createStyles
-} from "@material-ui/core/styles";
+import { fade, makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -96,7 +91,6 @@ const AffiCherDossier = ({
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [state, setState] = React.useState({
-    width: 0,
     formInput: {
       Nom: ""
     },
@@ -104,13 +98,6 @@ const AffiCherDossier = ({
     match: false,
     travaux: travaux
   });
-  const [width, setWidth] = React.useState(0);
-
-  useEffect(() => {
-    window.addEventListener("resize", () => {
-      setWidth(window.innerWidth / 1922);
-    });
-  }, []);
 
   const handleClose = () => setOpen(false);
 
@@ -125,7 +112,10 @@ const AffiCherDossier = ({
       actions.setSelectedTravau({ selectedTravau: travau });
     } else if (selectedTravau && selectedTravau.IdTrav !== travau.IdTrav) {
       actions.setSelectedTravau({ selectedTravau: travau });
-    } else actions.setSelectedTravau({ selectedTravau: null });
+    } else {
+      actions.setSelectedTravau({ selectedTravau: null });
+      actions.setSelectedConvocations({ selectedConvocation: null });
+    }
   };
 
   const collapseClick = convocation => {
@@ -167,15 +157,19 @@ const AffiCherDossier = ({
       currentIdCli: currentIdCli,
       match: matchClient(nom)
     });
+    if (!matchClient(nom)) setState({ ...state, travaux: travaux });
+    else handleSearch(currentIdCli);
   };
 
   useEffect(() => {
     if (travaux[0]) setState({ ...state, travaux: travaux });
   }, [travaux[0]]);
 
-  const handleSearch = () => {
-    if (state.currentIdCli !== "") {
-      DB.selectTravauBySearchName(db, state.currentIdCli, travaux => {
+  const handleSearch = currentIdCli => {
+    if (state.currentIdCli !== "" || currentIdCli !== "") {
+      let cli = state.currentIdCli;
+      if (currentIdCli !== "") cli = currentIdCli;
+      DB.selectTravauBySearchName(db, cli, travaux => {
         actions.setSelectTravauBySearchName({ travaux });
         setState({ ...state, travaux: travaux });
       });
@@ -206,7 +200,6 @@ const AffiCherDossier = ({
           const client = filterClients(travau.IdCli);
           const convocations = filterConvocations(travau.IdTrav);
           const isSelected = travau.IdTrav === selectedTravau.IdTrav;
-          const isSelectedConvocation = selectedConvocation !== null;
 
           return (
             <div key={i}>
@@ -263,7 +256,11 @@ const AffiCherDossier = ({
                       <ListItemIcon>
                         <ContactMailIcon
                           className={
-                            isSelectedConvocation ? classes.coralColor : ""
+                            selectedConvocation &&
+                            selectedConvocation.NumRegistre ===
+                              convocation.NumRegistre
+                              ? classes.coralColor
+                              : ""
                           }
                         />
                       </ListItemIcon>

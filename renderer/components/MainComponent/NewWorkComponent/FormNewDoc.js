@@ -39,9 +39,8 @@ export default function FormNewDoc(props) {
   const db = DB.connect(path);
 
   const [openTrav, setOpenTrav] = React.useState(false);
-
+  const [zoom, setZoom] = React.useState(1280 * 100);
   const [state, setState] = React.useState({
-    zoom: 0,
     width: 0,
     height: 0,
     letter: false,
@@ -72,20 +71,14 @@ export default function FormNewDoc(props) {
     }
   });
   useEffect(() => {
-    let width = 0;
+    let width;
     if (window.innerWidth >= 1280) width = window.innerWidth * 100;
     else width = 1280 * 100;
-    setState({
-      ...state,
-      zoom: width
-    });
+    setZoom(width);
     window.addEventListener("resize", () => {
       if (window.innerWidth >= 1280) width = window.innerWidth * 100;
       else width = 1280 * 100;
-      setState({
-        ...state,
-        zoom: width
-      });
+      setZoom(width);
     });
   }, []);
   const GlobalCss = withStyles({
@@ -93,7 +86,7 @@ export default function FormNewDoc(props) {
     "@global": {
       // You should target [class*="MuiButton-root"] instead if you nest themes.
       ".MuiPopover-root": {
-        zoom: state.zoom / 1922 + "%"
+        zoom: zoom / 1922 + "%"
       }
     }
   })(() => null);

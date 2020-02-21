@@ -5,26 +5,16 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import { withStyles } from "@material-ui/core/styles";
 
 export default function ComboBox(props) {
-  const [state, setState] = React.useState({
-    zoom: 0,
-    width: 0,
-    height: 0
-  });
+  const [zoom, setZoom] = React.useState(1280 * 100);
   useEffect(() => {
-    let width = 0;
+    let width;
     if (window.innerWidth >= 1280) width = window.innerWidth * 100;
     else width = 1280 * 100;
-    setState({
-      ...state,
-      zoom: width
-    });
+    setZoom(width);
     window.addEventListener("resize", () => {
       if (window.innerWidth >= 1280) width = window.innerWidth * 100;
       else width = 1280 * 100;
-      setState({
-        ...state,
-        zoom: width
-      });
+      setZoom(width);
     });
   }, []);
   const GlobalCss = withStyles({
@@ -32,7 +22,7 @@ export default function ComboBox(props) {
     "@global": {
       // You should target [class*="MuiButton-root"] instead if you nest themes.
       ".MuiAutocomplete-popper": {
-        zoom: state.zoom / 1922 + "%"
+        zoom: zoom / 1922 + "%"
       }
     }
   })(() => null);

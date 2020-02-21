@@ -101,7 +101,7 @@ const Next = ({ actions, routeMenu, users, settings }) => {
   let path = DB.homeDir("ECM");
   path += "EMC.sqlite";
   const db = DB.connect(path);
-  useEffect(() => {
+  const eventListener = () => {
     let width = 0;
     if (window.innerWidth >= 1280) width = window.innerWidth * 100;
     else width = 1280 * 100;
@@ -117,7 +117,8 @@ const Next = ({ actions, routeMenu, users, settings }) => {
         zoom: width
       });
     });
-  }, []);
+  };
+
   useEffect(() => {
     if (users[0]) {
       DB.selectSettings(db, users[0].IdUser, rows =>
@@ -125,6 +126,7 @@ const Next = ({ actions, routeMenu, users, settings }) => {
       );
     }
   }, [users[0]]);
+
   useEffect(() => {
     DB.selectUsers(db, rows => actions.initUser({ users: rows }));
     DB.selectClients(db, rows => actions.initClient({ clients: rows }));
@@ -137,6 +139,8 @@ const Next = ({ actions, routeMenu, users, settings }) => {
     );
     DB.selectPV(db, rows => actions.initPv({ pvs: rows }));
     DB.selectFacture(db, rows => actions.initFacture({ factures: rows }));
+
+    eventListener();
   }, []);
 
   const handleClose = e => {

@@ -2,7 +2,8 @@ import * as types from "../constants/factureActionTypes";
 
 const initState = {
   factures: [],
-  selectedFacture: null
+  selectedFacture: null,
+  facturesBySearchName: []
 };
 
 const facture = (state = initState, action) => {
@@ -22,6 +23,10 @@ const facture = (state = initState, action) => {
 
     case types.SET_SELECTED_FACTURE:
       newState.selectedFacture = payload.selectedFacture;
+      return newState;
+
+    case types.SET_SELECT_FACTURE_BY_SEARCH_NAME:
+      newState.facturesBySearchName = payload.factures;
       return newState;
 
     default:

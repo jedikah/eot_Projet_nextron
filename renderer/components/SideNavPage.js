@@ -89,7 +89,7 @@ const SideNavPage = ({ actions }) => {
   const handleChangeMenu = routeMenu => e =>
     actions.changeRouteMenu({ routeMenu });
 
-  React.render;
+  //React.render;
 
   const sideList = side => (
     <div

@@ -19,7 +19,7 @@ export const selectFacture = (db, cb) => {
   let sql = "SELECT facture.IdFact AS IdFact,";
   sql += "facture.IdCli AS IdCli,";
   sql += "facture.DateFact AS DateFact ";
-  sql += "FROM facture";
+  sql += "FROM facture ORDER BY IdFact DESC LIMIT 10";
 
   db.all(sql, (err, rows) => {
     cb(rows);
@@ -33,4 +33,15 @@ export const updateFacture = (db, params) => {
 
   sql = "UPDATE travau SET ";
   sql += "IdFact = ? WHERE IdTrav = ?";
+};
+
+export const selectFactureBySearchName = (db, params, cb) => {
+  let sql = "SELECT facture.IdFact AS IdFact,";
+  sql += "facture.IdCli AS IdCli,";
+  sql += "facture.DateFact AS DateFact ";
+  sql += "FROM facture WHERE IdCli = ?";
+
+  db.all(sql, params, (err, rows) => {
+    cb(rows);
+  });
 };
