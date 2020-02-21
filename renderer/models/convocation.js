@@ -15,8 +15,10 @@ export const selectConvocations = (db, cb) => {
 };
 
 export const addConvocation = (db, params, cb) => {
+  console.log({ params });
   let sql = "INSERT INTO convocation VALUES ( ?, ?, ?, ?, ?, ?, ? )";
   db.run(sql, params, err => {
+    console.log({ err });
     let newConvocation = {};
     (newConvocation.NumRegistre = params[0]),
       (newConvocation.IdTrav = params[1]),
@@ -45,5 +47,21 @@ export const upDateConvocation = (db, params, cb) => {
       (updateConvocation.VilleConv = params[5]),
       (updateConvocation.HeureConv = params[6]);
     cb(updateConvocation, params[8]);
+  });
+};
+
+export const selectOneConvocation = (db, param, cb) => {
+  let sql = "SELECT ";
+  sql += "convocation.NumRegistre AS NumRegistre,";
+  sql += "convocation.IdTrav AS IdTrav,";
+  sql += "convocation.NumPv AS NumPv,";
+  sql += "convocation.NomPersConv AS NomPersConv,";
+  sql += "convocation.DateConv AS DateConv,";
+  sql += "convocation.VilleConv AS VilleConv,";
+  sql += "convocation.HeureConv AS HeureConv ";
+  sql += "FROM convocation WHERE NumRegistre = ?";
+
+  db.all(sql, param, (err, rows) => {
+    cb(rows);
   });
 };

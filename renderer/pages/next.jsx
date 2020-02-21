@@ -23,6 +23,7 @@ import PlanningPan from "../components/MainComponent/Planning";
 import Facture from "../components/MainComponent/Facture";
 import SettingCtn from "../redux/containers/SettingCtn";
 import Setting from "../components/MainComponent/setting";
+import SignIn from "../components/SignIn";
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -59,7 +60,6 @@ const styles = theme => ({
     height: "35px",
     padding: 0,
     marginLeft: "10px",
-    border: "3px solid red",
     transform: "scale(0.5)"
   },
   closeButton: {
@@ -73,8 +73,18 @@ const styles = theme => ({
 const DialogTitles = withStyles(styles)(props => {
   const { children, classes, onClose, ...other } = props;
   return (
-    <DialogTitle disableTypography className={classes.root} {...other}>
-      <Typography variant="h6">{children}</Typography>
+    <DialogTitle
+      className={classes.root}
+      {...other}
+      style={{
+        width: "100%",
+        height: 60,
+        boxShadow: "0px 0px 10px #888888",
+        borderRadius: "10px 10px 10px 10px",
+        textAlign: "center"
+      }}
+    >
+      <Typography variant="h3">{children}</Typography>
       {onClose ? (
         <IconButton
           aria-label="close"
@@ -91,9 +101,7 @@ const DialogTitles = withStyles(styles)(props => {
 const Next = ({ actions, routeMenu, users, settings }) => {
   const classes = useStyles({});
 
-  const [state, setState] = useState({
-    zoom: 0
-  });
+  const [zoom, setZoom] = React.useState(1280 * 100);
   const [fullWidth, setFullWidth] = React.useState(true);
   const [maxWidth, setMaxWidth] = React.useState("md");
   const [open, setOpen] = React.useState(true);
@@ -105,17 +113,11 @@ const Next = ({ actions, routeMenu, users, settings }) => {
     let width = 0;
     if (window.innerWidth >= 1280) width = window.innerWidth * 100;
     else width = 1280 * 100;
-    setState({
-      ...state,
-      zoom: width
-    });
+    setZoom(width);
     window.addEventListener("resize", () => {
       if (window.innerWidth >= 1280) width = window.innerWidth * 100;
       else width = 1280 * 100;
-      setState({
-        ...state,
-        zoom: width
-      });
+      setZoom(width);
     });
   };
 
@@ -154,10 +156,7 @@ const Next = ({ actions, routeMenu, users, settings }) => {
     setOpen(false);
   };
   return (
-    <div
-      className={classes.root}
-      style={{ zoom: "" + state.zoom / 1922 + "%" }}
-    >
+    <div className={classes.root} style={{ zoom: "" + zoom / 1922 + "%" }}>
       <Container
         justify="left"
         style={{
@@ -184,7 +183,46 @@ const Next = ({ actions, routeMenu, users, settings }) => {
               {routeMenu === ROUTE_MENU.ELABORATION && <ElaborationTravaux />}
               {routeMenu === ROUTE_MENU.PLANING && <PlanningPan />}
               {routeMenu == ROUTE_MENU.FACTURE && <Facture />}
-              {routeMenu == ROUTE_MENU.SETTING && <Setting />}
+              {routeMenu == ROUTE_MENU.SETTING && (
+                <Dialog
+                  style={{
+                    zoom: "" + zoom / 1922 + "%",
+                    boxShadow: "0px 0px 10px #888888",
+                    borderRadius: "10px 10px 10px 10px"
+                  }}
+                  maxWidth={maxWidth}
+                  aria-labelledby="customized-dialog-title"
+                  open={true}
+                >
+                  <DialogTitles id="customized-dialog-title">
+                    Verification
+                  </DialogTitles>
+                  <DialogContent
+                    style={{
+                      background: "rgba(0,0,0,0.3)",
+                      justifyContent: "center"
+                    }}
+                  >
+                    <SignIn
+                      verification
+                      style={{
+                        opacity: "inherit",
+                        boxShadow: "0px 0px 10px #888888",
+                        borderRadius: "10px 10px 10px 10px"
+                      }}
+                    />
+                  </DialogContent>
+                  <DialogActions>
+                    <Button
+                      autoFocus
+                      onClick={handleClose}
+                      style={{ color: orange[500] }}
+                    >
+                      Fermer
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              )}
               {users[0] &&
                 settings[0] &&
                 settings.filter(

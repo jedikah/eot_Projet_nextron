@@ -179,19 +179,36 @@ const AffiCherDossier = ({
   return (
     <div
       className={classes.root}
-      style={{ display: "flex", flexDirection: "column" }}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+        boxShadow: "0px 0px 10px #888888",
+        borderRadius: "10px 10px 10px 10px",
+        padding: 10
+      }}
     >
-      <Grid item xs={10} className={classes.search}>
-        <Button variant="contained" color="primary" onClick={handleSearch}>
-          <SearchIcon />
-        </Button>
-        <ComboBox
-          style={{ width: "80%" }}
-          val={state.formInput.Nom}
-          list={clients}
-          onInputChange={(e, v) => handleChange("changeCombobox", v)(e)}
-        />
-      </Grid>
+      <div
+        style={{
+          width: "100%",
+          background: "white",
+          position: "sticky",
+          zIndex: 12,
+          top: -15
+        }}
+      >
+        <Grid item xs={10} className={classes.search}>
+          <Button variant="contained" color="primary" onClick={handleSearch}>
+            <SearchIcon />
+          </Button>
+          <ComboBox
+            style={{ width: "80%" }}
+            val={state.formInput.Nom}
+            list={clients}
+            onInputChange={(e, v) => handleChange("changeCombobox", v)(e)}
+          />
+        </Grid>
+      </div>
 
       <Divider />
       <List className={classes.root} style={{ width: "100%" }}>

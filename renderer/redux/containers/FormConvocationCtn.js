@@ -12,7 +12,10 @@ const mapStateToProps = state => {
   return {
     IdTrav,
     client: getTravauClient(state),
-    selectedConvocation: state.convocation.selectedConvocation
+    selectedConvocation: state.convocation.selectedConvocation,
+    convocations: state.convocation.convocations,
+    travaux: state.travau.travaux,
+    clients: state.client.clients
   };
 };
 

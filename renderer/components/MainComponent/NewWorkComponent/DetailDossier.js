@@ -110,7 +110,6 @@ const DetailDossier = props => {
   const db = DB.connect(path);
 
   let [state, setState] = React.useState({
-    zoom: 1280 * 100,
     letter: false,
     formInput: {
       //table client
@@ -135,18 +134,16 @@ const DetailDossier = props => {
       DateRTX: moment(datertx, DATE_FORMAT)
     }
   });
+  const [zoom, setZoom] = React.useState(1280 * 100);
   useEffect(() => {
     let width;
     if (window.innerWidth >= 1280) width = window.innerWidth * 100;
     else width = 1280 * 100;
-    setState({ ...state, zoom: width });
+    setZoom(width);
     window.addEventListener("resize", () => {
       if (window.innerWidth >= 1280) width = window.innerWidth * 100;
       else width = 1280 * 100;
-      setState({
-        ...state,
-        zoom: width
-      });
+      setZoom(width);
     });
   }, []);
   const GlobalCss = withStyles({
@@ -154,7 +151,7 @@ const DetailDossier = props => {
     "@global": {
       // You should target [class*="MuiButton-root"] instead if you nest themes.
       ".MuiPopover-root, .MuiDialog-root": {
-        zoom: state.zoom / 1922 + "% !important"
+        zoom: zoom / 1922 + "% !important"
       }
     }
   })(() => null);
@@ -162,7 +159,7 @@ const DetailDossier = props => {
     let width;
     if (window.innerWidth >= 1280) width = window.innerWidth * 100;
     else width = 1280 * 100;
-    setState({ ...state, zoom: width });
+    setZoom(width);
   };
   const handleChange = (names, val) => e => {
     let f = state.formInput;

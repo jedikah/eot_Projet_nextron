@@ -3,13 +3,34 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+import { makeStyles } from "@material-ui/core/styles";
+
 import FormPvCtn from "../../../redux/containers/FormPvCtn";
 import * as DB from "../../../models";
 
-const FormPv = ({ convocation, travau, client, actions, pv }) => {
+const useStyles = makeStyles(theme => ({
+  root: {
+    width: "100%",
+    "& > * + *": {
+      marginTop: theme.spacing(2)
+    }
+  }
+}));
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+const FormPv = ({ IdTrav, convocation, travau, client, actions, pv }) => {
   let path = DB.homeDir("ECM");
   path += "EMC.sqlite";
   const db = DB.connect(path);
+  const classes = useStyles();
+
+  const [openAlert, setOpenAlert] = React.useState(false);
+  const [openError, setOpenError] = React.useState(false);
 
   const [state, setState] = React.useState({
     formConv: {
@@ -42,8 +63,9 @@ const FormPv = ({ convocation, travau, client, actions, pv }) => {
 
   const handleClick = e => {
     e.preventDefault();
-    console.log(state.formConv.Commune);
-    if (travau.IdTrav) {
+
+    if (IdTrav) {
+      setOpenAlert(true);
       DB.addPV(
         db,
         [
@@ -57,13 +79,40 @@ const FormPv = ({ convocation, travau, client, actions, pv }) => {
           actions.updatePv({ pv });
         }
       );
+    } else {
+      setOpenError(true);
     }
   };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenAlert(false);
+  };
+
+  const handleCloseError = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenError(false);
+  };
+
   //console.log(travau);
   //console.log(convocation);
   return (
     <React.Fragment>
-      <form onSubmit={handleClick}>
+      <form
+        onSubmit={handleClick}
+        style={{
+          height: "100%",
+          boxShadow: "0px 0px 10px #888888",
+          borderRadius: "10px 10px 10px 10px",
+          padding: 10
+        }}
+      >
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <TextField
@@ -116,12 +165,40 @@ const FormPv = ({ convocation, travau, client, actions, pv }) => {
         </Grid>
         <Grid container spacing={3}>
           <Grid item xs={6}>
-            <Button type="submit" fullWidth variant="contained" color="primary">
+            <Button
+              disabled={(!IdTrav && true) || (IdTrav && false)}
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+            >
               Enregistrer
             </Button>
           </Grid>
         </Grid>
       </form>
+      <div className={classes.root}>
+        <Snackbar
+          open={openAlert}
+          autoHideDuration={6000}
+          onClose={handleClose}
+        >
+          <Alert onClose={handleClose} severity="success">
+            PV confirmé
+          </Alert>
+        </Snackbar>
+      </div>
+      <div className={classes.root}>
+        <Snackbar
+          open={openError}
+          autoHideDuration={6000}
+          onClose={handleCloseError}
+        >
+          <Alert onClose={handleCloseError} severity="error">
+            Choississez un dossier de travail
+          </Alert>
+        </Snackbar>
+      </div>
     </React.Fragment>
   );
 };

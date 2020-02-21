@@ -11,6 +11,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import moment, { DATE_FORMAT } from "../../../module/moment";
 import * as DB from "../../../models";
+import { selectTravaux } from "../../../models";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,7 +26,15 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const FormConvocation = ({ IdTrav, selectedConvocation, client, actions }) => {
+const FormConvocation = ({
+  IdTrav,
+  selectedConvocation,
+  client,
+  actions,
+  convocations,
+  travaux,
+  clients
+}) => {
   const classes = useStyles();
 
   let path = DB.homeDir("ECM");
@@ -33,11 +42,13 @@ const FormConvocation = ({ IdTrav, selectedConvocation, client, actions }) => {
   const db = DB.connect(path);
 
   const [openAlert, setOpenAlert] = React.useState(false);
+  const [openAlertConv, setOpenAlertConv] = React.useState(false);
   const [openSuccess, setOpenSuccess] = React.useState(false);
   const [openUpdateSuccess, setOpenUpdateSuccess] = React.useState(false);
-
+  const [zoom, setZoom] = React.useState(1280 * 100);
+  const [registre, setRegistre] = React.useState([]);
   const [state, setState] = React.useState({
-    zoom: 1280 * 100,
+    registreError: [],
     formConv: {
       NumRegistre: "",
       IdTrav: IdTrav,
@@ -45,8 +56,7 @@ const FormConvocation = ({ IdTrav, selectedConvocation, client, actions }) => {
       NomPersConv: "",
       DateConv: moment(),
       VilleConv: "",
-      HeureConv: moment(),
-      NumReq: ""
+      HeureConv: moment()
     }
   });
 
@@ -55,10 +65,7 @@ const FormConvocation = ({ IdTrav, selectedConvocation, client, actions }) => {
       let width;
       if (window.innerWidth >= 1280) width = window.innerWidth * 100;
       else width = 1280 * 100;
-      setState({
-        ...state,
-        zoom: width
-      });
+      setZoom(width);
     });
   }, []);
   const GlobalCss = withStyles({
@@ -66,7 +73,7 @@ const FormConvocation = ({ IdTrav, selectedConvocation, client, actions }) => {
     "@global": {
       // You should target [class*="MuiButton-root"] instead if you nest themes.
       ".MuiPopover-root, .MuiDialog-root": {
-        zoom: state.zoom / 1922 + "% !important"
+        zoom: zoom / 1922 + "% !important"
       }
     }
   })(() => null);
@@ -80,6 +87,12 @@ const FormConvocation = ({ IdTrav, selectedConvocation, client, actions }) => {
   const handleChange = names => e => {
     const formConv = state.formConv;
     setState({ ...state, formConv: { ...formConv, [names]: e.target.value } });
+    if (
+      convocations.filter(
+        item => item.NumRegistre === parseInt(e.target.value)
+      )[0]
+    )
+      matchDetail(e.target.value);
   };
 
   useEffect(() => {
@@ -114,26 +127,56 @@ const FormConvocation = ({ IdTrav, selectedConvocation, client, actions }) => {
       });
   }, [selectedConvocation]);
 
+  const match = () => {
+    if (
+      convocations.filter(
+        item => item.NumRegistre === parseInt(state.formConv.NumRegistre)
+      )[0]
+    ) {
+      return true;
+    } else return false;
+  };
+
+  const matchDetail = num => {
+    const trav = convocations.filter(
+      item => item.NumRegistre === parseInt(num)
+    )[0].IdTrav;
+
+    if (trav) {
+      DB.selectOneTravau(db, trav, travau => {
+        const TypeTrav = travau.TypeTrav;
+        const DateTrav = travau.DateTrav;
+        const idCli = travau.IdCli;
+        const Nom = clients.filter(item => parseInt(item.IdCli) === idCli)[0]
+          .Nom;
+        setRegistre({ TypeTrav, Nom, DateTrav });
+      });
+    }
+  };
+
   const handleClick = e => {
     e.preventDefault();
 
     if (IdTrav) {
-      setOpenSuccess(true);
-      DB.addConvocation(
-        db,
-        [
-          state.formConv.NumRegistre,
-          IdTrav,
-          IdTrav,
-          state.formConv.NomPersConv,
-          state.formConv.DateConv.format(DATE_FORMAT),
-          state.formConv.VilleConv,
-          state.formConv.HeureConv.format("LT")
-        ],
-        newConvocation => {
-          actions.addConvocations({ newConvocation });
-        }
-      );
+      if (match()) return setOpenAlertConv(false);
+      else {
+        setOpenSuccess(true);
+        DB.addConvocation(
+          db,
+          [
+            state.formConv.NumRegistre,
+            IdTrav,
+            IdTrav,
+            state.formConv.NomPersConv,
+            state.formConv.DateConv.format(DATE_FORMAT),
+            state.formConv.VilleConv,
+            state.formConv.HeureConv.format("LT")
+          ],
+          newConvocation => {
+            actions.addConvocations({ newConvocation });
+          }
+        );
+      }
     } else {
       setOpenAlert(true);
     }
@@ -179,6 +222,14 @@ const FormConvocation = ({ IdTrav, selectedConvocation, client, actions }) => {
     setOpenAlert(false);
   };
 
+  const handleCloseAlertConv = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenAlertConv(false);
+  };
+
   const handleCloseConvSuccess = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -198,11 +249,19 @@ const FormConvocation = ({ IdTrav, selectedConvocation, client, actions }) => {
   return (
     <React.Fragment>
       <GlobalCss />
-      <form>
+      <form
+        style={{
+          height: "100%",
+          boxShadow: "0px 0px 10px #888888",
+          borderRadius: "10px 10px 10px 10px",
+          padding: 10
+        }}
+      >
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <TextField
               required
+              type="number"
               id="numRegistre"
               name="numRegistre"
               label="Numero de registre: "
@@ -213,6 +272,21 @@ const FormConvocation = ({ IdTrav, selectedConvocation, client, actions }) => {
               variant="outlined"
             />
           </Grid>
+          {match() && (
+            <div style={{ paddingLeft: 30 }}>
+              <p style={{ color: "red" }}>
+                {state.formConv.NumRegistre} est déja assigé à au travaux de{" "}
+                {registre.TypeTrav} de {registre.Nom} du {registre.DateTrav}
+              </p>
+            </div>
+          )}
+          {!match() && state.formConv.NumRegistre !== "" && (
+            <div style={{ paddingLeft: 30 }}>
+              <p style={{ color: "green" }}>
+                le {state.formConv.NumRegistre} est ligre
+              </p>
+            </div>
+          )}
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <TextField
               required
@@ -275,6 +349,7 @@ const FormConvocation = ({ IdTrav, selectedConvocation, client, actions }) => {
           <Grid item xs={4}>
             {!selectedConvocation && (
               <Button
+                disabled={(!IdTrav && true) || (IdTrav && false)}
                 type="submit"
                 fullWidth
                 variant="contained"
@@ -305,7 +380,18 @@ const FormConvocation = ({ IdTrav, selectedConvocation, client, actions }) => {
           onClose={handleCloseAlert}
         >
           <Alert onClose={handleCloseAlert} severity="error">
-            Choississez un dossier travau
+            Choississez un dossier dans la liste des travaux
+          </Alert>
+        </Snackbar>
+      </div>
+      <div className={classes.root}>
+        <Snackbar
+          open={openAlert}
+          autoHideDuration={6000}
+          onClose={handleCloseAlertConv}
+        >
+          <Alert onClose={handleCloseAlertConv} severity="error">
+            Ce numero de registre est déja signé
           </Alert>
         </Snackbar>
       </div>

@@ -52,6 +52,22 @@ const useStyles = makeStyles(theme => ({
 const SignIn = props => {
   const classes = useStyles();
 
+  const [zoom, setZoom] = React.useState(1280 * 100);
+  const eventListener = () => {
+    let width = 0;
+    if (window.innerWidth >= 1280) width = window.innerWidth * 100;
+    else width = 1280 * 100;
+    setZoom(width);
+    window.addEventListener("resize", () => {
+      if (window.innerWidth >= 1280) width = window.innerWidth * 100;
+      else width = 1280 * 100;
+      setZoom(width);
+    });
+  };
+  useEffect(() => {
+    eventListener();
+  });
+
   const chageInputId = e => {
     input.id = e.target.value;
   };
@@ -61,7 +77,7 @@ const SignIn = props => {
   };
 
   return (
-    <div style={{ position: "fixed" }}>
+    <div style={props.style}>
       <Container
         component="main"
         maxWidth="xs"
@@ -101,28 +117,43 @@ const SignIn = props => {
               onChange={chageInputPassWd}
             />
             {props.children}
-            <MyLink
-              href="/next"
-              prefetch={false}
-              values={{
-                signId: props.users[0].Nom,
-                signPassWd: props.users[0].PassWord,
-                input
-              }}
-            >
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={e => {
-                  e.preventDefault;
+            {props.authentification && (
+              <MyLink
+                href="/next"
+                prefetch={false}
+                values={{
+                  signId: props.users[0].Nom,
+                  signPassWd: props.users[0].PassWord,
+                  input
                 }}
               >
-                S'authentifier
-              </Button>
-            </MyLink>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  onClick={e => {
+                    e.preventDefault;
+                  }}
+                >
+                  S'authentifier
+                </Button>
+              </MyLink>
+            )}
+            {props.verification && (
+              <div>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                >
+                  Verification
+                </Button>
+              </div>
+            )}
           </form>
         </div>
         <Box mt={8}>

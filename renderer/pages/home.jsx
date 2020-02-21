@@ -40,7 +40,9 @@ const Home = ({ actions, users }) => {
       <RemoteWindow bg="#272727">AUTHENTIFICATION</RemoteWindow>
       <Container justify="center">
         <ParticleField config={config} />
-        {users[0] && <SignIn></SignIn>}
+        {users[0] && (
+          <SignIn authentification style={{ position: "fixed" }}></SignIn>
+        )}
       </Container>
     </div>
   );

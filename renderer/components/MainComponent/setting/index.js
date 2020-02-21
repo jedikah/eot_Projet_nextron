@@ -25,7 +25,10 @@ const planning = () => {
           height: "95%",
           padding: 15,
           marginTop: 5,
-          overflow: "auto"
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center"
         }}
       >
         <SettingCtn />

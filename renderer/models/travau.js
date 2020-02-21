@@ -15,7 +15,7 @@ export const selectTravaux = (db, cb) => {
   sql += "travau.TypeTrav AS TypeTrav,";
   sql += "travau.Prix AS Prix ";
   sql += "FROM ";
-  sql += "travau ORDER BY IdTrav DESC LIMIT 10";
+  sql += "travau ORDER BY IdTrav DESC LIMIT 20";
 
   db.all(sql, (err, rows) => cb(rows));
 };
@@ -105,4 +105,24 @@ export const selectTravauBySearchName = (db, params, cb) => {
   sql += "travau WHERE IdCli = ?";
 
   db.all(sql, params, (err, rows) => cb(rows));
+};
+
+export const selectOneTravau = (db, param, cb) => {
+  let sql = "SELECT ";
+  sql += "travau.IdTrav AS IdTrav,";
+  sql += "travau.IdCli AS IdCli,";
+  sql += "travau.IdFact AS IdFact,";
+  sql += "travau.NumReq AS NumReq,";
+  sql += "travau.DateReq AS DateReq,";
+  sql += "travau.NumTitre AS NumTitre,";
+  sql += "travau.NomTer AS NomTer,";
+  sql += "travau.LocalisationTrav AS LocalisationTrav,";
+  sql += "travau.Fokontany AS Fokontany,";
+  sql += "travau.DateTrav AS DateTrav,";
+  sql += "travau.TypeTrav AS TypeTrav,";
+  sql += "travau.Prix AS Prix ";
+  sql += "FROM ";
+  sql += "travau WHERE IdTrav = ?";
+
+  db.all(sql, param, (err, rows) => cb(rows[0]));
 };
