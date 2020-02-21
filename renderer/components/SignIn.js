@@ -70,10 +70,12 @@ const SignIn = props => {
 
   const chageInputId = e => {
     input.id = e.target.value;
+    if (props.user) props.user(e.target.value);
   };
 
   const chageInputPassWd = e => {
     input.passWd = e.target.value;
+    if (props.password) props.password(e.target.value);
   };
 
   return (
@@ -140,19 +142,6 @@ const SignIn = props => {
                   S'authentifier
                 </Button>
               </MyLink>
-            )}
-            {props.verification && (
-              <div>
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
-                >
-                  Verification
-                </Button>
-              </div>
             )}
           </form>
         </div>

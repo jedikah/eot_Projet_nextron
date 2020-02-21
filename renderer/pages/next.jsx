@@ -84,7 +84,9 @@ const DialogTitles = withStyles(styles)(props => {
         textAlign: "center"
       }}
     >
-      <Typography variant="h3">{children}</Typography>
+      <Typography variant="button" style={{ fontSize: "2em" }}>
+        {children}
+      </Typography>
       {onClose ? (
         <IconButton
           aria-label="close"
@@ -105,6 +107,13 @@ const Next = ({ actions, routeMenu, users, settings }) => {
   const [fullWidth, setFullWidth] = React.useState(true);
   const [maxWidth, setMaxWidth] = React.useState("md");
   const [open, setOpen] = React.useState(true);
+  const [openSingIn, setOpenSingIn] = React.useState(true);
+  const [state, setState] = React.useState({
+    user: "",
+    password: "",
+    match: false,
+    saveRouter: ""
+  });
 
   let path = DB.homeDir("ECM");
   path += "EMC.sqlite";
@@ -153,8 +162,25 @@ const Next = ({ actions, routeMenu, users, settings }) => {
       IdUser: users[0].IdUser,
       NameSetting: "FirstRun"
     });
+    actions.changeRouteMenu({ routeMenu: state.saveRouter });
+    console.log(state.saveRouter);
     setOpen(false);
+    setOpenSingIn(false);
   };
+  const verification = e => {
+    e.preventDefault();
+    if (state.user === users[0].Nom && state.password === users[0].PassWord) {
+      setState({ ...state, match: true });
+      setOpenSingIn(false);
+    }
+  };
+
+  const saveRouter = routeMenu => {
+    console.log(routeMenu);
+    setState({ ...state, saveRouter: routeMenu });
+    setOpenSingIn(true);
+  };
+
   return (
     <div className={classes.root} style={{ zoom: "" + zoom / 1922 + "%" }}>
       <Container
@@ -183,46 +209,7 @@ const Next = ({ actions, routeMenu, users, settings }) => {
               {routeMenu === ROUTE_MENU.ELABORATION && <ElaborationTravaux />}
               {routeMenu === ROUTE_MENU.PLANING && <PlanningPan />}
               {routeMenu == ROUTE_MENU.FACTURE && <Facture />}
-              {routeMenu == ROUTE_MENU.SETTING && (
-                <Dialog
-                  style={{
-                    zoom: "" + zoom / 1922 + "%",
-                    boxShadow: "0px 0px 10px #888888",
-                    borderRadius: "10px 10px 10px 10px"
-                  }}
-                  maxWidth={maxWidth}
-                  aria-labelledby="customized-dialog-title"
-                  open={true}
-                >
-                  <DialogTitles id="customized-dialog-title">
-                    Verification
-                  </DialogTitles>
-                  <DialogContent
-                    style={{
-                      background: "rgba(0,0,0,0.3)",
-                      justifyContent: "center"
-                    }}
-                  >
-                    <SignIn
-                      verification
-                      style={{
-                        opacity: "inherit",
-                        boxShadow: "0px 0px 10px #888888",
-                        borderRadius: "10px 10px 10px 10px"
-                      }}
-                    />
-                  </DialogContent>
-                  <DialogActions>
-                    <Button
-                      autoFocus
-                      onClick={handleClose}
-                      style={{ color: orange[500] }}
-                    >
-                      Fermer
-                    </Button>
-                  </DialogActions>
-                </Dialog>
-              )}
+              {routeMenu == ROUTE_MENU.SETTING && <Setting />}
               {users[0] &&
                 settings[0] &&
                 settings.filter(
@@ -231,7 +218,11 @@ const Next = ({ actions, routeMenu, users, settings }) => {
                     item.NameSetting === "FirstRun"
                 )[0].Value === "1" && (
                   <Dialog
-                    fullWidth={fullWidth}
+                    style={{
+                      zoom: "" + zoom / 1922 + "%",
+                      boxShadow: "0px 0px 10px #888888",
+                      borderRadius: "10px 10px 10px 10px"
+                    }}
                     maxWidth={maxWidth}
                     aria-labelledby="customized-dialog-title"
                     open={open}
@@ -239,8 +230,24 @@ const Next = ({ actions, routeMenu, users, settings }) => {
                     <DialogTitles id="customized-dialog-title">
                       PARAMETTRE
                     </DialogTitles>
-                    <DialogContent dividers>
-                      <SettingCtn />
+                    <DialogContent
+                      dividers
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "center"
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: "100%",
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "center"
+                        }}
+                      >
+                        <SettingCtn />
+                      </div>
                     </DialogContent>
                     <DialogActions>
                       <Button

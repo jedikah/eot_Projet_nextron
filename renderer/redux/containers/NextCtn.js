@@ -9,6 +9,7 @@ import * as convocationActions from "../actions/convocationActions";
 import * as pvActions from "../actions/pvActions";
 import * as factureActions from "../actions/factureActions";
 import * as settingActions from "../actions/settingActions";
+import * as menuActions from "../actions/menuActions";
 
 const actions = {
   ...userActions,
@@ -18,7 +19,8 @@ const actions = {
   ...convocationActions,
   ...pvActions,
   ...factureActions,
-  ...settingActions
+  ...settingActions,
+  ...menuActions
 };
 
 const mapStateToProps = state => ({
