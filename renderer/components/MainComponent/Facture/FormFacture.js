@@ -6,15 +6,38 @@ import Divider from "@material-ui/core/Divider";
 import { Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+import { makeStyles } from "@material-ui/core/styles";
+
 import ComboBox from "../ComboBox";
 import ComboMulti from "../ComboMulti";
 import * as DB from "../../../models";
 import moment, { DATE_FORMAT } from "../../../module/moment";
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    width: "100%",
+    "& > * + *": {
+      marginTop: theme.spacing(2)
+    }
+  }
+}));
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
   let path = DB.homeDir("ECM");
   path += "EMC.sqlite";
   const db = DB.connect(path);
+
+  const classes = useStyles();
+
+  const [openAdd, setOpenAdd] = React.useState(false);
+  const [openUpdate, setOpenUpdate] = React.useState(false);
+
   const [state, setState] = React.useState({
     zoom: 1280 * 100,
     formInput: {
@@ -127,6 +150,7 @@ const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
     let f = state.formInput;
     const trav = state.formInput.travaux;
     if (state.formInput.currentIdCli !== null && state.formInput.travaux[0]) {
+      setOpenAdd(true);
       DB.addFacture(
         db,
         [
@@ -192,6 +216,7 @@ const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
     console.log({ val });
     val.forEach(IdTrav => {
       DB.checkFacture(db, IdTrav, id => {
+        setOpenUpdate(true);
         if (id === "") {
           DB.updateFactureTrav(db, [selectedFacture.IdFact, IdTrav]);
           actions.updateTravauFact({
@@ -229,6 +254,23 @@ const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
     if (filtredList.length === 1) return filtredList[0].IdCli;
     else return "";
   };
+
+  const handleCloseAdd = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenAdd(false);
+  };
+
+  const handleCloseUpdate = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenUpdate(false);
+  };
+
   return (
     <div
       style={{
@@ -325,6 +367,28 @@ const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
           </Grid>
         </Grid>
       </form>
+      <div className={classes.root}>
+        <Snackbar
+          open={openAdd}
+          autoHideDuration={6000}
+          onClose={handleCloseAdd}
+        >
+          <Alert onClose={handleCloseAdd} severity="success">
+            Facture enregistré
+          </Alert>
+        </Snackbar>
+      </div>
+      <div className={classes.root}>
+        <Snackbar
+          open={openUpdate}
+          autoHideDuration={6000}
+          onClose={handleCloseUpdate}
+        >
+          <Alert onClose={handleCloseUpdate} severity="success">
+            Facture modifié
+          </Alert>
+        </Snackbar>
+      </div>
     </div>
   );
 };
