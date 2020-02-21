@@ -305,7 +305,7 @@ const FormConvocation = ({ IdTrav, selectedConvocation, client, actions }) => {
           onClose={handleCloseAlert}
         >
           <Alert onClose={handleCloseAlert} severity="error">
-            Choississez un dossier travau
+            Choississez un dossier de travail
           </Alert>
         </Snackbar>
       </div>
