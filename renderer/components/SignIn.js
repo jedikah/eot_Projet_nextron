@@ -79,14 +79,10 @@ const SignIn = props => {
   };
 
   return (
-    <div style={props.style}>
-      <Container
-        component="main"
-        maxWidth="xs"
-        style={{ backgroundColor: "white" }}
-      >
+    <div style={props.style} className={props.className}>
+      <Container component="main" maxWidth="xs" className="container">
         <CssBaseline />
-        <div className={classes.paper}>
+        <div className={classes.paper} style={{ filter: "blur(0px)" }}>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>

@@ -155,7 +155,7 @@ const ListFacture = ({
       style={{
         display: "flex",
         flexDirection: "column",
-        height: "100%",
+        minHeight: "100%",
         boxShadow: "0px 0px 10px #888888",
         borderRadius: "10px 10px 10px 10px",
         padding: 10

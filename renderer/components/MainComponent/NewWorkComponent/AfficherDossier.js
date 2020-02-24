@@ -57,6 +57,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   search: {
+    marginBottom: 10,
     "& div.MuiAutocomplete-popper": { background: "red" },
     display: "flex",
     flexDirection: "row",
@@ -84,12 +85,14 @@ const AffiCherDossier = ({
   convocations,
   travauxBySearchName
 }) => {
+  const { remote } = require("electron");
   let path = DB.homeDir("ECM");
   path += "EMC.sqlite";
   const db = DB.connect(path);
 
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [zoom, setZoom] = React.useState(1280 * 100);
   const [state, setState] = React.useState({
     formInput: {
       Nom: ""
@@ -98,7 +101,19 @@ const AffiCherDossier = ({
     match: false,
     travaux: travaux
   });
-
+  useEffect(() => {
+    let width = 0;
+    let min = 1280;
+    if (remote.getCurrentWindow().getMaximumSize()[0] >= 1920) min = 1600;
+    if (window.innerWidth >= min) width = window.innerWidth * 100;
+    else width = min * 100;
+    setZoom(width);
+    window.addEventListener("resize", () => {
+      if (window.innerWidth >= min) width = window.innerWidth * 100;
+      else width = min * 100;
+      setZoom(width);
+    });
+  });
   const handleClose = () => setOpen(false);
 
   const filterClients = IdCli =>
@@ -182,7 +197,7 @@ const AffiCherDossier = ({
       style={{
         display: "flex",
         flexDirection: "column",
-        height: "100%",
+        minHeight: "100%",
         boxShadow: "0px 0px 10px #888888",
         borderRadius: "10px 10px 10px 10px",
         padding: 10
@@ -225,39 +240,54 @@ const AffiCherDossier = ({
                 alignItems="flex-start"
                 selected={isSelected}
                 onClick={() => selectTravau(travau)}
+                style={{ display: "flex", flexDirection: "row" }}
               >
-                <ListItemIcon>
-                  <FolderIcon
-                    className={isSelected ? classes.coralColor : ""}
-                  />
-                </ListItemIcon>
-                <ListItemText
-                  primary={client && client.Nom}
-                  secondary={
-                    <React.Fragment>
-                      <Typography
-                        component="span"
-                        variant="body2"
-                        className={classes.inline}
-                        color="textPrimary"
-                      >
-                        {travau.Prix}
-                      </Typography>
-                      <br />
-                      {travau.TypeTrav}
-                      <br />
-                      {travau.DateTrav}
-                    </React.Fragment>
-                  }
-                />
-                <ListItemSecondaryAction>
+                <div
+                  style={{
+                    width: "70%",
+                    display: "flex",
+                    flexDirection: "row"
+                  }}
+                >
+                  <div>
+                    <ListItemIcon>
+                      <FolderIcon
+                        className={isSelected ? classes.coralColor : ""}
+                      />
+                    </ListItemIcon>
+                  </div>
+                  <div>
+                    <ListItemText
+                      primary={client && client.Nom}
+                      secondary={
+                        <React.Fragment>
+                          <Typography
+                            component="span"
+                            variant="body2"
+                            className={classes.inline}
+                            color="textPrimary"
+                          >
+                            {travau.Prix}
+                          </Typography>
+                          <br />
+                          {travau.TypeTrav}
+                          <br />
+                          {travau.DateTrav}
+                        </React.Fragment>
+                      }
+                    />
+                  </div>
+                </div>
+                <ListItemSecondaryAction style={{ width: "30%" }}>
                   <Button
+                    style={{ overflow: "hidden", width: "100%" }}
                     variant="outlined"
                     color="primary"
                     startIcon={<DetailsIcon />}
                     onClick={handleClickOpen(travau)}
                   >
-                    Detail
+                    {remote.getCurrentWindow().getMaximumSize()[0] >= 1600 &&
+                      zoom / 100 >= 1000 && <div>Detail</div>}
                   </Button>
                 </ListItemSecondaryAction>
               </ListItem>

@@ -8,7 +8,11 @@ export default function ToolBar(props) {
     <AppBar position="relative" style={{ background: "#333333" }}>
       <Toolbar
         variant="dense"
-        style={{ display: "flex", flexDirection: "row", height: 50 }}
+        style={{
+          display: "flex",
+          height: "30px",
+          flexDirection: "row"
+        }}
       >
         <Typography style={{ minWidth: "230px" }} variant="h6">
           GESTION DES DOSSIERS
@@ -17,7 +21,7 @@ export default function ToolBar(props) {
           style={{
             marginLeft: "20px",
             width: "100%",
-            height: "50px",
+            height: "40px",
             textAlign: "right",
             display: "flex",
             flexDirection: "row",

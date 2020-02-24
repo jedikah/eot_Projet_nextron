@@ -63,7 +63,6 @@ const afficher = () => {
     <div
       style={{
         width: "100%",
-        minWidth: 350,
         height: "100%",
         position: "relative",
         zIndex: 7,

@@ -9,3 +9,8 @@ export const updateUser = payload => ({
   type: types.UPDATE_USER,
   payload
 });
+
+export const setMax = payload => ({
+  type: types.SETMAX,
+  payload
+});

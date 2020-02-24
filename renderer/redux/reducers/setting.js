@@ -20,8 +20,8 @@ const setting = (state = initialState, action) => {
           item.NameSetting === payload.NameSetting
         );
       });
-      settings[indexSetting].Value = { ...payload.Value };
-      newState.indexSetting = [...settings];
+      settings[indexSetting].Value = payload.Value;
+      newState.settings = [...settings];
       return newState;
     default:
       return state;

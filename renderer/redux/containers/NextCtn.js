@@ -26,7 +26,8 @@ const actions = {
 const mapStateToProps = state => ({
   routeMenu: state.menu.routeMenu,
   users: state.user.users,
-  settings: state.setting.settings
+  settings: state.setting.settings,
+  maxs: state.user.maxs
 });
 
 const mapDispatchToProps = dispatch => ({

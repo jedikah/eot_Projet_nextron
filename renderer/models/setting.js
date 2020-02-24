@@ -7,7 +7,6 @@ export const selectSettings = (db, params, cb) => {
   sql += "FROM setting WHERE IdUser = ?";
 
   db.all(sql, params, (err, rows) => {
-    console.log({ params });
     cb(rows);
   });
 };

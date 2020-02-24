@@ -2,7 +2,7 @@ import React from "react";
 
 const config = {
   // Display reference cube, useful for orienting the field
-  showCube: true,
+  showCube: false,
   // '2D' or '3D' particle field
   dimension: "3D",
   // 'bounce' or 'passthru'

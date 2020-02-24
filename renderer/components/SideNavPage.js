@@ -16,9 +16,10 @@ import { yellow } from "@material-ui/core/colors";
 
 const useStyles = makeStyles({
   ListItemIcon: {
+    color: "white",
     display: "block",
     zIndex: 9,
-    background: "white",
+    background: "#3a3a3a",
     paddingTop: 20,
     paddingBottom: 20,
     paddingLeft: 18,
@@ -29,19 +30,21 @@ const useStyles = makeStyles({
     }
   },
   ListItemIcon_menu: {
+    color: "white",
     display: "block",
     zIndex: 9,
-    background: "white",
+    background: "#3a3a3a",
     paddingTop: 16,
     paddingBottom: 16,
     paddingLeft: 18,
     paddingRight: 18,
     "&:hover": {
-      background: "#020527",
+      background: "#19857b",
       color: "white"
     }
   },
   list1: {
+    background: "#3a3a3aa6",
     width: 200,
     transition: "0.5s",
     padding: 0,
@@ -55,16 +58,19 @@ const useStyles = makeStyles({
     }
   },
   list2: {
+    background: "#3a3a3aa6",
     width: 60,
     transition: "0.5s",
     padding: 0
   },
   text1: {
+    color: "white",
     transform: "translateX(0)",
     transition: "0.5s",
     textAlign: "center"
   },
   text2: {
+    color: "white",
     transform: "translateX(-100px)",
     transition: "0.5s",
     textAlign: "center"
@@ -206,7 +212,11 @@ const SideNavPage = ({ actions }) => {
   );
 
   return (
-    <div className={classes.root} onMouseLeave={hoverMenuOff}>
+    <div
+      className={classes.root}
+      onMouseLeave={hoverMenuOff}
+      style={{ background: "#3a3a3aa6" }}
+    >
       <div style={{ overflow: "hidden" }}>{sideList("left")}</div>
     </div>
   );

@@ -33,7 +33,11 @@ class MyApp extends App {
             </Head>
             <ThemeProvider theme={theme}>
               <CssBaseline />
-              <Component {...pageProps} store={myStore} />
+              <Component
+                {...pageProps}
+                store={myStore}
+                style={{ border: "1px solid green" }}
+              />
             </ThemeProvider>
           </React.Fragment>
         </MuiPickersUtilsProvider>

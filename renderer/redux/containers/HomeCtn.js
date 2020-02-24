@@ -8,7 +8,8 @@ const actions = {
 };
 
 const mapStateToProps = state => ({
-  users: state.user.users
+  users: state.user.users,
+  maxs: state.user.maxs
 });
 
 const mapDispatchToProps = dispatch => ({

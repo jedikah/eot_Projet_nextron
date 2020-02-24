@@ -5,7 +5,6 @@ import { KeyboardDatePicker } from "@material-ui/pickers";
 import Divider from "@material-ui/core/Divider";
 import { Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import { makeStyles } from "@material-ui/core/styles";
@@ -332,6 +331,7 @@ const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
           <Grid item xs={12} sm={12} md={12} lg={12}>
             {!selectedFacture && (
               <Button
+                disabled={state.formInput.currentIdCli === null}
                 type="submit"
                 onClick={handleSave}
                 fullWidth

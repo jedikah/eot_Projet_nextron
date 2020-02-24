@@ -7,8 +7,10 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
 import orange from "@material-ui/core/colors/orange";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
 import SignIn from "../../SignIn";
 import * as DB from "../../../models";
@@ -32,21 +34,39 @@ const styles = theme => ({
   }
 });
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    width: "100%",
+    "& > * + *": {
+      marginTop: theme.spacing(2)
+    }
+  }
+}));
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 const Setting = ({ users, settings, actions }) => {
   let path = DB.homeDir("ECM");
   path += "EMC.sqlite";
   const db = DB.connect(path);
+
+  const classes = useStyles();
+
   const currentSettings = () => {
     return settings.filter(item => item.IdUser === users[0].IdUser);
   };
 
   const this_setting = nameSetting => {
-    return currentSettings().filter(
-      item => item.NameSetting === nameSetting
-    )[0];
+    let val = "";
+    val = currentSettings().filter(item => item.NameSetting === nameSetting)[0]
+      .Value;
+    return val;
   };
 
   const [openSingIn, setOpenSingIn] = React.useState(false);
+  const [openAdd, setOpenAdd] = React.useState(false);
   const [maxWidth, setMaxWidth] = React.useState("md");
   const [zoom, setZoom] = React.useState(1280 * 100);
   const [state, setState] = React.useState({
@@ -56,11 +76,15 @@ const Setting = ({ users, settings, actions }) => {
     formInput: {
       Nom: users[0].Nom,
       PassWord: users[0].PassWord,
-      Path: this_setting("Path").Value
+      Path: ""
     }
   });
 
   useEffect(() => {
+    setState({
+      ...state,
+      formInput: { ...state.formInput, Path: this_setting("Path") }
+    });
     let width;
     if (window.innerWidth >= 1280) width = window.innerWidth * 100;
     else width = 1280 * 100;
@@ -84,6 +108,7 @@ const Setting = ({ users, settings, actions }) => {
 
   const handleEdit = e => {
     e.preventDefault();
+
     setOpenSingIn(true);
   };
   const DialogTitles = withStyles(styles)(props => {
@@ -119,7 +144,6 @@ const Setting = ({ users, settings, actions }) => {
   const handleClose = () => {
     setOpenSingIn(false);
   };
-
   const dialogue = () => {
     const verification = e => {
       e.preventDefault();
@@ -141,6 +165,7 @@ const Setting = ({ users, settings, actions }) => {
           IdUser: users[0].IdUser,
           NameSetting: "Path"
         });
+        setOpenAdd(true);
         setOpenSingIn(false);
       }
     };
@@ -206,6 +231,13 @@ const Setting = ({ users, settings, actions }) => {
     if (dir) {
       setState({ ...state, formInput: { ...state.formInput, Path: dir[0] } });
     }
+  };
+  const handleCloseAdd = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenAdd(false);
   };
   return (
     <div
@@ -274,6 +306,17 @@ const Setting = ({ users, settings, actions }) => {
               variant="filled"
             />
           </Grid>
+          <div className={classes.root}>
+            <Snackbar
+              open={openAdd === true}
+              autoHideDuration={6000}
+              onClose={handleCloseAdd}
+            >
+              <Alert onClose={handleCloseAdd} severity="success">
+                Paramètre enregistré
+              </Alert>
+            </Snackbar>
+          </div>
           <Grid item xs={3} xs={3} sm={3} md={3} lg={3}>
             <Button
               fullWidth

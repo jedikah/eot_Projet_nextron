@@ -100,8 +100,9 @@ const DialogTitles = withStyles(styles)(props => {
   );
 });
 
-const Next = ({ actions, routeMenu, users, settings }) => {
+const Next = ({ actions, routeMenu, users, settings, maxs }) => {
   const classes = useStyles({});
+  const { remote } = require("electron");
 
   const [zoom, setZoom] = React.useState(1280 * 100);
   const [fullWidth, setFullWidth] = React.useState(true);
@@ -120,12 +121,14 @@ const Next = ({ actions, routeMenu, users, settings }) => {
   const db = DB.connect(path);
   const eventListener = () => {
     let width = 0;
-    if (window.innerWidth >= 1280) width = window.innerWidth * 100;
-    else width = 1280 * 100;
+    let min = 1280;
+    if (remote.getCurrentWindow().getMaximumSize()[0] >= 1920) min = 1600;
+    if (window.innerWidth >= min) width = window.innerWidth * 100;
+    else width = min * 100;
     setZoom(width);
     window.addEventListener("resize", () => {
-      if (window.innerWidth >= 1280) width = window.innerWidth * 100;
-      else width = 1280 * 100;
+      if (window.innerWidth >= min) width = window.innerWidth * 100;
+      else width = min * 100;
       setZoom(width);
     });
   };
@@ -167,20 +170,10 @@ const Next = ({ actions, routeMenu, users, settings }) => {
     setOpen(false);
     setOpenSingIn(false);
   };
-  const verification = e => {
-    e.preventDefault();
-    if (state.user === users[0].Nom && state.password === users[0].PassWord) {
-      setState({ ...state, match: true });
-      setOpenSingIn(false);
-    }
-  };
 
-  const saveRouter = routeMenu => {
-    console.log(routeMenu);
-    setState({ ...state, saveRouter: routeMenu });
-    setOpenSingIn(true);
+  const setMax = rm => {
+    actions.setMax({ maxs: rm });
   };
-
   return (
     <div className={classes.root} style={{ zoom: "" + zoom / 1922 + "%" }}>
       <Container
@@ -192,19 +185,32 @@ const Next = ({ actions, routeMenu, users, settings }) => {
           height: "100%"
         }}
       >
-        <RemoteWindow bg="#272727">E.O.T MANAGER</RemoteWindow>
+        <RemoteWindow bg="#272727" setMax={setMax} getMax={maxs}>
+          E.O.T MANAGER
+        </RemoteWindow>
         <Container justify="toolBar" className={classes.main}>
           <SideNavPage />
           <div className={classes.innerMain}>
             <div>
               <ToolBar>
-                <Button>PARAMETTRE</Button>
-                <Button>
-                  <Link href="/home">Se déconnecter</Link>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  style={{ margin: 0, lineHeight: 0, height: "100%" }}
+                >
+                  <Link
+                    href="/home"
+                    style={{ color: "white", textDecoration: "none" }}
+                  >
+                    Retour à la page d'authentification
+                  </Link>
                 </Button>
               </ToolBar>
             </div>
-            <div className={classes.contenue}>
+            <div
+              className={classes.contenue}
+              style={{ backgroundColor: "white" }}
+            >
               {routeMenu === ROUTE_MENU.NEWDOC && <NewWork />}
               {routeMenu === ROUTE_MENU.ELABORATION && <ElaborationTravaux />}
               {routeMenu === ROUTE_MENU.PLANING && <PlanningPan />}
@@ -260,7 +266,6 @@ const Next = ({ actions, routeMenu, users, settings }) => {
                     </DialogActions>
                   </Dialog>
                 )}
-              }
             </div>
           </div>
         </Container>

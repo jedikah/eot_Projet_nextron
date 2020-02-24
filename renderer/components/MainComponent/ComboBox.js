@@ -6,14 +6,17 @@ import { withStyles } from "@material-ui/core/styles";
 
 export default function ComboBox(props) {
   const [zoom, setZoom] = React.useState(1280 * 100);
+  const { remote } = require("electron");
   useEffect(() => {
     let width;
-    if (window.innerWidth >= 1280) width = window.innerWidth * 100;
-    else width = 1280 * 100;
+    let min = 1280;
+    if (remote.getCurrentWindow().getMaximumSize()[0] >= 1920) min = 1600;
+    if (window.innerWidth >= min) width = window.innerWidth * 100;
+    else width = min * 100;
     setZoom(width);
     window.addEventListener("resize", () => {
-      if (window.innerWidth >= 1280) width = window.innerWidth * 100;
-      else width = 1280 * 100;
+      if (window.innerWidth >= min) width = window.innerWidth * 100;
+      else width = min * 100;
       setZoom(width);
     });
   }, []);

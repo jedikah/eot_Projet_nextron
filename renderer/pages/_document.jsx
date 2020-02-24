@@ -18,9 +18,13 @@ class MyDocument extends Document {
             name="viewport"
             content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
           />
-          <meta name="theme-color" content={theme.palette.primary.main} />
         </Head>
-        <body style={{ overflow: "hidden", zoom: "" }}>
+        <body
+          style={{
+            overflow: "hidden",
+            backgroundColor: "transparent"
+          }}
+        >
           <Main />
           <NextScript />
         </body>

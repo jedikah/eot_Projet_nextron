@@ -17,7 +17,7 @@ const planning = () => {
           height: "3.5%"
         }}
       >
-        Parametre
+        Paramètre
       </div>
       <div
         style={{
