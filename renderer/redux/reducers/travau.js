@@ -3,6 +3,7 @@ import * as types from "../constants/travauActionTypes";
 const initState = {
   travaux: [],
   selectedTravau: null,
+  CountTravaux: 0,
   travauxBySearchName: []
 };
 
@@ -14,10 +15,11 @@ const travau = (state = initState, action) => {
   switch (action.type) {
     case types.INIT_TRAVAU:
       newState.travaux = payload.travaux;
+      newState.CountTravaux = payload.CountTravaux;
       return newState;
 
     case types.ADD_TRAVAU:
-      travaux.push(payload.newTrav);
+      travaux.unshift(payload.newTrav);
       newState.travaux = [...travaux];
       return newState;
 

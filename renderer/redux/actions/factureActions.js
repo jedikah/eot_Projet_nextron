@@ -19,3 +19,8 @@ export const setSelectFactureBySearchName = payload => ({
   type: types.SET_SELECT_FACTURE_BY_SEARCH_NAME,
   payload
 });
+
+export const updateSelectedFacture = payload => ({
+  type: types.UPDATE_SELECTED_FACTURE,
+  payload
+});

@@ -27,7 +27,7 @@ function Alert(props) {
 }
 
 const FormConvocation = ({
-  IdTrav,
+  selectedIdTrav,
   selectedConvocation,
   client,
   actions,
@@ -47,11 +47,12 @@ const FormConvocation = ({
   const [openUpdateSuccess, setOpenUpdateSuccess] = React.useState(false);
   const [zoom, setZoom] = React.useState(1280 * 100);
   const [registre, setRegistre] = React.useState([]);
+  const [match, setMatch] = React.useState(false);
   const [state, setState] = React.useState({
     registreError: [],
     formConv: {
-      NumRegistre: "",
-      IdTrav: IdTrav,
+      NumRegistre: null,
+      IdTrav: selectedIdTrav,
       NumPv: "",
       NomPersConv: "",
       DateConv: moment(),
@@ -115,8 +116,8 @@ const FormConvocation = ({
       setState({
         ...state,
         formConv: {
-          NumRegistre: "",
-          IdTrav: IdTrav,
+          NumRegistre: null,
+          IdTrav: selectedIdTrav,
           NumPv: "",
           NomPersConv: "",
           DateConv: moment(),
@@ -127,15 +128,15 @@ const FormConvocation = ({
       });
   }, [selectedConvocation]);
 
-  const match = () => {
+  useEffect(() => {
     if (
       convocations.filter(
         item => item.NumRegistre === parseInt(state.formConv.NumRegistre)
       )[0]
     ) {
-      return true;
-    } else return false;
-  };
+      setMatch(true);
+    } else setMatch(false);
+  }, [state.formConv.NumRegistre]);
 
   const matchDetail = num => {
     const trav = convocations.filter(
@@ -157,16 +158,20 @@ const FormConvocation = ({
   const handleClick = e => {
     e.preventDefault();
 
-    if (IdTrav) {
-      if (match()) return setOpenAlertConv(false);
+    if (
+      selectedIdTrav &&
+      state.formConv.NomPersConv !== "" &&
+      state.formConv.VilleConv !== ""
+    ) {
+      if (match === true) return setOpenAlertConv(false);
       else {
         setOpenSuccess(true);
         DB.addConvocation(
           db,
           [
-            state.formConv.NumRegistre,
-            IdTrav,
-            IdTrav,
+            parseInt(state.formConv.NumRegistre),
+            selectedIdTrav,
+            selectedIdTrav,
             state.formConv.NomPersConv,
             state.formConv.DateConv.format(DATE_FORMAT),
             state.formConv.VilleConv,
@@ -174,6 +179,20 @@ const FormConvocation = ({
           ],
           newConvocation => {
             actions.addConvocations({ newConvocation });
+            setState({
+              ...state,
+              formConv: {
+                ...state.formConv,
+                NumRegistre: null,
+                IdTrav: selectedIdTrav,
+                NumPv: "",
+                NomPersConv: "",
+                DateConv: moment(),
+                VilleConv: "",
+                HeureConv: moment(),
+                NumReq: ""
+              }
+            });
           }
         );
       }
@@ -272,7 +291,7 @@ const FormConvocation = ({
               variant="outlined"
             />
           </Grid>
-          {match() && (
+          {match === true && (
             <div style={{ paddingLeft: 30 }}>
               <p style={{ color: "red" }}>
                 {state.formConv.NumRegistre} est déja assigé à au travaux de{" "}
@@ -280,10 +299,10 @@ const FormConvocation = ({
               </p>
             </div>
           )}
-          {!match() && state.formConv.NumRegistre !== "" && (
+          {match === false && state.formConv.NumRegistre && (
             <div style={{ paddingLeft: 30 }}>
               <p style={{ color: "green" }}>
-                le {state.formConv.NumRegistre} est ligre
+                le numéro {state.formConv.NumRegistre} est libre
               </p>
             </div>
           )}
@@ -346,10 +365,23 @@ const FormConvocation = ({
           />
         </Grid>
         <Grid container spacing={3}>
-          <Grid item xs={4}>
+          <Grid item xs={6}>
             {!selectedConvocation && (
               <Button
-                disabled={(!IdTrav && true) || (IdTrav && false)}
+                disabled={
+                  ((!selectedIdTrav || match === true) &&
+                    state.formConv.NomPersConv === "" &&
+                    state.formConv.VilleConv === "" &&
+                    true) ||
+                  ((selectedIdTrav || match === true) &&
+                    (state.formConv.NomPersConv === "" ||
+                      state.formConv.VilleConv === "") &&
+                    true) ||
+                  ((selectedIdTrav || match === false) &&
+                    (state.formConv.NomPersConv !== "" ||
+                      state.formConv.VilleConv !== "") &&
+                    false)
+                }
                 type="submit"
                 fullWidth
                 variant="contained"

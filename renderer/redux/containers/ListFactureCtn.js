@@ -11,7 +11,9 @@ const mapStateToProps = state => ({
   clients: state.client.clients,
   factures: state.facture.factures,
   selectedFacture: state.facture.selectedFacture,
-  factureBySearchName: state.facture.factureBySearchName
+  factureBySearchName: state.facture.factureBySearchName,
+  CountFactures: state.facture.CountFactures,
+  IdCliFromFacture: state.facture.IdCliFromFacture
 });
 
 const mapDispatchToProps = dispatch => ({

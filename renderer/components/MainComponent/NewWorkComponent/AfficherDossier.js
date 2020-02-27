@@ -14,6 +14,7 @@ import DetailsIcon from "@material-ui/icons/Details";
 import FolderIcon from "@material-ui/icons/Folder";
 import ContactMailIcon from "@material-ui/icons/ContactMail";
 import SearchIcon from "@material-ui/icons/Search";
+import Pagination from "@material-ui/lab/Pagination";
 
 import AfficherDossierCtn from "../../../redux/containers/AfficherDossierCtn";
 import DetailDossier from "../../../redux/containers/DetailDossierCtn";
@@ -83,7 +84,8 @@ const AffiCherDossier = ({
   selectedTravau,
   selectedConvocation,
   convocations,
-  travauxBySearchName
+  travauxBySearchName,
+  CountTravaux
 }) => {
   const { remote } = require("electron");
   let path = DB.homeDir("ECM");
@@ -99,7 +101,9 @@ const AffiCherDossier = ({
     },
     currentIdCli: "",
     match: false,
-    travaux: travaux
+    travaux: travaux,
+    pages: CountTravaux % 10,
+    selectPage: 1
   });
   useEffect(() => {
     let width = 0;
@@ -114,6 +118,20 @@ const AffiCherDossier = ({
       setZoom(width);
     });
   });
+
+  useEffect(() => {
+    if (travaux[0]) {
+      actions.initConvocation({ convocations: [] });
+      travaux.forEach(item => {
+        DB.selectConvocations(db, item.IdTrav, rows => {
+          rows.forEach(elem => {
+            actions.addConvocations({ newConvocation: elem });
+          });
+        });
+      });
+    }
+  }, [travaux]);
+
   const handleClose = () => setOpen(false);
 
   const filterClients = IdCli =>
@@ -162,33 +180,50 @@ const AffiCherDossier = ({
     actions.setSelectedTravau({ selectedTravau: travau });
     setOpen(true);
   };
-  const handleChange = (names, val) => e => {
-    let nom = val;
-    let currentIdCli = filterClientIdByName(nom);
+
+  const handleChange = (val = state.formInput.Nom) => e => {
+    let currentIdCli = filterClientIdByName(val);
     let f = state.formInput;
+
     setState({
       ...state,
-      formInput: { ...f, Nom: nom },
-      currentIdCli: currentIdCli,
-      match: matchClient(nom)
+      formInput: { ...f, Nom: val }
     });
-    if (!matchClient(nom)) setState({ ...state, travaux: travaux });
-    else handleSearch(currentIdCli);
-  };
 
-  useEffect(() => {
-    if (travaux[0]) setState({ ...state, travaux: travaux });
-  }, [travaux[0]]);
+    if (matchClient(val)) handleSearch(currentIdCli);
+    else
+      DB.selectTravaux(db, rows => {
+        DB.selectCountTrav(db, Count => {
+          actions.initTravau({ travaux: rows, CountTravaux: Count });
+        });
+      });
+  };
 
   const handleSearch = currentIdCli => {
     if (state.currentIdCli !== "" || currentIdCli !== "") {
       let cli = state.currentIdCli;
-      if (currentIdCli !== "") cli = currentIdCli;
-      DB.selectTravauBySearchName(db, cli, travaux => {
-        actions.setSelectTravauBySearchName({ travaux });
-        setState({ ...state, travaux: travaux });
-      });
+      if (currentIdCli !== "") {
+        cli = currentIdCli;
+        DB.selectTravauBySearchName(db, cli, travaux => {
+          //actions.setSelectTravauBySearchName({ travaux });
+          actions.initTravau({ travaux: travaux, CountTravaux: CountTravaux });
+          setState({
+            ...state,
+            formInput: { ...state.formInput },
+            currentIdCli: currentIdCli,
+            travaux: travaux
+          });
+        });
+      } else pageChange(1);
     }
+  };
+  const pageChange = num => e => {
+    num *= 10;
+    DB.selectTravauxPaging(db, num - 10, rows => {
+      DB.selectCountTrav(db, Count => {
+        actions.initTravau({ travaux: rows, CountTravaux: Count });
+      });
+    });
   };
 
   return (
@@ -197,7 +232,7 @@ const AffiCherDossier = ({
       style={{
         display: "flex",
         flexDirection: "column",
-        minHeight: "100%",
+        height: "100%",
         boxShadow: "0px 0px 10px #888888",
         borderRadius: "10px 10px 10px 10px",
         padding: 10
@@ -205,123 +240,149 @@ const AffiCherDossier = ({
     >
       <div
         style={{
-          width: "100%",
-          background: "white",
-          position: "sticky",
-          zIndex: 12,
-          top: -15
+          height: "100%",
+          overflowY: "scroll"
         }}
       >
-        <Grid item xs={10} className={classes.search}>
-          <Button variant="contained" color="primary" onClick={handleSearch}>
-            <SearchIcon />
-          </Button>
-          <ComboBox
-            style={{ width: "80%" }}
-            val={state.formInput.Nom}
-            list={clients}
-            onInputChange={(e, v) => handleChange("changeCombobox", v)(e)}
+        <div
+          style={{
+            width: "100%",
+            background: "white",
+            position: "sticky",
+            zIndex: 12,
+            top: -15
+          }}
+        >
+          <Grid item xs={10} className={classes.search}>
+            <Button variant="contained" color="primary" onClick={handleChange}>
+              <SearchIcon />
+            </Button>
+            <ComboBox
+              style={{ width: "80%" }}
+              val={state.formInput.Nom}
+              list={clients}
+              onInputChange={(e, v) => handleChange(v)(e)}
+            />
+          </Grid>
+        </div>
+
+        <Divider />
+        <List className={classes.root} style={{ width: "100%" }}>
+          {travaux.map((travau, i) => {
+            if (selectedTravau === null) selectedTravau = { IdTrav: null };
+            const client = filterClients(travau.IdCli);
+            const convocations = filterConvocations(travau.IdTrav);
+            const isSelected = travau.IdTrav === selectedTravau.IdTrav;
+
+            return (
+              <div key={i}>
+                <ListItem
+                  button
+                  alignItems="flex-start"
+                  selected={isSelected}
+                  onClick={() => selectTravau(travau)}
+                  style={{ display: "flex", flexDirection: "row" }}
+                >
+                  <div
+                    style={{
+                      width: "70%",
+                      display: "flex",
+                      flexDirection: "row"
+                    }}
+                  >
+                    <div>
+                      <ListItemIcon>
+                        <FolderIcon
+                          className={isSelected ? classes.coralColor : ""}
+                        />
+                      </ListItemIcon>
+                    </div>
+                    <div>
+                      <ListItemText
+                        primary={client && client.Nom}
+                        secondary={
+                          <React.Fragment>
+                            <Typography
+                              component="span"
+                              variant="body2"
+                              className={classes.inline}
+                              color="textPrimary"
+                            >
+                              {travau.Prix}
+                            </Typography>
+                            <br />
+                            {travau.TypeTrav}
+                            <br />
+                            {travau.DateTrav}
+                          </React.Fragment>
+                        }
+                      />
+                    </div>
+                  </div>
+                  <ListItemSecondaryAction style={{ width: "30%" }}>
+                    <Button
+                      style={{ overflow: "hidden", width: "100%" }}
+                      variant="outlined"
+                      color="primary"
+                      startIcon={<DetailsIcon />}
+                      onClick={handleClickOpen(travau)}
+                    >
+                      {remote.getCurrentWindow().getMaximumSize()[0] >= 1600 &&
+                        zoom / 100 >= 1000 && <div>Detail</div>}
+                    </Button>
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <Collapse in={isSelected} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    {convocations.map((convocation, key) => (
+                      <ListItem
+                        key={convocation.NumRegistre}
+                        button
+                        className={classes.nested}
+                        onClick={() => collapseClick(convocation)}
+                      >
+                        <ListItemIcon>
+                          <ContactMailIcon
+                            className={
+                              selectedConvocation &&
+                              selectedConvocation.NumRegistre ===
+                                convocation.NumRegistre
+                                ? classes.coralColor
+                                : ""
+                            }
+                          />
+                        </ListItemIcon>
+                        <ListItemText primary={convocation.NomPersConv} />
+                      </ListItem>
+                    ))}
+                  </List>
+                </Collapse>
+                <Divider />
+              </div>
+            );
+          })}
+        </List>
+        {open && <DetailDossier open={open} handleClose={handleClose} />}
+      </div>
+
+      <div
+        style={{
+          width: "100%",
+          background: "white"
+        }}
+      >
+        <Divider />
+        <Grid item xs={12}>
+          <Pagination
+            count={Math.ceil(CountTravaux / 10)}
+            shape="rounded"
+            color="secondary"
+            showFirstButton
+            showLastButton
+            onChange={(e, num) => pageChange(num)(e)}
           />
         </Grid>
       </div>
-
-      <Divider />
-      <List className={classes.root} style={{ width: "100%" }}>
-        {state.travaux.map((travau, i) => {
-          if (selectedTravau === null) selectedTravau = { IdTrav: null };
-          const client = filterClients(travau.IdCli);
-          const convocations = filterConvocations(travau.IdTrav);
-          const isSelected = travau.IdTrav === selectedTravau.IdTrav;
-
-          return (
-            <div key={i}>
-              <ListItem
-                button
-                alignItems="flex-start"
-                selected={isSelected}
-                onClick={() => selectTravau(travau)}
-                style={{ display: "flex", flexDirection: "row" }}
-              >
-                <div
-                  style={{
-                    width: "70%",
-                    display: "flex",
-                    flexDirection: "row"
-                  }}
-                >
-                  <div>
-                    <ListItemIcon>
-                      <FolderIcon
-                        className={isSelected ? classes.coralColor : ""}
-                      />
-                    </ListItemIcon>
-                  </div>
-                  <div>
-                    <ListItemText
-                      primary={client && client.Nom}
-                      secondary={
-                        <React.Fragment>
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            className={classes.inline}
-                            color="textPrimary"
-                          >
-                            {travau.Prix}
-                          </Typography>
-                          <br />
-                          {travau.TypeTrav}
-                          <br />
-                          {travau.DateTrav}
-                        </React.Fragment>
-                      }
-                    />
-                  </div>
-                </div>
-                <ListItemSecondaryAction style={{ width: "30%" }}>
-                  <Button
-                    style={{ overflow: "hidden", width: "100%" }}
-                    variant="outlined"
-                    color="primary"
-                    startIcon={<DetailsIcon />}
-                    onClick={handleClickOpen(travau)}
-                  >
-                    {remote.getCurrentWindow().getMaximumSize()[0] >= 1600 &&
-                      zoom / 100 >= 1000 && <div>Detail</div>}
-                  </Button>
-                </ListItemSecondaryAction>
-              </ListItem>
-              <Collapse in={isSelected} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  {convocations.map((convocation, key) => (
-                    <ListItem
-                      key={convocation.NumRegistre}
-                      button
-                      className={classes.nested}
-                      onClick={() => collapseClick(convocation)}
-                    >
-                      <ListItemIcon>
-                        <ContactMailIcon
-                          className={
-                            selectedConvocation &&
-                            selectedConvocation.NumRegistre ===
-                              convocation.NumRegistre
-                              ? classes.coralColor
-                              : ""
-                          }
-                        />
-                      </ListItemIcon>
-                      <ListItemText primary={convocation.NomPersConv} />
-                    </ListItem>
-                  ))}
-                </List>
-              </Collapse>
-              <Divider />
-            </div>
-          );
-        })}
-      </List>
-      {open && <DetailDossier open={open} handleClose={handleClose} />}
     </div>
   );
 };

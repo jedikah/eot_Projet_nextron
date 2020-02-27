@@ -1,4 +1,4 @@
-export const selectConvocations = (db, cb) => {
+export const selectConvocations = (db, params, cb) => {
   let sql = "SELECT ";
   sql += "convocation.NumRegistre AS NumRegistre,";
   sql += "convocation.IdTrav AS IdTrav,";
@@ -7,9 +7,9 @@ export const selectConvocations = (db, cb) => {
   sql += "convocation.DateConv AS DateConv,";
   sql += "convocation.VilleConv AS VilleConv,";
   sql += "convocation.HeureConv AS HeureConv ";
-  sql += "FROM convocation";
+  sql += "FROM convocation WHERE IdTrav = ?";
 
-  db.all(sql, (err, rows) => {
+  db.all(sql, params, (err, rows) => {
     cb(rows);
   });
 };

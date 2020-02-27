@@ -11,6 +11,7 @@ import { fade, makeStyles } from "@material-ui/core/styles";
 import DetailsIcon from "@material-ui/icons/Details";
 import ReceiptIcon from "@material-ui/icons/Receipt";
 import SearchIcon from "@material-ui/icons/Search";
+import Pagination from "@material-ui/lab/Pagination";
 
 import ComboBox from "../ComboBox";
 import * as DB from "../../../models";
@@ -65,7 +66,9 @@ const ListFacture = ({
   factures,
   actions,
   selectedFacture,
-  facturesBySearchName
+  facturesBySearchName,
+  CountFactures,
+  IdCliFromFacture
 }) => {
   let path = DB.homeDir("ECM");
   path += "EMC.sqlite";
@@ -77,21 +80,27 @@ const ListFacture = ({
     formInput: {
       Nom: ""
     },
+    travaux: [],
     currentIdCli: "",
     match: false,
     factures: factures
   });
 
+  useEffect(() => {
+    DB.selectAllTravaux(db, rows => {
+      setState({ ...state, travaux: rows });
+    });
+  }, []);
   const cli = idCli => {
     return clients.filter(item => item.IdCli === idCli)[0];
   };
 
   const travList = idFact => {
-    return travaux.filter(travau => travau.IdFact === idFact);
+    return state.travaux.filter(travau => travau.IdFact === idFact);
   };
 
   const som = idFact => {
-    const travs = travaux.filter(travau => travau.IdFact === idFact);
+    const travs = state.travaux.filter(travau => travau.IdFact === idFact);
     let somme = 0;
     for (let i = 0; i < travs.length; i++) {
       somme += travs[i].Prix;
@@ -99,12 +108,25 @@ const ListFacture = ({
     return somme;
   };
 
-  const selectFacture = facture => {
-    if (!selectedFacture) {
-      actions.setSelectedFacture({ selectedFacture: facture });
-    } else if (selectedFacture && selectedFacture.IdFact !== facture.IdFact) {
-      actions.setSelectedFacture({ selectedFacture: facture });
-    } else actions.setSelectedFacture({ selectedFacture: null });
+  const selectFacture = (facture, Nom, IdCli) => {
+    DB.selectTravauBySearchName(db, IdCli, rows => {
+      facture.Nom = Nom;
+      if (!selectedFacture) {
+        actions.setSelectedFacture({
+          selectedFacture: facture,
+          selectedTravauxByFacture: rows
+        });
+      } else if (selectedFacture && selectedFacture.IdFact !== facture.IdFact) {
+        actions.setSelectedFacture({
+          selectedFacture: facture,
+          selectedTravauxByFacture: rows
+        });
+      } else
+        actions.setSelectedFacture({
+          selectedFacture: null,
+          selectedTravauxByFacture: []
+        });
+    });
   };
 
   const filterClientIdByName = name => {
@@ -120,7 +142,8 @@ const ListFacture = ({
     });
     return match;
   };
-  const handleChange = (names, val) => e => {
+
+  const handleChange = (val = state.formInput.Nom) => e => {
     let nom = val;
     let currentIdCli = filterClientIdByName(nom);
     let f = state.formInput;
@@ -130,23 +153,47 @@ const ListFacture = ({
       currentIdCli: currentIdCli,
       match: matchClient(nom)
     });
-    if (!matchClient(nom)) setState({ ...state, factures: factures });
-    else handleSearch(currentIdCli);
-  };
+    setState({
+      ...state,
+      formInput: { ...f, Nom: val }
+    });
 
-  useEffect(() => {
-    if (factures[0]) setState({ ...state, factures: factures });
-  }, [factures[0]]);
+    if (matchClient(val)) handleSearch(currentIdCli);
+    else
+      DB.selectFacture(db, rows => {
+        DB.selectCountFact(db, Count => {
+          actions.initFacture({ factures: rows, CountFactures: Count });
+        });
+      });
+  };
 
   const handleSearch = currentIdCli => {
     if (state.currentIdCli !== "" || currentIdCli !== "") {
       let cli = state.currentIdCli;
-      if (currentIdCli !== "") cli = currentIdCli;
-      DB.selectFactureBySearchName(db, cli, factures => {
-        actions.setSelectFactureBySearchName({ factures });
-        setState({ ...state, factures: factures });
-      });
+      if (currentIdCli !== "") {
+        cli = currentIdCli;
+        DB.selectFactureBySearchName(db, cli, factures => {
+          actions.initFacture({
+            factures,
+            CountFactures
+          });
+          setState({
+            ...state,
+            currentIdCli: currentIdCli,
+            factures: factures
+          });
+        });
+      } else pageChange(1);
     }
+  };
+
+  const pageChange = num => e => {
+    num *= 10;
+    DB.selectTravauxPaging(db, num - 10, rows => {
+      DB.selectCountTrav(db, Count => {
+        actions.initTravau({ travaux: rows, CountTravaux: Count });
+      });
+    });
   };
 
   return (
@@ -155,7 +202,7 @@ const ListFacture = ({
       style={{
         display: "flex",
         flexDirection: "column",
-        minHeight: "100%",
+        height: "100%",
         boxShadow: "0px 0px 10px #888888",
         borderRadius: "10px 10px 10px 10px",
         padding: 10
@@ -163,83 +210,121 @@ const ListFacture = ({
     >
       <div
         style={{
-          width: "100%",
-          background: "white",
-          position: "sticky",
-          zIndex: 12,
-          top: -15
+          height: "100%",
+          overflowY: "scroll"
         }}
       >
-        <Grid item xs={10} className={classes.search}>
-          <Button variant="contained" color="primary" onClick={handleSearch}>
-            <SearchIcon />
-          </Button>
-          <ComboBox
-            style={{ width: "80%" }}
-            val={state.formInput.Nom}
-            list={clients}
-            onInputChange={(e, v) => handleChange("changeCombobox", v)(e)}
+        <div
+          style={{
+            width: "100%",
+            background: "white",
+            position: "sticky",
+            zIndex: 12,
+            top: -15
+          }}
+        >
+          <Grid item xs={10} className={classes.search}>
+            <Button variant="contained" color="primary" onClick={handleChange}>
+              <SearchIcon />
+            </Button>
+            <ComboBox
+              style={{ width: "80%" }}
+              val={state.formInput.Nom}
+              list={clients}
+              onInputChange={(e, v) => handleChange(v)(e)}
+            />
+          </Grid>
+        </div>
+
+        <Divider />
+        <List className={classes.root}>
+          {factures.map((facture, i) => {
+            let isSelected = false,
+              idFact;
+            if (selectedFacture === null) idFact = "";
+            else idFact = selectedFacture.IdFact;
+            isSelected = facture.IdFact === idFact;
+
+            return (
+              <div key={i}>
+                <ListItem
+                  button
+                  alignItems="flex-start"
+                  selected={isSelected}
+                  onClick={() =>
+                    selectFacture(
+                      facture,
+                      cli(facture.IdCli).Nom,
+                      facture.IdCli
+                    )
+                  }
+                >
+                  <ListItemIcon>
+                    <ReceiptIcon
+                      className={isSelected ? classes.coralColor : ""}
+                    />
+                  </ListItemIcon>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      padding: 0,
+                      margin: 0,
+                      lineHeight: 0
+                    }}
+                  >
+                    <ListItemText primary={facture && cli(facture.IdCli).Nom} />
+                    <br />
+                    {(travList(facture.IdFact)[0] &&
+                      travList(facture.IdFact).map((trav, i) => {
+                        return (
+                          <ListItemText
+                            key={i}
+                            primary={"type: " + trav.TypeTrav}
+                            secondary={"Titre N°: " + trav.NumTitre}
+                          />
+                        );
+                      })) || (
+                      <ListItemText key={i} primary={"Travaux non facturé"} />
+                    )}
+                    <br />
+                    {"Total: " + som(facture.IdFact) + " Ar"}
+                  </div>
+                  <ListItemSecondaryAction>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      startIcon={<DetailsIcon />}
+                    >
+                      Word
+                    </Button>
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <Divider />
+              </div>
+            );
+          })}
+        </List>
+      </div>
+
+      <div
+        style={{
+          width: "100%",
+          background: "white"
+        }}
+      >
+        <Divider />
+        <Grid item xs={12}>
+          <Pagination
+            count={Math.ceil(CountFactures / 10)}
+            shape="rounded"
+            color="secondary"
+            showFirstButton
+            showLastButton
+            onChange={(e, num) => pageChange(num)(e)}
           />
         </Grid>
       </div>
-
-      <Divider />
-      <List className={classes.root}>
-        {state.factures.map((facture, i) => {
-          if (selectedFacture === null) selectedFacture = { IdFact: null };
-          const isSelected = facture.IdFact === selectedFacture.IdFact;
-
-          return (
-            <div key={i}>
-              <ListItem
-                button
-                alignItems="flex-start"
-                selected={isSelected}
-                onClick={() => selectFacture(facture)}
-              >
-                <ListItemIcon>
-                  <ReceiptIcon
-                    className={isSelected ? classes.coralColor : ""}
-                  />
-                </ListItemIcon>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    padding: 0,
-                    margin: 0,
-                    lineHeight: 0
-                  }}
-                >
-                  <ListItemText primary={facture && cli(facture.IdCli).Nom} />
-                  <br />
-                  {travList(facture.IdFact).map((trav, i) => {
-                    return (
-                      <ListItemText
-                        key={i}
-                        primary={trav.TypeTrav}
-                        secondary={"Titre N°: " + trav.NumTitre}
-                      />
-                    );
-                  })}
-                  <br />
-                  {"Total: " + som(facture.IdFact) + " Ar"}
-                </div>
-                <ListItemSecondaryAction>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    startIcon={<DetailsIcon />}
-                  >
-                    Word
-                  </Button>
-                </ListItemSecondaryAction>
-              </ListItem>
-              <Divider />
-            </div>
-          );
-        })}
-      </List>
     </div>
   );
 };

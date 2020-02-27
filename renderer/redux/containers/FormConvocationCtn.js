@@ -6,11 +6,12 @@ import { getTravauClient } from "../selectors";
 import * as convocationActions from "../actions/convocationActions";
 
 const mapStateToProps = state => {
-  const IdTrav = state.travau.selectedTravau
-    ? state.travau.selectedTravau.IdTrav
-    : null;
+  const selectedIdTrav =
+    state.travau.selectedTravau !== null
+      ? state.travau.selectedTravau.IdTrav
+      : null;
   return {
-    IdTrav,
+    selectedIdTrav,
     client: getTravauClient(state),
     selectedConvocation: state.convocation.selectedConvocation,
     convocations: state.convocation.convocations,

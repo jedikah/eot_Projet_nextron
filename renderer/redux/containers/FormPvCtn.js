@@ -11,13 +11,14 @@ import {
 const actions = { ...FormPv };
 
 const mapStateToProps = state => {
-  const IdTrav = state.travau.selectedTravau
-    ? state.travau.selectedTravau.IdTrav
-    : null;
+  const selectedIdTrav =
+    state.travau.selectedTravau !== null
+      ? state.travau.selectedTravau.IdTrav
+      : null;
   return {
-    IdTrav,
+    selectedIdTrav,
     convocation: getConvocationClient(state),
-    travau: state.travau.selectedTravau,
+    selectedTravau: state.travau.selectedTravau,
     client: getTravauClient(state),
     pv: getPvTravau(state)
   };
