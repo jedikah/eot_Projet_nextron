@@ -53,7 +53,7 @@ if (isProd) {
       mainWindow.setSize(900, 500);
       mainWindow.setMinimumSize(900, 500);
       mainWindow.center();
-      globalShortcut.register("CommandOrControl+R", () => false);
+      //globalShortcut.register("CommandOrControl+R", () => false);
       globalShortcut.register("F5", () => false);
 
       mainWindow.show();

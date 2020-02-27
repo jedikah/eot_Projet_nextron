@@ -16,7 +16,8 @@ const mapStateToProps = state => ({
   pvs: state.pv.pvs,
   lettreCharges: state.lettreCharge.lettreCharges,
   users: state.user.users,
-  travauxBySearchName: state.travau.travauxBySearchName
+  travauxBySearchName: state.travau.travauxBySearchName,
+  CountTravaux: state.travau.CountTravaux
 });
 
 const mapDispatchToProps = dispatch => ({

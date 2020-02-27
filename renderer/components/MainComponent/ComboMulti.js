@@ -35,10 +35,6 @@ export default function ComboMulti({
       }
     }
   })(() => null);
-  const filterTrav = () => {
-    return list.filter(item => item.IdCli === currentIdCli);
-  };
-
   return (
     <div tyle={{ width: "100%" }}>
       <GlobalCss />
@@ -46,9 +42,9 @@ export default function ComboMulti({
         multiple
         id="tags-outlined"
         disabled={disabled}
-        options={filterTrav()}
+        options={list}
         value={values}
-        onChange={(e, v) => onInputChange(e, v)}
+        onChange={(e, v, r) => onInputChange(e, v, r)}
         getOptionLabel={option => option.TypeTrav + " du " + option.DateTrav}
         filterSelectedOptions
         renderInput={params => (

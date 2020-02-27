@@ -27,7 +27,13 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
+const FormFacture = ({
+  clients,
+  travaux,
+  actions,
+  selectedFacture,
+  selectedTravauxByFacture
+}) => {
   let path = DB.homeDir("ECM");
   path += "EMC.sqlite";
   const db = DB.connect(path);
@@ -41,6 +47,7 @@ const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
     formInput: {
       DateFact: moment(),
       currentIdCli: null,
+      travNotFactuered: [],
       travaux: [],
       NomCli: "",
       oldTravaux: []
@@ -65,39 +72,47 @@ const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
   };
 
   useEffect(() => {
-    if (selectedFacture) {
+    if (selectedFacture !== null) {
       setState({
         ...state,
         formInput: {
           ...state.formInput,
           DateFact: moment(selectedFacture.DateFact, DATE_FORMAT),
           currentIdCli: selectedFacture.IdCli,
-          travaux: travaux.filter(
+          travaux: selectedTravauxByFacture.filter(
             item => item.IdFact === selectedFacture.IdFact
+          ),
+          travNotFactuered:
+            selectedTravauxByFacture.filter(item => item.IdFact === "") || [],
+          oldTravaux: selectedTravauxByFacture.filter(
+            item => item.IdFact !== ""
           ),
           NomCli: clients.filter(
             item => item.IdCli === selectedFacture.IdCli
-          )[0].Nom,
-          oldTravaux: travaux.filter(
-            item => item.IdFact === selectedFacture.IdFact
-          )
+          )[0].Nom
         }
       });
-    } else {
+    } else if (selectedFacture === null && selectedTravauxByFacture[0]) {
       setState({
         ...state,
         formInput: {
           ...state.formInput,
-          DateFact: moment(),
-          currentIdCli: null,
-          travaux: [],
-          NomCli: ""
+          currentIdCli: selectedTravauxByFacture[0].IdCli,
+          travaux: selectedTravauxByFacture.filter(item => item.IdFact !== ""),
+          travNotFactuered:
+            selectedTravauxByFacture.filter(item => item.IdFact === "") || [],
+          oldTravaux: selectedTravauxByFacture.filter(
+            item => item.IdFact !== ""
+          ),
+          NomCli: clients.filter(
+            item => item.IdCli === selectedTravauxByFacture[0].IdCli
+          )[0].Nom
         }
       });
     }
-  }, [selectedFacture]);
+  }, [selectedTravauxByFacture]);
 
-  const handleChange = (names, val) => e => {
+  const handleChange = (names, val, reason) => e => {
     let name = names;
     let f = state.formInput;
 
@@ -111,19 +126,26 @@ const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
           formInput: { ...f, travaux: [], currentIdCli: null }
         });
       else
-        setState({
-          ...state,
-          formInput: {
-            ...f,
-            travaux: [],
-            currentIdCli: currentIdCli,
-            NomCli: val
-          }
+        DB.selectTravauBySearchName(db, currentIdCli, rows => {
+          actions.setSelectedFacture({
+            selectedFacture: null,
+            selectedTravauxByFacture: rows.filter(item => item.IdFact === "")
+          });
         });
     } else if (names === "changeComboMulti") {
-      setState({
-        ...state,
-        formInput: { ...f, travaux: val }
+      DB.selectCountFact(db, count => {
+        let selectedFact = null,
+          IdFact;
+        if (selectedFacture !== null) {
+          selectedFact = selectedFacture;
+          IdFact = selectedFacture.IdFact;
+        } else IdFact = count;
+        actions.updateSelectedFacture({
+          selectedTravauxII: findDeletedTravau(val, selectedTravauxByFacture),
+          selectedTravauxI: val,
+          IdFact: IdFact + 1,
+          selectedFact
+        });
       });
     } else {
       setState({
@@ -136,28 +158,32 @@ const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
   const handleSave = e => {
     e.preventDefault();
     let f = state.formInput;
-    const trav = state.formInput.travaux;
-    if (state.formInput.currentIdCli !== null && state.formInput.travaux[0]) {
+    if (selectedFacture === null) {
       setOpenAdd(true);
-      DB.addFacture(
-        db,
-        [
-          state.formInput.currentIdCli,
-          state.formInput.DateFact.format(DATE_FORMAT),
-          state.formInput.travaux
-        ],
-        IdFact => {
-          for (let i = 0; i < trav.length; i++) {
-            const IdTrav = trav[i].IdTrav;
-            actions.updateTravauFact({ IdTrav, IdFact });
-          }
-          let newFacture = {};
-          newFacture.IdFact = IdFact;
-          newFacture.IdCli = state.formInput.currentIdCli;
-          newFacture.DateFact = state.formInput.DateFact.format(DATE_FORMAT);
-          actions.addFacture({ newFacture });
-        }
-      );
+
+      console.log(state.formInput.currentIdCli);
+
+      DB.addFacture(db, [
+        state.formInput.currentIdCli,
+        state.formInput.DateFact.format(DATE_FORMAT),
+        selectedTravauxByFacture
+      ]);
+      DB.selectFacture(db, rows => {
+        DB.selectCountFact(db, Count => {
+          let IdCli = [],
+            i = 0;
+
+          rows.forEach(element => {
+            IdCli[i++] = element.IdCli;
+          });
+          let removeDuplicatesIdCli = [...new Set(IdCli)];
+          actions.initFacture({
+            factures: rows,
+            CountFactures: Count,
+            IdCliFromFacture: removeDuplicatesIdCli
+          });
+        });
+      });
       setState({
         ...state,
         formInput: { ...f, travaux: [] }
@@ -185,6 +211,7 @@ const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
     array2.forEach(item => array1.push(item));
     return array1;
   };
+
   const match = () => {
     let newTrav = [],
       oldTrav = [];
@@ -290,7 +317,9 @@ const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
           {selectedFacture && (
             <Grid item xs={6}>
               <TextField
-                disabled={state.match}
+                InputProps={{
+                  readOnly: true
+                }}
                 id="Nom"
                 name="Nom"
                 label="Nom"
@@ -305,11 +334,15 @@ const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
 
           <Grid item xs={6}>
             <ComboMulti
-              values={state.formInput.travaux}
-              disabled={state.formInput.currentIdCli === null && true}
-              list={travaux.filter(item => item.IdFact === "")}
+              values={
+                (selectedTravauxByFacture[0] && state.formInput.travaux) || ""
+              }
+              disabled={!selectedTravauxByFacture[0]}
+              list={state.formInput.travNotFactuered}
               currentIdCli={state.formInput.currentIdCli}
-              onInputChange={(e, v) => handleChange("changeComboMulti", v)(e)}
+              onInputChange={(e, v, r) =>
+                handleChange("changeComboMulti", v, r)(e)
+              }
             />
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={12}>
@@ -331,7 +364,9 @@ const FormFacture = ({ clients, travaux, actions, selectedFacture }) => {
           <Grid item xs={12} sm={12} md={12} lg={12}>
             {!selectedFacture && (
               <Button
-                disabled={state.formInput.currentIdCli === null}
+                disabled={
+                  !selectedTravauxByFacture[0] || !state.formInput.travaux[0]
+                }
                 type="submit"
                 onClick={handleSave}
                 fullWidth

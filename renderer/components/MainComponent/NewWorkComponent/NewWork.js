@@ -87,9 +87,7 @@ const afficher = () => {
           width: "96.5%",
           height: "95%",
           minHeight: 400,
-          padding: 15,
-          marginTop: 5,
-          overflowY: "scroll"
+          marginTop: 5
         }}
       >
         <AfficherDossier />

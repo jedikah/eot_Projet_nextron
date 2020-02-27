@@ -144,15 +144,35 @@ const Next = ({ actions, routeMenu, users, settings, maxs }) => {
   useEffect(() => {
     DB.selectUsers(db, rows => actions.initUser({ users: rows }));
     DB.selectClients(db, rows => actions.initClient({ clients: rows }));
-    DB.selectTravaux(db, rows => actions.initTravau({ travaux: rows }));
+    DB.selectTravaux(db, rows => {
+      DB.selectCountTrav(db, Count => {
+        actions.initTravau({ travaux: rows, CountTravaux: Count });
+      });
+    });
+
     DB.selectLetreCharges(db, rows =>
       actions.initLettreCharge({ lettreCharges: rows })
     );
-    DB.selectConvocations(db, rows =>
-      actions.initConvocation({ convocations: rows })
-    );
+    // DB.selectConvocations(db, rows =>
+    //   actions.initConvocation({ convocations: rows })
+    // );
     DB.selectPV(db, rows => actions.initPv({ pvs: rows }));
-    DB.selectFacture(db, rows => actions.initFacture({ factures: rows }));
+    DB.selectFacture(db, rows => {
+      DB.selectCountFact(db, Count => {
+        let IdCli = [],
+          i = 0;
+
+        rows.forEach(element => {
+          IdCli[i++] = element.IdCli;
+        });
+        let removeDuplicatesIdCli = [...new Set(IdCli)];
+        actions.initFacture({
+          factures: rows,
+          CountFactures: Count,
+          IdCliFromFacture: removeDuplicatesIdCli
+        });
+      });
+    });
 
     eventListener();
   }, []);
@@ -166,7 +186,6 @@ const Next = ({ actions, routeMenu, users, settings, maxs }) => {
       NameSetting: "FirstRun"
     });
     actions.changeRouteMenu({ routeMenu: state.saveRouter });
-    console.log(state.saveRouter);
     setOpen(false);
     setOpenSingIn(false);
   };

@@ -27,7 +27,7 @@ function Alert(props) {
 }
 
 const FormConvocation = ({
-  IdTrav,
+  selectedIdTrav,
   selectedConvocation,
   client,
   actions,
@@ -51,7 +51,7 @@ const FormConvocation = ({
     registreError: [],
     formConv: {
       NumRegistre: "",
-      IdTrav: IdTrav,
+      IdTrav: selectedIdTrav,
       NumPv: "",
       NomPersConv: "",
       DateConv: moment(),
@@ -116,7 +116,7 @@ const FormConvocation = ({
         ...state,
         formConv: {
           NumRegistre: "",
-          IdTrav: IdTrav,
+          IdTrav: selectedIdTrav,
           NumPv: "",
           NomPersConv: "",
           DateConv: moment(),
@@ -127,9 +127,9 @@ const FormConvocation = ({
       });
   }, [selectedConvocation]);
 
-  const match = () => {
+  const match = conv => {
     if (
-      convocations.filter(
+      conv.filter(
         item => item.NumRegistre === parseInt(state.formConv.NumRegistre)
       )[0]
     ) {
@@ -157,16 +157,16 @@ const FormConvocation = ({
   const handleClick = e => {
     e.preventDefault();
 
-    if (IdTrav) {
-      if (match()) return setOpenAlertConv(false);
+    if (selectedIdTrav) {
+      if (match(convocations)) return setOpenAlertConv(false);
       else {
         setOpenSuccess(true);
         DB.addConvocation(
           db,
           [
             state.formConv.NumRegistre,
-            IdTrav,
-            IdTrav,
+            selectedIdTrav,
+            selectedIdTrav,
             state.formConv.NomPersConv,
             state.formConv.DateConv.format(DATE_FORMAT),
             state.formConv.VilleConv,
@@ -174,6 +174,20 @@ const FormConvocation = ({
           ],
           newConvocation => {
             actions.addConvocations({ newConvocation });
+            setState({
+              ...state,
+              formConv: {
+                ...state.formConv,
+                NumRegistre: "",
+                IdTrav: selectedIdTrav,
+                NumPv: "",
+                NomPersConv: "",
+                DateConv: moment(),
+                VilleConv: "",
+                HeureConv: moment(),
+                NumReq: ""
+              }
+            });
           }
         );
       }
@@ -272,7 +286,9 @@ const FormConvocation = ({
               variant="outlined"
             />
           </Grid>
-          {match() && (
+          {convocations.filter(
+            item => item.NumRegistre === parseInt(state.formConv.NumRegistre)
+          )[0] && (
             <div style={{ paddingLeft: 30 }}>
               <p style={{ color: "red" }}>
                 {state.formConv.NumRegistre} est déja assigé à au travaux de{" "}
@@ -280,13 +296,16 @@ const FormConvocation = ({
               </p>
             </div>
           )}
-          {!match() && state.formConv.NumRegistre !== "" && (
-            <div style={{ paddingLeft: 30 }}>
-              <p style={{ color: "green" }}>
-                le {state.formConv.NumRegistre} est ligre
-              </p>
-            </div>
-          )}
+          {!convocations.filter(
+            item => item.NumRegistre === parseInt(state.formConv.NumRegistre)
+          )[0] &&
+            state.formConv.NumRegistre !== "" && (
+              <div style={{ paddingLeft: 30 }}>
+                <p style={{ color: "green" }}>
+                  le numéro {state.formConv.NumRegistre} est libre
+                </p>
+              </div>
+            )}
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <TextField
               required
@@ -349,7 +368,9 @@ const FormConvocation = ({
           <Grid item xs={4}>
             {!selectedConvocation && (
               <Button
-                disabled={(!IdTrav && true) || (IdTrav && false)}
+                disabled={
+                  (!selectedIdTrav && true) || (selectedIdTrav && false)
+                }
                 type="submit"
                 fullWidth
                 variant="contained"

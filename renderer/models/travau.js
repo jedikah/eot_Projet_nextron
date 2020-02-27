@@ -1,4 +1,5 @@
-import { updateTravau } from "../redux/actions/travauActions";
+//mport { updateTravau } from "../redux/actions/travauActions";
+import React from "react";
 
 export const selectTravaux = (db, cb) => {
   let sql = "SELECT ";
@@ -15,9 +16,78 @@ export const selectTravaux = (db, cb) => {
   sql += "travau.TypeTrav AS TypeTrav,";
   sql += "travau.Prix AS Prix ";
   sql += "FROM ";
-  sql += "travau ORDER BY IdTrav DESC LIMIT 20";
+  sql += "travau ORDER BY IdTrav DESC LIMIT 10";
 
   db.all(sql, (err, rows) => cb(rows));
+};
+
+export const selectAllTravaux = (db, cb) => {
+  let sql = "SELECT ";
+  sql += "travau.IdTrav AS IdTrav,";
+  sql += "travau.IdCli AS IdCli,";
+  sql += "travau.IdFact AS IdFact,";
+  sql += "travau.NumReq AS NumReq,";
+  sql += "travau.DateReq AS DateReq,";
+  sql += "travau.NumTitre AS NumTitre,";
+  sql += "travau.NomTer AS NomTer,";
+  sql += "travau.LocalisationTrav AS LocalisationTrav,";
+  sql += "travau.Fokontany AS Fokontany,";
+  sql += "travau.DateTrav AS DateTrav,";
+  sql += "travau.TypeTrav AS TypeTrav,";
+  sql += "travau.Prix AS Prix ";
+  sql += "FROM ";
+  sql += "travau";
+
+  db.all(sql, (err, rows) => cb(rows));
+};
+
+export const selectTravauxPaging = (db, params, cb) => {
+  let sql = "SELECT ";
+  sql += "travau.IdTrav AS IdTrav,";
+  sql += "travau.IdCli AS IdCli,";
+  sql += "travau.IdFact AS IdFact,";
+  sql += "travau.NumReq AS NumReq,";
+  sql += "travau.DateReq AS DateReq,";
+  sql += "travau.NumTitre AS NumTitre,";
+  sql += "travau.NomTer AS NomTer,";
+  sql += "travau.LocalisationTrav AS LocalisationTrav,";
+  sql += "travau.Fokontany AS Fokontany,";
+  sql += "travau.DateTrav AS DateTrav,";
+  sql += "travau.TypeTrav AS TypeTrav,";
+  sql += "travau.Prix AS Prix ";
+  sql += "FROM ";
+  sql += "travau ORDER BY IdTrav DESC LIMIT 10 OFFSET ?";
+
+  db.all(sql, params, (err, rows) => {
+    console.log(rows);
+    cb(rows);
+  });
+};
+
+export const selectTravauxNotFactured = (db, params, cb) => {
+  let sql = "SELECT ";
+  sql += "travau.IdTrav AS IdTrav,";
+  sql += "travau.IdCli AS IdCli,";
+  sql += "travau.IdFact AS IdFact,";
+  sql += "travau.NumReq AS NumReq,";
+  sql += "travau.DateReq AS DateReq,";
+  sql += "travau.NumTitre AS NumTitre,";
+  sql += "travau.NomTer AS NomTer,";
+  sql += "travau.LocalisationTrav AS LocalisationTrav,";
+  sql += "travau.Fokontany AS Fokontany,";
+  sql += "travau.DateTrav AS DateTrav,";
+  sql += "travau.TypeTrav AS TypeTrav,";
+  sql += "travau.Prix AS Prix ";
+  sql += "FROM ";
+  sql += "travau WHERE IdFact = '' AND IdCli = ?";
+  let res = [];
+  db.all(sql, params, (err, rows) => cb(rows));
+};
+
+export const selectCountTrav = (db, cb) => {
+  let sql =
+    "SELECT travau.IdTrav AS IdTrav, COUNT(IdTrav) as Count FROM travau";
+  db.all(sql, (err, rows) => cb(rows[0].Count));
 };
 
 export const addTravaux = (db, params, cb) => {

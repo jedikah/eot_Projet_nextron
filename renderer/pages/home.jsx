@@ -85,7 +85,7 @@ const Home = ({ actions, users, maxs }) => {
             <SignIn
               authentification
               className={classes.signin}
-              style={{ zIndex: 2 }}
+              style={{ zIndex: 2, boxShadow: "0px 0px 20px #000" }}
             ></SignIn>
             <div
               style={{

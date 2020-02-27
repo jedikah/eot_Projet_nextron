@@ -23,7 +23,14 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const FormPv = ({ IdTrav, convocation, travau, client, actions, pv }) => {
+const FormPv = ({
+  selectedIdTrav,
+  convocation,
+  selectedTravau,
+  client,
+  actions,
+  pv
+}) => {
   let path = DB.homeDir("ECM");
   path += "EMC.sqlite";
   const db = DB.connect(path);
@@ -60,11 +67,11 @@ const FormPv = ({ IdTrav, convocation, travau, client, actions, pv }) => {
       formConv: { ...state.formConv, [names]: e.target.value }
     });
   };
-
+  console.log(pv);
   const handleClick = e => {
     e.preventDefault();
 
-    if (IdTrav) {
+    if (selectedIdTrav) {
       setOpenAlert(true);
       DB.addPV(
         db,
@@ -73,7 +80,7 @@ const FormPv = ({ IdTrav, convocation, travau, client, actions, pv }) => {
           state.formConv.Commune,
           state.formConv.District,
           state.formConv.Region,
-          travau.IdTrav
+          selectedTravau.IdTrav
         ],
         pv => {
           actions.updatePv({ pv });
@@ -100,7 +107,6 @@ const FormPv = ({ IdTrav, convocation, travau, client, actions, pv }) => {
     setOpenError(false);
   };
 
-  //console.log(travau);
   //console.log(convocation);
   return (
     <React.Fragment>
@@ -166,7 +172,7 @@ const FormPv = ({ IdTrav, convocation, travau, client, actions, pv }) => {
         <Grid container spacing={3}>
           <Grid item xs={6}>
             <Button
-              disabled={(!IdTrav && true) || (IdTrav && false)}
+              disabled={(!selectedIdTrav && true) || (selectedIdTrav && false)}
               type="submit"
               fullWidth
               variant="contained"

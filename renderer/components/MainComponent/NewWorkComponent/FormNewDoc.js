@@ -164,7 +164,14 @@ export default function FormNewDoc(props) {
               props.actions.lettreCharge.addLettreCharge({ newLettreCharge });
             }
           );
-        props.actions.travau.addTravaux({ newTrav });
+        DB.selectTravaux(db, rows => {
+          DB.selectCountTrav(db, Count => {
+            props.actions.travau.initTravau({
+              travaux: rows,
+              CountTravaux: Count
+            });
+          });
+        });
         let newPv = {
           PieceJust: "",
           Commune: "",
@@ -177,14 +184,8 @@ export default function FormNewDoc(props) {
     );
   };
 
-  const verifieNom = () => {
-    props.clients.forEach(element => {
-      if (element.Nom === state.formInput.Nom) console.log("pareil");
-    });
-  };
   const handleClick = e => {
     e.preventDefault();
-    verifieNom();
     if (state.match) {
       setOpenTrav(true);
       addDB(state.currentIdCli);
@@ -370,6 +371,7 @@ export default function FormNewDoc(props) {
       </Grid>
     );
   };
+
   return (
     <React.Fragment>
       <GlobalCss />
@@ -398,6 +400,7 @@ export default function FormNewDoc(props) {
           </Grid>
           <Grid item xs={6} md={4} lg={4}>
             <TextField
+              required={!state.match}
               disabled={state.match}
               id="domicile"
               name="domicile"
