@@ -160,8 +160,7 @@ const FormConvocation = ({
 
     if (
       selectedIdTrav &&
-      state.formConv.NomPersConv !== "" &&
-      state.formConv.VilleConv !== ""
+      (state.formConv.NomPersConv !== "" || state.formConv.VilleConv !== "")
     ) {
       if (match === true) return setOpenAlertConv(false);
       else {
