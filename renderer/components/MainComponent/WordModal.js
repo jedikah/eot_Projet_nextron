@@ -80,17 +80,31 @@ const WordModal = ({ title, Content, open, onClick }) => {
   });
 
   const writeWord = () => {
+<<<<<<< HEAD
     const fs = require("fs");
     let html = "<!DOCTYPE html>";
     html += "<html><head><meta charset='utf-8'><title>HTML-DOCX test</title>";
     html += ReactDOMServer.renderToString(Content); //<Content />;
     html += "</head></html>";
+=======
+    console.log(<Content />);
+    const fs = require("fs");
+    let html = "<!DOCTYPE html>";
+    html +=
+      "<html><head><meta charset='utf-8'><title>HTML-DOCX test</title><body>";
+    html += ReactDOMServer.renderToString(Content); //<Content />;
+    html += "</body></head></html>";
+>>>>>>> 6b92d60597b6d11814ec7c1594d288dc8ccf1b08
 
     var converted = htmlDocx.asBlob(html, {
       orientation: "portrait",
       margins: { top: 720 }
     });
+<<<<<<< HEAD
 
+=======
+    console.log(html);
+>>>>>>> 6b92d60597b6d11814ec7c1594d288dc8ccf1b08
     saveAs(converted, "Next HTML DOX.docx");
     fs.writeFile("Next HTML DOX.docx", converted, err => {
       if (err) return console.log(err);
