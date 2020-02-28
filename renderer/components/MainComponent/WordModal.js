@@ -90,7 +90,6 @@ const WordModal = ({ title, Content, open, onClick }) => {
       orientation: "portrait",
       margins: { top: 720 }
     });
-
     saveAs(converted, "Next HTML DOX.docx");
     fs.writeFile("Next HTML DOX.docx", converted, err => {
       if (err) return console.log(err);
