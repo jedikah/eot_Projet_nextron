@@ -51,7 +51,7 @@ const FormConvocation = ({
   const [state, setState] = React.useState({
     registreError: [],
     formConv: {
-      NumRegistre: "",
+      NumRegistre: null,
       IdTrav: selectedIdTrav,
       NumPv: "",
       NomPersConv: "",
@@ -116,7 +116,7 @@ const FormConvocation = ({
       setState({
         ...state,
         formConv: {
-          NumRegistre: "",
+          NumRegistre: null,
           IdTrav: selectedIdTrav,
           NumPv: "",
           NomPersConv: "",
@@ -182,7 +182,7 @@ const FormConvocation = ({
               ...state,
               formConv: {
                 ...state.formConv,
-                NumRegistre: "",
+                NumRegistre: null,
                 IdTrav: selectedIdTrav,
                 NumPv: "",
                 NomPersConv: "",
