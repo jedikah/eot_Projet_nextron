@@ -51,7 +51,7 @@ const FormConvocation = ({
   const [state, setState] = React.useState({
     registreError: [],
     formConv: {
-      NumRegistre: null,
+      NumRegistre: "",
       IdTrav: selectedIdTrav,
       NumPv: "",
       NomPersConv: "",
@@ -116,7 +116,7 @@ const FormConvocation = ({
       setState({
         ...state,
         formConv: {
-          NumRegistre: null,
+          NumRegistre: "",
           IdTrav: selectedIdTrav,
           NumPv: "",
           NomPersConv: "",
@@ -160,8 +160,7 @@ const FormConvocation = ({
 
     if (
       selectedIdTrav &&
-      state.formConv.NomPersConv !== "" &&
-      state.formConv.VilleConv !== ""
+      (state.formConv.NomPersConv !== "" || state.formConv.VilleConv !== "")
     ) {
       if (match === true) return setOpenAlertConv(false);
       else {
@@ -183,7 +182,7 @@ const FormConvocation = ({
               ...state,
               formConv: {
                 ...state.formConv,
-                NumRegistre: null,
+                NumRegistre: "",
                 IdTrav: selectedIdTrav,
                 NumPv: "",
                 NomPersConv: "",
@@ -208,7 +207,7 @@ const FormConvocation = ({
       DB.upDateConvocation(
         db,
         [
-          state.formConv.NumRegistre,
+          parseInt(state.formConv.NumRegistre),
           selectedConvocation.IdTrav,
           selectedConvocation.NumPv,
           state.formConv.NomPersConv,
