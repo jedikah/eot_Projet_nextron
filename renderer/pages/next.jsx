@@ -8,7 +8,6 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Typography from "@material-ui/core/Typography";
 import orange from "@material-ui/core/colors/orange";
-import { Scale } from "react-scaling";
 
 import * as DB from "../models";
 import { ROUTE_MENU } from "../redux/reducers/menu";
@@ -153,9 +152,7 @@ const Next = ({ actions, routeMenu, users, settings, maxs }) => {
     DB.selectLetreCharges(db, rows =>
       actions.initLettreCharge({ lettreCharges: rows })
     );
-    // DB.selectConvocations(db, rows =>
-    //   actions.initConvocation({ convocations: rows })
-    // );
+
     DB.selectPV(db, rows => actions.initPv({ pvs: rows }));
     DB.selectFacture(db, rows => {
       DB.selectCountFact(db, Count => {

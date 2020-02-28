@@ -15,6 +15,8 @@ import Pagination from "@material-ui/lab/Pagination";
 
 import ComboBox from "../ComboBox";
 import * as DB from "../../../models";
+import WordModal from "../WordModal";
+import Word from "./word";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -298,6 +300,11 @@ const ListFacture = ({
                     >
                       Word
                     </Button>
+                    <WordModal
+                      open={true}
+                      title="Visualisation de facture"
+                      Content={Word()}
+                    />
                   </ListItemSecondaryAction>
                 </ListItem>
                 <Divider />
