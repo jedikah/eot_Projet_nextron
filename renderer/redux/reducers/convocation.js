@@ -12,8 +12,20 @@ const convocation = (state = initstate, action) => {
 
   switch (action.type) {
     case types.INIT_CONVOCATION:
-      newState.convocations = payload.convocations;
-      return newState;
+      let convs = [];
+      if (payload.convocations[0])
+        payload.convocations.forEach((element, key) => {
+          convs.push(element);
+          if (key === payload.convocations.length - 1) {
+            newState.convocations = [...convs];
+            payload.convReady(true);
+            return newState;
+          }
+        });
+      else {
+        newState.convocations = [...convs];
+        return newState;
+      }
 
     case types.SET_SELECTED_CONVOCATION:
       newState.selectedConvocation = payload.selectedConvocation;

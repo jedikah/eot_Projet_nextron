@@ -87,6 +87,7 @@ const ListFacture = ({
     match: false,
     factures: factures
   });
+  const [word, setWord] = React.useState(false);
 
   useEffect(() => {
     DB.selectAllTravaux(db, rows => {
@@ -198,6 +199,11 @@ const ListFacture = ({
     });
   };
 
+  const wordClose = val => setWord(val);
+  const handleClickOpen = () => {
+    setWord(true);
+  };
+
   return (
     <div
       className={classes.root}
@@ -297,11 +303,13 @@ const ListFacture = ({
                       variant="outlined"
                       color="primary"
                       startIcon={<DetailsIcon />}
+                      onClick={handleClickOpen}
                     >
                       Word
                     </Button>
                     <WordModal
-                      open={true}
+                      open={word}
+                      close={wordClose}
                       title="Visualisation de facture"
                       Content={Word()}
                     />

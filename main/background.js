@@ -1,6 +1,7 @@
 import { app, globalShortcut, Tray } from "electron";
 import serve from "electron-serve";
 import { createWindow } from "./helpers";
+require("v8-compile-cache");
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -16,10 +17,10 @@ if (isProd) {
   require("../renderer/module/electron-devtools");
 
   const splash = createWindow("splash", {
-    width: 200,
-    height: 100,
-    minWidth: 200,
-    minHeight: 100,
+    maxWidth: 1920,
+    maxHeight: 1080,
+    width: 900,
+    height: 500,
     frame: false,
     alwaysOnTop: true,
     resizable: false,
@@ -29,7 +30,7 @@ if (isProd) {
     show: false
   });
 
-  splash.setSize(200, 250);
+  splash.setSize(500, 400);
   splash.center();
   splash.setIgnoreMouseEvents(true);
 
@@ -60,7 +61,7 @@ if (isProd) {
 
       setTimeout(() => {
         splash.close();
-      }, 1000);
+      }, 2000);
     }, 8000);
   });
 

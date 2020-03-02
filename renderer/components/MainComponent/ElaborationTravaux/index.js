@@ -101,11 +101,10 @@ const afficher = () => {
       </div>
       <div
         style={{
-          width: "100%",
+          width: "96.5%",
           height: "95%",
-          padding: 15,
-          marginTop: 5,
-          overflow: "auto"
+          minHeight: 400,
+          marginTop: 5
         }}
       >
         <AfficherDossier />

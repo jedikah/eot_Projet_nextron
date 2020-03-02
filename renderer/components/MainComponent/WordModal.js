@@ -60,7 +60,7 @@ const DialogTitles = withStyles(styles)(props => {
   );
 });
 
-const WordModal = ({ title, Content, open, onClick }) => {
+const WordModal = ({ title, Content, open, onClick, close }) => {
   const [maxWidth, setMaxWidth] = React.useState("md");
   const [zoom, setZoom] = React.useState(1280 * 100);
   const { remote } = require("electron");
@@ -132,7 +132,11 @@ const WordModal = ({ title, Content, open, onClick }) => {
         <Button autoFocus onClick={writeWord} style={{ color: orange[500] }}>
           Créer le fichier
         </Button>
-        <Button autoFocus onClick={onClick} style={{ color: orange[500] }}>
+        <Button
+          autoFocus
+          onClick={() => close(false)}
+          style={{ color: orange[500] }}
+        >
           Fermer
         </Button>
       </DialogActions>
