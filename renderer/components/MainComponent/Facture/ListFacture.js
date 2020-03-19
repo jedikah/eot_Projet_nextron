@@ -45,6 +45,7 @@ const useStyles = makeStyles(theme => ({
   },
   search: {
     "& div.MuiAutocomplete-popper": { background: "red" },
+    zIndex: 12,
     display: "flex",
     flexDirection: "row",
     borderRadius: theme.shape.borderRadius,
@@ -52,7 +53,7 @@ const useStyles = makeStyles(theme => ({
     "&:hover": {
       backgroundColor: fade(theme.palette.common.white, 0.25)
     },
-    marginRight: theme.spacing(2),
+    marginRight: 0,
     marginLeft: 0,
     [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing(3),
@@ -70,7 +71,8 @@ const ListFacture = ({
   selectedFacture,
   facturesBySearchName,
   CountFactures,
-  IdCliFromFacture
+  IdCliFromFacture,
+  lastPageChange
 }) => {
   let path = DB.homeDir("ECM");
   path += "EMC.sqlite";
@@ -93,7 +95,7 @@ const ListFacture = ({
     DB.selectAllTravaux(db, rows => {
       setState({ ...state, travaux: rows });
     });
-  }, []);
+  }, [travaux]);
   const cli = idCli => {
     return clients.filter(item => item.IdCli === idCli)[0];
   };
@@ -114,10 +116,11 @@ const ListFacture = ({
   const selectFacture = (facture, Nom, IdCli) => {
     DB.selectTravauBySearchName(db, IdCli, rows => {
       facture.Nom = Nom;
+      
       if (!selectedFacture) {
         actions.setSelectedFacture({
           selectedFacture: facture,
-          selectedTravauxByFacture: rows
+          selectedTravauxByFacture: rows,
         });
       } else if (selectedFacture && selectedFacture.IdFact !== facture.IdFact) {
         actions.setSelectedFacture({
@@ -162,15 +165,28 @@ const ListFacture = ({
     });
 
     if (matchClient(val)) handleSearch(currentIdCli);
-    else
-      DB.selectFacture(db, rows => {
-        DB.selectCountFact(db, Count => {
-          actions.initFacture({ factures: rows, CountFactures: Count });
+    else DB.selectFacturePaging(db, (lastPageChange * 10) - 10, rows => {
+      DB.selectCountFact(db, Count => {
+        let IdCli = [],
+          i = 0;
+
+        rows.forEach(element => {
+          IdCli[i++] = element.IdCli;
+        });
+        let removeDuplicatesIdCli = [...new Set(IdCli)];
+        actions.initFacture({
+          factures: rows,
+          CountFactures: Count,
+          IdCliFromFacture: removeDuplicatesIdCli,
+          lastPageChange:lastPageChange
         });
       });
-  };
+    });
+      
+  }
 
   const handleSearch = currentIdCli => {
+    
     if (state.currentIdCli !== "" || currentIdCli !== "") {
       let cli = state.currentIdCli;
       if (currentIdCli !== "") {
@@ -178,7 +194,8 @@ const ListFacture = ({
         DB.selectFactureBySearchName(db, cli, factures => {
           actions.initFacture({
             factures,
-            CountFactures
+            CountFactures,
+            lastPageChange
           });
           setState({
             ...state,
@@ -192,9 +209,21 @@ const ListFacture = ({
 
   const pageChange = num => e => {
     num *= 10;
-    DB.selectTravauxPaging(db, num - 10, rows => {
-      DB.selectCountTrav(db, Count => {
-        actions.initTravau({ travaux: rows, CountTravaux: Count });
+    DB.selectFacturePaging(db, num - 10, rows => {
+      DB.selectCountFact(db, Count => {
+        let IdCli = [],
+          i = 0;
+
+        rows.forEach(element => {
+          IdCli[i++] = element.IdCli;
+        });
+        let removeDuplicatesIdCli = [...new Set(IdCli)];
+        actions.initFacture({
+          factures: rows,
+          CountFactures: Count,
+          IdCliFromFacture: removeDuplicatesIdCli,
+          lastPageChange:num/10
+        });
       });
     });
   };
@@ -212,13 +241,13 @@ const ListFacture = ({
         flexDirection: "column",
         height: "100%",
         boxShadow: "0px 0px 10px #888888",
-        borderRadius: "10px 10px 10px 10px",
-        padding: 10
+        borderRadius: "10px 10px 10px 10px"
       }}
     >
       <div
         style={{
           height: "100%",
+          background: "white",
           overflowY: "scroll"
         }}
       >
@@ -228,7 +257,9 @@ const ListFacture = ({
             background: "white",
             position: "sticky",
             zIndex: 12,
-            top: -15
+            top: 0,
+            paddingTop: 5,
+            paddingBottom: 5
           }}
         >
           <Grid item xs={10} className={classes.search}>
@@ -236,7 +267,7 @@ const ListFacture = ({
               <SearchIcon />
             </Button>
             <ComboBox
-              style={{ width: "80%" }}
+              style={{ width: "100%" }}
               val={state.formInput.Nom}
               list={clients}
               onInputChange={(e, v) => handleChange(v)(e)}
@@ -332,6 +363,10 @@ const ListFacture = ({
         <Grid item xs={12}>
           <Pagination
             count={Math.ceil(CountFactures / 10)}
+            boundaryCount={1}
+            defaultPage={1}
+            page={lastPageChange}
+            siblingCount={1}
             shape="rounded"
             color="secondary"
             showFirstButton

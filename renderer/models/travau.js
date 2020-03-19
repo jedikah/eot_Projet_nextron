@@ -58,10 +58,7 @@ export const selectTravauxPaging = (db, params, cb) => {
   sql += "FROM ";
   sql += "travau ORDER BY IdTrav DESC LIMIT 10 OFFSET ?";
 
-  db.all(sql, params, (err, rows) => {
-    console.log(rows);
-    cb(rows);
-  });
+  db.all(sql, params, (err, rows) => cb(rows));
 };
 
 export const selectTravauxNotFactured = (db, params, cb) => {

@@ -4,7 +4,8 @@ const initState = {
   travaux: [],
   selectedTravau: null,
   CountTravaux: 0,
-  travauxBySearchName: []
+  travauxBySearchName: [],
+  lastPageChange: 1
 };
 
 const travau = (state = initState, action) => {
@@ -16,6 +17,8 @@ const travau = (state = initState, action) => {
     case types.INIT_TRAVAU:
       newState.travaux = payload.travaux;
       newState.CountTravaux = payload.CountTravaux;
+      newState.lastPageChange = payload.lastPageChange
+
       return newState;
 
     case types.ADD_TRAVAU:
@@ -36,13 +39,19 @@ const travau = (state = initState, action) => {
       return newState;
 
     case types.UPDATE_TRAVAU_FACT:
-      const index_Trav = travaux.findIndex(
+      let index_Trav = -2;
+      if(travaux.findIndex(
         item => item.IdTrav === payload.IdTrav
-      );
+      ) !== -1) {
 
-      travaux[index_Trav].IdFact = payload.IdFact;
-      newState.travaux = [...travaux];
-      return newState;
+        index_Trav = travaux.findIndex(
+        item => item.IdTrav === payload.IdTrav);
+
+        travaux[index_Trav].IdFact = payload.IdFact;
+        newState.travaux = [...travaux];
+        return newState;
+      }
+      
 
     case types.SET_SELECT_TRAVAU_BY_SEARCH_NAME:
       newState.travauxBySearchName = payload.travaux;

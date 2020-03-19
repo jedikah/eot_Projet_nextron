@@ -26,22 +26,20 @@ export const selectFacture = (db, cb) => {
   });
 };
 
-export const selectCountFact = (db, cb) => {
-  let sql =
-    "SELECT facture.IdFact AS IdFact, COUNT(IdFact) AS Count FROM facture";
-  db.all(sql, (err, rows) => {
-    cb(rows[0].Count);
-  });
-};
-
 export const selectFacturePaging = (db, params, cb) => {
   let sql = "SELECT facture.IdFact AS IdFact,";
   sql += "facture.IdCli AS IdCli,";
   sql += "facture.DateFact AS DateFact ";
   sql += "FROM facture ORDER BY IdFact DESC LIMIT 10 OFFSET ?";
 
-  db.all(sql, params, (err, rows) => {
-    cb(rows);
+  db.all(sql, params, (err, rows) => cb(rows));
+};
+
+export const selectCountFact = (db, cb) => {
+  let sql =
+    "SELECT facture.IdFact AS IdFact, COUNT(IdFact) AS Count FROM facture";
+  db.all(sql, (err, rows) => {
+    cb(rows[0].Count);
   });
 };
 

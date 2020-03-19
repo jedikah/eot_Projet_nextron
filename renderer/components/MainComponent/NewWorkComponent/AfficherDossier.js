@@ -86,13 +86,14 @@ const AffiCherDossier = ({
   selectedConvocation,
   convocations,
   travauxBySearchName,
-  CountTravaux
+  CountTravaux,
+  lastPageChange
 }) => {
   const { remote } = require("electron");
   let path = DB.homeDir("ECM");
   path += "EMC.sqlite";
   const db = DB.connect(path);
-
+  
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [zoom, setZoom] = React.useState(1280 * 100);
@@ -121,27 +122,33 @@ const AffiCherDossier = ({
     });
   });
 
+  const convocationFromDB = () => {
+    return new Promise((resolve, reject) => {
+      let newConvocations = [];
+      let i = 0;
+      let lenTtrav = travaux.length;
+      travaux.forEach((item, index) => {
+        DB.selectConvocations(db, item.IdTrav, rows => {
+          newConvocations = [...newConvocations, ...rows];
+          if (i === lenTtrav - 1) resolve(newConvocations);
+          i++;
+        });
+      });
+    });
+  };
+
   useEffect(() => {
     if (travaux[0]) {
       setConvReady(false);
-      let newConvocations = [];
-      travaux.forEach((item, index) => {
-        DB.selectConvocations(db, item.IdTrav, rows => {
-          rows.forEach((elem, i) => {
-            newConvocations.push(elem);
-            //actions.addConvocations({ newConvocation: elem });
-            if (index === travaux.length - 1 && i === rows.length - 1) {
-              actions.initConvocation({
-                convocations: newConvocations,
-                convReady: val =>
-                  setTimeout(() => {
-                    setConvReady(val);
-                  }, 1000)
-              });
-            }
-          });
-        });
-      });
+      convocationFromDB().then(newConvocations =>
+        actions.initConvocation({
+          convocations: newConvocations,
+          convReady: val =>
+            setTimeout(() => {
+              setConvReady(val);
+            }, 1000)
+        })
+      );
     }
   }, [travaux]);
 
@@ -205,9 +212,14 @@ const AffiCherDossier = ({
 
     if (matchClient(val)) handleSearch(currentIdCli);
     else
-      DB.selectTravaux(db, rows => {
+      // DB.selectTravaux(db, rows => {
+      //   DB.selectCountTrav(db, Count => {
+      //     actions.initTravau({ travaux: rows, CountTravaux: Count, lastPageChange });
+      //   });
+      // });
+      DB.selectTravauxPaging(db, (lastPageChange * 10) - 10, rows => {
         DB.selectCountTrav(db, Count => {
-          actions.initTravau({ travaux: rows, CountTravaux: Count });
+          actions.initTravau({ travaux: rows, CountTravaux: Count, lastPageChange:lastPageChange});
         });
       });
   };
@@ -219,7 +231,7 @@ const AffiCherDossier = ({
         cli = currentIdCli;
         DB.selectTravauBySearchName(db, cli, travaux => {
           //actions.setSelectTravauBySearchName({ travaux });
-          actions.initTravau({ travaux: travaux, CountTravaux: CountTravaux });
+          actions.initTravau({ travaux: travaux, CountTravaux: CountTravaux, lastPageChange });
           setState({
             ...state,
             formInput: { ...state.formInput },
@@ -230,11 +242,13 @@ const AffiCherDossier = ({
       } else pageChange(1);
     }
   };
-  const pageChange = num => e => {
+
+  const pageChange = (num) => e => {
     num *= 10;
+    
     DB.selectTravauxPaging(db, num - 10, rows => {
       DB.selectCountTrav(db, Count => {
-        actions.initTravau({ travaux: rows, CountTravaux: Count });
+        actions.initTravau({ travaux: rows, CountTravaux: Count, lastPageChange:num/10});
       });
     });
   };
@@ -247,13 +261,13 @@ const AffiCherDossier = ({
         flexDirection: "column",
         height: "100%",
         boxShadow: "0px 0px 10px #888888",
-        borderRadius: "10px 10px 10px 10px",
-        padding: 10
+        borderRadius: "10px 10px 10px 10px"
       }}
     >
       <div
         style={{
           height: "100%",
+          background: "white",
           overflowY: "scroll"
         }}
       >
@@ -263,7 +277,9 @@ const AffiCherDossier = ({
             background: "white",
             position: "sticky",
             zIndex: 12,
-            top: -15
+            top: 0,
+            paddingTop: 5,
+            paddingBottom: 5
           }}
         >
           <Grid item xs={10} className={classes.search}>
@@ -271,7 +287,7 @@ const AffiCherDossier = ({
               <SearchIcon />
             </Button>
             <ComboBox
-              style={{ width: "80%" }}
+              style={{ width: "100%" }}
               val={state.formInput.Nom}
               list={clients}
               onInputChange={(e, v) => handleChange(v)(e)}
@@ -406,6 +422,10 @@ const AffiCherDossier = ({
         <Grid item xs={12}>
           <Pagination
             count={Math.ceil(CountTravaux / 10)}
+            boundaryCount={1}
+            defaultPage={1}
+            page={lastPageChange}
+            siblingCount={1}
             shape="rounded"
             color="secondary"
             showFirstButton

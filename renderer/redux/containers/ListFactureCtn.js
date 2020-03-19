@@ -3,8 +3,9 @@ import { bindActionCreators } from "redux";
 
 import ListFacture from "../../components/MainComponent/Facture/ListFacture";
 import * as factureActions from "../actions/factureActions";
+import * as travauxActions from "../actions/travauActions";
 
-const actions = { ...factureActions };
+const actions = { ...factureActions, ...travauxActions };
 
 const mapStateToProps = state => ({
   travaux: state.travau.travaux,
@@ -13,7 +14,8 @@ const mapStateToProps = state => ({
   selectedFacture: state.facture.selectedFacture,
   factureBySearchName: state.facture.factureBySearchName,
   CountFactures: state.facture.CountFactures,
-  IdCliFromFacture: state.facture.IdCliFromFacture
+  IdCliFromFacture: state.facture.IdCliFromFacture,
+  lastPageChange: state.facture.lastPageChange
 });
 
 const mapDispatchToProps = dispatch => ({

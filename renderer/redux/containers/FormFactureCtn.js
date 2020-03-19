@@ -11,7 +11,9 @@ const mapStateToProps = state => ({
   travaux: state.travau.travaux,
   clients: state.client.clients,
   selectedFacture: state.facture.selectedFacture,
-  selectedTravauxByFacture: state.facture.selectedTravauxByFacture
+  selectedTravauxByFacture: state.facture.selectedTravauxByFacture,
+  beforeSelectedTravauxByFacture: state.facture.beforeSelectedTravauxByFacture,
+  lastPageChange: state.facture.lastPageChange
 });
 
 const mapDispatchToProps = dispatch => ({

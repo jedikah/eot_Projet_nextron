@@ -20,7 +20,7 @@ export const setSelectFactureBySearchName = payload => ({
   payload
 });
 
-export const updateSelectedFacture = payload => ({
-  type: types.UPDATE_SELECTED_FACTURE,
+export const setBeforeSetSelectedFacture = payload => ({
+  type: types.SET_BEFORE_SET_SELECTED_FACTURE,
   payload
 });

@@ -147,7 +147,7 @@ const Next = ({ actions, routeMenu, users, settings, maxs }) => {
     DB.selectClients(db, rows => actions.initClient({ clients: rows }));
     DB.selectTravaux(db, rows => {
       DB.selectCountTrav(db, Count => {
-        actions.initTravau({ travaux: rows, CountTravaux: Count });
+        actions.initTravau({ travaux: rows, CountTravaux: Count, lastPageChange:1 });
       });
     });
 
@@ -156,6 +156,7 @@ const Next = ({ actions, routeMenu, users, settings, maxs }) => {
     );
 
     DB.selectPV(db, rows => actions.initPv({ pvs: rows }));
+    
     DB.selectFacture(db, rows => {
       DB.selectCountFact(db, Count => {
         let IdCli = [],
@@ -168,7 +169,8 @@ const Next = ({ actions, routeMenu, users, settings, maxs }) => {
         actions.initFacture({
           factures: rows,
           CountFactures: Count,
-          IdCliFromFacture: removeDuplicatesIdCli
+          IdCliFromFacture: removeDuplicatesIdCli,
+          lastPageChange:1
         });
       });
     });

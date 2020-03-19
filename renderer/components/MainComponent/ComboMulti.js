@@ -26,6 +26,7 @@ export default function ComboMulti({
       setZoom(width);
     });
   }, []);
+  
   const GlobalCss = withStyles({
     // @global is handled by jss-plugin-global.
     "@global": {
@@ -52,7 +53,7 @@ export default function ComboMulti({
             {...params}
             variant="outlined"
             label="Liste des travaux à facturer"
-            placeholder="Traveau"
+            placeholder="Travaux"
             variant="outlined"
             fullWidth
           />

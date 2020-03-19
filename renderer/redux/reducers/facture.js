@@ -4,15 +4,17 @@ const initState = {
   factures: [],
   selectedFacture: null,
   selectedTravauxByFacture: [],
+  beforeSelectedTravauxByFacture: [],
   CountFactures: 0,
   facturesBySearchName: [],
-  IdCliFromFacture: []
+  IdCliFromFacture: [],
+  lastPageChange: 1
 };
 
 const facture = (state = initState, action) => {
   let newState = { ...state };
   let payload = action.payload;
-  let { factures, selectedTravauxByFacture } = state;
+  let { factures } = state;
 
   switch (action.type) {
     case types.ADD_FACTURE:
@@ -23,26 +25,38 @@ const facture = (state = initState, action) => {
     case types.INIT_FACTURE:
       newState.factures = payload.factures;
       newState.CountFactures = payload.CountFactures;
-      newState.IdCliFromFacture = payload.IdCliFromFacture;
+      newState.lastPageChange = payload.lastPageChange;
+
       return newState;
 
     case types.SET_SELECTED_FACTURE:
       newState.selectedFacture = payload.selectedFacture;
       newState.selectedTravauxByFacture = payload.selectedTravauxByFacture;
+      newState.IdCliFromFacture = payload.IdCliFromFacture;
+      newState.beforeSelectedTravauxByFacture =
+        payload.selectedTravauxByFacture;
       return newState;
 
-    case types.UPDATE_SELECTED_FACTURE:
-      selectedTravauxByFacture = [];
+    case types.SET_BEFORE_SET_SELECTED_FACTURE:
+      let beforeSelectedTravauxByFacture = [];
+
       payload.selectedTravauxI.forEach(item => {
         item.IdFact = payload.IdFact;
-        selectedTravauxByFacture.push(item);
+        beforeSelectedTravauxByFacture = [
+          ...beforeSelectedTravauxByFacture,
+          item
+        ];
       });
       payload.selectedTravauxII.forEach(item => {
         item.IdFact = "";
-        selectedTravauxByFacture.push(item);
+        beforeSelectedTravauxByFacture = [
+          ...beforeSelectedTravauxByFacture,
+          item
+        ];
       });
-      newState.selectedTravauxByFacture = selectedTravauxByFacture;
-      newState.selectedFacture = payload.selectedFact;
+
+      newState.beforeSelectedTravauxByFacture = beforeSelectedTravauxByFacture;
+
       return newState;
 
     case types.SET_SELECT_FACTURE_BY_SEARCH_NAME:
